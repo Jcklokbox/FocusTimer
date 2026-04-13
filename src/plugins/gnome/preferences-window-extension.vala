@@ -449,6 +449,10 @@ namespace Gnome
         {
             this.taredown ();
 
+            if (this.window != null) {
+                this.window.notify["visible-panel"].disconnect (this.on_notify_visible_panel);
+            }
+
             if (this.shell_extension != null) {
                 this.shell_extension.notify["settings"].disconnect (this.on_notify_settings);
                 this.shell_extension.notify["available"].disconnect (this.on_notify_available);

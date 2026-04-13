@@ -1,0 +1,8 @@
+<schemalist>
+  <schema id="io.github.focustimerhq.FocusTimer.plugins.sni" path="/io/github/focustimerhq/FocusTimer/plugins/sni/">
+    <key name="indicator" type="b">
+      <default>true</default>
+      <summary>Whether to enable indicator</summary>
+    </key>
+  </schema>
+</schemalist>

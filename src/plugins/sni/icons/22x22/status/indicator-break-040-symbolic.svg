@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22" height="22" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <style id="current-color-scheme" type="text/css">
+    .ColorScheme-PositiveText {
+      color: #3ea554;
+    }
+  </style>
+  <path d="m7.5156 2.7793a1.25 1.25 0 0 0-0.95117 0.10352c-4.2911 2.3443-6.0175 7.6593-3.9238 12.078a1.25 1.25 0 0 0 1.666 0.59375 1.25 1.25 0 0 0 0.59375-1.6641c-1.537-3.2438-0.28681-7.0936 2.8633-8.8145a1.25 1.25 0 0 0 0.49805-1.6953 1.25 1.25 0 0 0-0.74609-0.60156z" opacity="0.34902" fill="currentColor" class="success ColorScheme-PositiveText"/>
+  <path d="m11 1.75a1.25 1.25 0 0 0-1.25 1.25 1.25 1.25 0 0 0 1.25 1.25c4.6218 0 7.8481 4.4403 6.4199 8.8359-1.4282 4.3956-6.6476 6.0916-10.387 3.375a1.25 1.25 0 0 0-1.7461 0.27734 1.25 1.25 0 0 0 0.27539 1.7461c5.0548 3.6725 12.304 1.3153 14.234-4.627 1.9308-5.9423-2.5488-12.107-8.7969-12.107z" fill="currentColor" class="success ColorScheme-PositiveText"/>
+</svg>

@@ -134,6 +134,7 @@ namespace Ft
         private Ft.ScreenOverlayManager?    screen_overlay_manager;
         private Ft.BackgroundManager?       background_manager;
         private Ft.SoundManager?            sound_manager;
+        private Ft.Indicator?               indicator;
         private Ft.Logger?                  logger;
         private GLib.Settings?              settings;
         private Peas.ExtensionSet?          extensions;
@@ -362,6 +363,16 @@ namespace Ft
 
         private void show_screen_overlay ()
         {
+            if (!this.session_manager.current_state.is_break () || this.timer.is_finished ()) {
+                this.session_manager.advance_to_state (Ft.State.BREAK);
+            }
+            else if (this.timer.is_paused ()) {
+                this.timer.resume ();
+            }
+            else if (!this.timer.is_started ()) {
+                this.timer.start ();
+            }
+
             this.screen_overlay_manager.open ();
         }
 
@@ -675,6 +686,7 @@ namespace Ft
             this.event_bus              = this.event_producer.bus;
             this.job_queue              = new Ft.JobQueue ();
             this.logger                 = new Ft.Logger ();
+            this.indicator              = new Ft.Indicator ();
 
 #if ENABLE_AUTOMATION
             this.action_manager = new Ft.ActionManager ();

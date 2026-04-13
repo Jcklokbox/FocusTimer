@@ -1,0 +1,6 @@
+[Plugin]
+Name=SNI
+Module=sni
+Builtin=true
+Embedded=sni_peas_register_types
+X-Priority=low

@@ -817,7 +817,7 @@ namespace Ft
             }
         }
 
-        public void uninhibit ()
+        public void uninhibit (bool notify = true)
         {
             this.inhibit_count--;
 
@@ -827,7 +827,10 @@ namespace Ft
                 GLib.SignalHandler.unblock (this._session_manager, this.session_manager_confirm_advancement_id);
 
                 this.schedule_announcements();
-                this.update (false);
+
+                if (notify) {
+                    this.update (false);
+                }
             }
         }
 

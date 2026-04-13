@@ -67,8 +67,7 @@ namespace Ft
 
         seconds = seconds % 60;
 
-        if (hours > 0)
-        {
+        if (hours > 0) {
             str = ngettext ("%u hour", "%u hours", hours).printf (hours);
         }
 
@@ -81,7 +80,7 @@ namespace Ft
             str += ngettext ("%u minute", "%u minutes", minutes).printf (minutes);
         }
 
-        if (seconds > 0 && hours == 0)
+        if ((seconds > 0 && hours == 0) || (seconds == 0 && minutes == 0 && hours == 0))
         {
             if (str != "") {
                 str += " ";

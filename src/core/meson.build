@@ -16,6 +16,7 @@ libft_core_sources = files(
   'gap.vala',
   'gap-entry.vala',
   'idle-monitor.vala',
+  'indicator.vala',
   'job-queue.vala',
   'keyboard-manager.vala',
   'locale.vala',

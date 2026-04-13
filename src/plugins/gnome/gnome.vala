@@ -28,5 +28,8 @@ namespace Gnome
 
         object_module.register_extension_type (typeof (Ft.ScreenOverlayProvider),
                                                typeof (Gnome.ScreenOverlayProvider));
+
+        object_module.register_extension_type (typeof (Ft.IndicatorProvider),
+                                               typeof (Gnome.IndicatorProvider));
     }
 }

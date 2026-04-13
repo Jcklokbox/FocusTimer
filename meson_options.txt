@@ -14,3 +14,15 @@ option(
   value: 'enabled',
   description: 'Enable Automation panel.'
 )
+option(
+  'plugin_gnome',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Enable GNOME integration.'
+)
+option(
+  'plugin_sni',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Enable indicator.'
+)

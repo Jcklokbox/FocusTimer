@@ -26,6 +26,12 @@ namespace Gnome
                              this.shell_extension.enabled;
         }
 
+        private void on_notify_extension_enabled (GLib.Object    object,
+                                                  GLib.ParamSpec pspec)
+        {
+            this.update_available ();
+        }
+
         public void open ()
         {
             var proxy = this.shell_extension?.get_shell_integration_proxy ();
@@ -75,12 +81,6 @@ namespace Gnome
         protected override async void disable () throws GLib.Error
         {
             this.close ();
-        }
-
-        private void on_notify_extension_enabled (GLib.Object    object,
-                                                  GLib.ParamSpec pspec)
-        {
-            this.update_available ();
         }
     }
 }

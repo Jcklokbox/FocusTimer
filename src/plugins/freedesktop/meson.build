@@ -18,3 +18,5 @@ libft_plugin_freedesktop = static_library(
   dependencies: [libft_core_dep, gio_dep, peas_dep],
   include_directories: config_h_dir,
 )
+
+libft_plugins += [libft_plugin_freedesktop]

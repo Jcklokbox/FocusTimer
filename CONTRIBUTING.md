@@ -19,8 +19,6 @@ Suggestions and feature requests are always welcome!
 ### Missing indicator
 If you're on GNOME, you'll need the [Focus Timer extension](https://github.com/focustimerhq/gnome-shell-extension-focus-timer). Check its [troubleshooting page](https://github.com/focustimerhq/gnome-shell-extension-focus-timer/blob/main/CONTRIBUTING.md#troubleshooting) if you already have it.
 
-There is no support for the ayatana / [SNI interface](https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/StatusNotifierItem/) on other desktop environments yet.
-
 ### Missing Automation panel
 If you installed the app via Flathub, restricted permissions hide this panel. Try another [installation option](README.md#installation) if you need it.
 
