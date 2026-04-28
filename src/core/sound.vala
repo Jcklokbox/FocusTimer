@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016,2024 focus-timer contributors
+ * Copyright (c) 2016,2024,2026 focus-timer contributors
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
@@ -349,6 +349,7 @@ namespace Ft
 
         private dynamic Gst.Element pipeline;
         private dynamic Gst.Element volume_filter;
+        private dynamic Gst.Element audio_sink;
         private bool                _is_playing = false;
         private bool                is_about_to_finish = false;
         private uint                instance_id = 0;
@@ -368,18 +369,27 @@ namespace Ft
 
             dynamic Gst.Element pipeline = Gst.ElementFactory.make ("playbin", "player");
             dynamic Gst.Element volume_filter = Gst.ElementFactory.make ("volume", "volume");
+            dynamic Gst.Element audio_sink = Gst.ElementFactory.make ("autoaudiosink", "audio-output");
 
-            if (pipeline == null || volume_filter == null) {
+            if (pipeline == null || volume_filter == null || audio_sink == null) {
                 throw new Ft.SoundError.NOT_INITIALIZED (_("Failed to initialize playback"));
             }
 
             pipeline.flags = GstPlayFlags.AUDIO;
             pipeline.audio_filter = volume_filter;
+            pipeline.audio_sink = audio_sink;
+
+            // Keep the audio sink locked at NULL when idle. This forces
+            // autoaudiosink to re-probe for the current default device on each
+            // play(), while the source/decoder chain stays warm in READY state.
+            audio_sink.set_locked_state (true);
+
             pipeline.about_to_finish.connect (this.on_about_to_finish);
             pipeline.get_bus ().add_watch (GLib.Priority.DEFAULT, this.on_bus_callback);
 
             this.pipeline = pipeline;
             this.volume_filter = volume_filter;
+            this.audio_sink = audio_sink;
             this.instance_id = next_instance_id++;
         }
 
@@ -460,8 +470,13 @@ namespace Ft
                         this.finished ();
                     }
 
-                    if (pending_state != Gst.State.PLAYING) {
+                    if (pending_state != Gst.State.PLAYING)
+                    {
                         this.pipeline.set_state (Gst.State.READY);
+
+                        if (!this.repeat) {
+                            this.park_audio_sink ();
+                        }
                     }
 
                     break;
@@ -504,10 +519,17 @@ namespace Ft
             return GLib.Source.CONTINUE;
         }
 
+        private void park_audio_sink ()
+        {
+            this.audio_sink.set_locked_state (true);
+            this.audio_sink.set_state (Gst.State.NULL);
+        }
+
         public void play ()
                           requires (this.pipeline != null)
         {
             if (this.uri != "") {
+                this.audio_sink.set_locked_state (false);
                 this.pipeline.set_state (Gst.State.PLAYING);
             }
         }
@@ -532,6 +554,8 @@ namespace Ft
             if (state != Gst.State.NULL && state != Gst.State.READY) {
                 this.pipeline.set_state (Gst.State.READY);
             }
+
+            this.park_audio_sink ();
         }
 
         public bool is_playing ()
@@ -542,9 +566,12 @@ namespace Ft
         public override void dispose ()
         {
             if (this.pipeline != null) {
+                this.audio_sink.set_locked_state (false);
                 this.pipeline.set_state (Gst.State.NULL);
                 this.pipeline = null;
             }
+
+            this.audio_sink = null;
 
             base.dispose ();
         }
