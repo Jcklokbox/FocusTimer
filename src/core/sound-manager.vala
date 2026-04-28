@@ -11,11 +11,11 @@ namespace Ft
     [SingleInstance]
     public class SoundManager : GLib.Object
     {
-        private const int64 SHORT_FADE_IN_DURATION  =  5 * Ft.Interval.SECOND;
-        private const int64 LONG_FADE_IN_DURATION   = 20 * Ft.Interval.SECOND;
-        private const int64 SHORT_FADE_OUT_DURATION =  2 * Ft.Interval.SECOND;
-        private const int64 LONG_FADE_OUT_DURATION  = 20 * Ft.Interval.SECOND;
-        private const int64 MIN_FADE_OUT_DURATION   =  1 * Ft.Interval.SECOND;
+        private const int64 SHORT_FADE_DURATION = 300 * Ft.Interval.MILLISECOND;
+        private const int64 LONG_FADE_DURATION  = Ft.Interval.SECOND;
+
+        // Silence at the end of Pomodoro serves as a cue that it's about to end
+        private const int64 ABOUT_TO_END_TIME = 10 * Ft.Interval.SECOND;
 
         private Ft.AlertSound?      pomodoro_finished_sound = null;
         private Ft.AlertSound?      break_finished_sound = null;
@@ -34,7 +34,7 @@ namespace Ft
             this.pomodoro_finished_sound = new Ft.AlertSound ("pomodoro-finished");
             this.break_finished_sound = new Ft.AlertSound ("break-finished");
             this.background_sound = new Ft.BackgroundSound ();
-            this.background_sound.repeat = true;
+            this.background_sound.loop = true;
             this.background_sound.fade_out (0);
 
             this.settings = Ft.get_settings ();
@@ -63,15 +63,7 @@ namespace Ft
                                 "volume",
                                 GLib.SettingsBindFlags.DEFAULT);
 
-            this.update_background_sound (true);
-        }
-
-        private void unschedule_fade_out ()
-        {
-            if (this.fade_out_timeout_id != 0) {
-                GLib.Source.remove (this.fade_out_timeout_id);
-                this.fade_out_timeout_id = 0;
-            }
+            this.update_background_sound ();
         }
 
         private void schedule_fade_out (int64 timeout)
@@ -82,17 +74,24 @@ namespace Ft
             GLib.Source.set_name_by_id (this.fade_out_timeout_id, "Ft.SoundManager.on_fade_out_timeout");
         }
 
-        private void update_background_sound (bool shorter_fade_in = false)
+        private void unschedule_fade_out ()
+        {
+            if (this.fade_out_timeout_id != 0) {
+                GLib.Source.remove (this.fade_out_timeout_id);
+                this.fade_out_timeout_id = 0;
+            }
+        }
+
+        private void update_background_sound ()
         {
             this.unschedule_fade_out ();
 
             if (this.background_sound_inhibit_count != 0) {
-                this.background_sound.fade_out (SHORT_FADE_OUT_DURATION, Ft.Easing.OUT);
+                this.background_sound.fade_out (LONG_FADE_DURATION);
                 return;
             }
 
             if (!this.background_sound.can_play ()) {
-                this.background_sound.stop ();
                 return;
             }
 
@@ -103,22 +102,20 @@ namespace Ft
 
             if (current_state == Ft.State.POMODORO && this.timer.is_running ())
             {
-                var remaining        = this.timer.calculate_remaining ();
-                var fade_in_duration = shorter_fade_in ? SHORT_FADE_IN_DURATION : LONG_FADE_IN_DURATION;
-                var fade_out_timeout = remaining - LONG_FADE_OUT_DURATION;
+                var remaining = this.timer.calculate_remaining ();
+                var fade_duration = LONG_FADE_DURATION;
 
-                if (fade_out_timeout > fade_in_duration) {
-                    this.background_sound.fade_in (fade_in_duration);
-                    this.schedule_fade_out (fade_out_timeout);
+                if (remaining > ABOUT_TO_END_TIME) {
+                    this.background_sound.fade_in (fade_duration);
+                    this.schedule_fade_out (remaining - ABOUT_TO_END_TIME);
                 }
-                else if (remaining > MIN_FADE_OUT_DURATION) {
-                    var volume = ((double) remaining / (double) LONG_FADE_OUT_DURATION).clamp (0.0, 1.0);
-
-                    this.background_sound.fade_in_out (remaining, volume);
+                else {
+                    fade_duration = int64.max (remaining - Ft.Interval.SECOND, SHORT_FADE_DURATION);
+                    this.background_sound.fade_out (fade_duration);
                 }
             }
             else {
-                this.background_sound.stop ();
+                this.background_sound.fade_out (SHORT_FADE_DURATION);
             }
         }
 
@@ -126,8 +123,7 @@ namespace Ft
         {
             this.background_sound_inhibit_count++;
 
-            if (this.background_sound_inhibit_count == 1)
-            {
+            if (this.background_sound_inhibit_count == 1) {
                 this.update_background_sound ();
             }
         }
@@ -136,9 +132,8 @@ namespace Ft
         {
             this.background_sound_inhibit_count--;
 
-            if (this.background_sound_inhibit_count == 0)
-            {
-                this.update_background_sound (true);
+            if (this.background_sound_inhibit_count == 0) {
+                this.update_background_sound ();
             }
         }
 
@@ -165,12 +160,12 @@ namespace Ft
         private bool on_fade_out_timeout ()
                                           requires (this.timer.is_running ())
         {
-            this.fade_out_timeout_id = 0;
-
             var current_time = this.timer.get_current_time (GLib.MainContext.current_source ().get_time ());
             var remaining = this.timer.calculate_remaining (current_time);
+            var fade_out_duration = int64.max (remaining - Ft.Interval.SECOND, SHORT_FADE_DURATION);
 
-            this.background_sound.fade_out (remaining, Ft.Easing.IN_OUT);
+            this.fade_out_timeout_id = 0;
+            this.background_sound.fade_out (fade_out_duration);
 
             return GLib.Source.REMOVE;
         }

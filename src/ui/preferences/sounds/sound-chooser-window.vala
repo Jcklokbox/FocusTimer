@@ -241,7 +241,7 @@ namespace Ft
 
             var file_filter = new Gtk.FileFilter ();
 
-            foreach (var mime_type in this.sound.get_supported_mime_types ()) {
+            foreach (var mime_type in Ft.SoundPlayer.get_supported_mime_types ()) {
                 file_filter.add_mime_type (mime_type);
             }
 
