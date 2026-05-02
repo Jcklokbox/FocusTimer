@@ -49,7 +49,7 @@ flatpak install --user --include-sdk --include-debug io.github.focustimerhq.Focu
 
 Find the app PID from recent crashes:
 ```bash
-coredumpctl list focus-timer
+coredumpctl list --since=today focus-timer
 ```
 
 Run gdb with your `<pid>`:

@@ -4,8 +4,6 @@
 
   <!-- General -->
   <id>io.github.focustimerhq.FocusTimer</id>
-  <translation type="gettext">focus-timer</translation>
-  ​<launchable type="desktop-id">io.github.focustimerhq.FocusTimer.desktop</launchable>
   <name>Focus Timer</name>
   <summary>Work with regular breaks</summary>
   <description>
@@ -18,25 +16,16 @@
     </p>
     <ul>
       <li>Customizable work session and break lengths</li>
-      <li>Visual and audio notifications</li>
-      <li>Time tracking and statistics</li>
-      <li>GNOME desktop integration</li>
       <li>Screen overlay during breaks</li>
-      <li>Run custom commands after Pomodoro or break</li>
+      <li>System tray icon</li>
+      <li>Hotkeys (global shortcuts)</li>
+      <li>Daily, weekly, and monthly statistics</li>
+      <li>Extensible via custom shell commands, D-Bus, and CLI</li>
+      <li>GNOME Shell extension for deeper desktop integration</li>
     </ul>
   </description>
-  <keywords>
-    <keyword>pomodoro</keyword>
-    <keyword>timer</keyword>
-    <keyword>productivity</keyword>
-    <keyword>focus</keyword>
-    <keyword>time management</keyword>
-  </keywords>
-  <categories>
-    <category>Utility</category>
-    <category>Clock</category>
-    <category>GNOME</category>
-  </categories>
+  <translation type="gettext">focus-timer</translation>
+  ​<launchable type="desktop-id">io.github.focustimerhq.FocusTimer.desktop</launchable>
   <provides>
     <binary>focus-timer</binary>
     <dbus type="user">io.github.focustimerhq.FocusTimer</dbus>
@@ -77,10 +66,6 @@
     <screenshot type="default">
       <image>https://gnomepomodoro.org/release/1.1/timer.png</image>
       <caption>Timer</caption>
-    </screenshot>
-    <screenshot>
-      <image>https://gnomepomodoro.org/release/1.1/stats-daily.png</image>
-      <caption>Daily stats</caption>
     </screenshot>
     <screenshot>
       <image>https://gnomepomodoro.org/release/1.1/stats-monthly.png</image>

@@ -4,15 +4,16 @@
   <img src="data/icons/256x256/io.github.focustimerhq.FocusTimer.png" width="256" height="256">
 </p>
 
-[Focus Timer](https://gnomepomodoro.org) (formerly gnome-pomodoro) is a time-management application that helps with taking breaks according to [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique). It intends to help maintain concentration and prevent burnout.
+[Focus Timer](https://gnomepomodoro.org) (formerly gnome-pomodoro) is a time-management app built around the [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique), helping you maintain focus and prevent burnout through structured work and break intervals.
 
-Key features:
+**Key features:**
 * Customizable work session and break lengths
-* Visual and audio notifications
-* Time tracking and statistics
-* GNOME desktop integration
 * Screen overlay during breaks
-* Run custom commands after Pomodoro or break
+* System tray icon
+* Hotkeys (global shortcuts)
+* Daily, weekly, and monthly statistics
+* Extensible via custom shell commands, D-Bus, and CLI
+* [GNOME Shell extension](https://github.com/focustimerhq/gnome-shell-extension-focus-timer) for deeper desktop integration
 
 <p align="center">
   <br/>
@@ -35,6 +36,8 @@ Key features:
 ![Preferences](https://gnomepomodoro.org/release/1.1/preferences.png)
 
 ![Screen overlay](https://gnomepomodoro.org/release/1.1/screen-overlay.png)
+
+![System tray icons](https://gnomepomodoro.org/release/1.1/indicators.svg)
 
 <br/>
 
