@@ -267,27 +267,10 @@ namespace Sni
         public void scroll (int32  delta,
                             string orientation) throws GLib.DBusError, GLib.IOError
         {
-            if (delta == 0) {
-                return;
-            }
-
-            switch (orientation)
+            if (delta != 0 &&
+                orientation != null && orientation.ascii_down () == "vertical")
             {
-                case "Vertical":  // SNI
-                    this.scrolled (delta);
-                    break;
-
-                case "vertical":  // Appindicator
-                    this.scrolled (-delta);
-                    break;
-
-                case "Horizontal":
-                case "horizontal":
-                    break;
-
-                default:
-                    GLib.debug ("Unhandled scroll event. Unknown orientation: %s", orientation);
-                    break;
+                this.scrolled (delta);
             }
         }
 
