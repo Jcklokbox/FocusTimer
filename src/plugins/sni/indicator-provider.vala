@@ -955,16 +955,14 @@ namespace Sni
                     }
                     else {
                         var application = Ft.Application.get_default ();
-                        var background_manager = new Ft.BackgroundManager ();
-                        var main_window = application.get_window<Ft.Window> ();
-
                         application.hold ();
 
                         this.destroy_indicator_controller ();
 
                         // Ensure there is a main window when disabling the indicator.
                         // It undoes the close-to-tray behaviour.
-                        if (!background_manager.active && main_window == null) {
+                        var main_window = application.get_window<Ft.Window> ();
+                        if (main_window == null) {
                             application.show_window ();
                         }
 
