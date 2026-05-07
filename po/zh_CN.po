@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 11:06+0200\n"
+"POT-Creation-Date: 2026-05-07 18:10+0200\n"
 "PO-Revision-Date: 2023-03-26 11:47+0200\n"
 "Last-Translator: wffger <wffger@163.com>\n"
 "Language-Team: Chinese\n"
@@ -20,29 +20,24 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#. translators: consider 'Concentration Timer' as an alternative, whichever sounds more natural
+#. translators: Consider "Concentration Timer" as an alternative.
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:2
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:9 src/main.vala:35
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:7 src/main.vala:35
 #: src/ui/main/dialogs/about-dialog.vala:17
 msgid "Focus Timer"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:3
-#, fuzzy
-msgid "Time management utility"
-msgstr "时间管理工具"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:8
+msgid "Work with regular breaks"
+msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:5
-msgid "pomodoro;timer;"
+#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
+msgid "pomodoro;timer;productivity;time tracker;time management;"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:10
-#, fuzzy
-msgid "Maintain focus by taking frequent breaks"
-msgstr "通过经常休息来保持专注"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:12
 #, fuzzy
 msgid ""
 "A productivity timer that helps you work more effectively by breaking your "
@@ -53,218 +48,243 @@ msgstr ""
 "一个生产力计时器，通过将您的时间分为专注工作阶段和随后的短暂休息，帮助您更有"
 "效地工作。工作 25 分钟，然后休息 5 分钟，以保持注意力集中并防止疲劳。"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:16
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:14
 #, fuzzy
 msgid "Key features:"
 msgstr "主要功能："
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:18
 #, fuzzy
 msgid "Customizable work session and break lengths"
 msgstr "可自定义工作会话和休息时长"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
-#, fuzzy
-msgid "Visual and audio notifications"
-msgstr "视觉与音频通知"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
-#, fuzzy
-msgid "Time tracking and statistics"
-msgstr "时间追踪与统计"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
-#, fuzzy
-msgid "GNOME desktop integration"
-msgstr "GNOME 桌面集成"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:19
 #, fuzzy
 msgid "Screen overlay during breaks"
 msgstr "休息时的全屏覆盖层"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:25
-#, fuzzy
-msgid "Run custom commands after Pomodoro or break"
-msgstr "在番茄钟或休息结束后运行自定义命令"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+msgid "System tray icon"
+msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:48
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
+msgid "Hotkeys (global shortcuts)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
+msgid "Daily, weekly, and monthly statistics"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
+msgid "Extensible via custom shell commands, D-Bus, and CLI"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+msgid "GNOME Shell extension for deeper desktop integration"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:45
 msgid "Kamil Prusko"
 msgstr "Kamil Prusko"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:71
-#: src/ui/main/window.ui:76
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:37
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:68
+#: src/plugins/sni/indicator-provider.vala:293 src/ui/main/window.ui:76
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
 #: src/ui/preferences/preferences-window.vala:30
 msgid "Timer"
 msgstr "计时器"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:75
-#, fuzzy
-msgid "Daily stats"
-msgstr "每日统计"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:79
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:72
 #, fuzzy
 msgid "Monthly stats"
 msgstr "每月统计"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:83
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:76
+#: src/plugins/sni/indicator-provider.vala:289
+#: src/plugins/sni/indicator-provider.vala:295
 #: src/ui/preferences/preferences-window.ui:6
 msgid "Preferences"
 msgstr "首选项"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:87
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:80
 #, fuzzy
 msgid "Screen overlay"
 msgstr "全屏覆盖层"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
-msgid "Overview of changes in focus-timer 1.0:"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:88
+msgid "Overview of changes in focus-timer 1.1.0:"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:97
-msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:90
+msgid "Support for GNOME Shell extension"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:98
-msgid "Automatic daily backup"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:91
+msgid "Option to autostart on login"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:92
+msgid "Reviewed sound files"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
+msgid "Fix build with vala 0.56.19"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:99
-msgid "Removed libcanberra backend for playing notification sounds"
-msgstr ""
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:100
-msgid "Updated Lithuanian translation (thanks @psukys)"
+msgid "Overview of changes in focus-timer 1.0:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:101
+msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:102
+msgid "Automatic daily backup"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:103
+msgid "Removed libcanberra backend for playing notification sounds"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
+msgid "Updated Lithuanian translation (thanks @psukys)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:105
 msgid "Updated Russian translation (thanks @ViktorOn)"
 msgstr ""
 
-#: src/application.vala:153 src/application.vala:593
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
+#: src/application.vala:154 src/application.vala:608
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
 #, fuzzy
 msgid "Start or Stop"
 msgstr "开始或停止"
 
-#: src/application.vala:156 src/application.vala:596
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:47
+#: src/application.vala:157 src/application.vala:611
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
 #, fuzzy
 msgid "Start, Pause or Resume"
 msgstr "开始、暂停或继续"
 
-#: src/application.vala:159 src/core/notification-manager.vala:436
+#: src/application.vala:160 src/core/notification-manager.vala:436
 #: src/core/notification-manager.vala:532
+#: src/plugins/sni/indicator-provider.vala:392
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:69
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:308
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:324
 msgid "Start Pomodoro"
 msgstr "启动番茄计时器"
 
-#: src/application.vala:162
+#: src/application.vala:163
 msgid "Start break"
 msgstr ""
 
-#: src/application.vala:165
+#: src/application.vala:166
 msgid "Start short break"
 msgstr ""
 
-#: src/application.vala:168
+#: src/application.vala:169
 msgid "Start long break"
 msgstr ""
 
 #. Actions
-#: src/application.vala:171 src/application.vala:598 src/core/event.vala:268
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
+#: src/application.vala:172 src/application.vala:613 src/core/event.vala:268
+#: src/plugins/sni/indicator-provider.vala:239
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:77
 msgid "Start"
 msgstr "开始"
 
-#: src/application.vala:174 src/application.vala:600 src/core/event.vala:276
+#: src/application.vala:175 src/application.vala:615 src/core/event.vala:276
+#: src/plugins/sni/indicator-provider.vala:251
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:139
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:64
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:84
 msgid "Stop"
 msgstr "停止"
 
-#: src/application.vala:177 src/application.vala:602 src/core/event.vala:284
+#: src/application.vala:178 src/application.vala:617 src/core/event.vala:284
+#: src/plugins/sni/indicator-provider.vala:242
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:83
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:71
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:91
 msgid "Pause"
 msgstr "暂停"
 
-#: src/application.vala:180 src/application.vala:604 src/core/event.vala:292
+#: src/application.vala:181 src/application.vala:619 src/core/event.vala:292
+#: src/plugins/sni/indicator-provider.vala:245
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:97
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:98
 msgid "Resume"
 msgstr "继续"
 
-#: src/application.vala:183 src/application.vala:606 src/core/event.vala:300
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
+#: src/application.vala:184 src/application.vala:621 src/core/event.vala:300
+#: src/plugins/sni/indicator-provider.vala:254
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
 msgid "Skip"
 msgstr "跳过"
 
-#: src/application.vala:186 src/application.vala:608 src/core/event.vala:308
+#: src/application.vala:187 src/application.vala:623 src/core/event.vala:308
 #, fuzzy
 msgid "Rewind"
 msgstr "快退"
 
-#: src/application.vala:187 src/application.vala:190
+#: src/application.vala:188 src/application.vala:191
 msgid "SECONDS"
 msgstr ""
 
-#: src/application.vala:189
+#: src/application.vala:190
 msgid "Extend current pomodoro or break"
 msgstr "延长当前番茄钟或休息"
 
-#: src/application.vala:192 src/core/event.vala:316
+#: src/application.vala:193 src/core/event.vala:316
+#: src/plugins/sni/indicator-provider.vala:257
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:39
 #, fuzzy
 msgid "Reset"
 msgstr "重置"
 
-#: src/application.vala:195
+#: src/application.vala:196
 msgid "Print timer status"
 msgstr ""
 
-#: src/application.vala:198
+#: src/application.vala:199
 msgid "Show preferences"
 msgstr "显示首选项"
 
-#: src/application.vala:201
+#: src/application.vala:202
 msgid "Quit application"
 msgstr "退出应用"
 
-#: src/application.vala:204
+#: src/application.vala:205
 msgid "Print version information and exit"
 msgstr "打印版本信息并退出"
 
-#: src/application.vala:238
+#: src/application.vala:239
 msgid "Timer Options:"
 msgstr ""
 
-#: src/application.vala:239
+#: src/application.vala:240
 msgid "Show options for controlling the timer"
 msgstr ""
 
-#: src/application.vala:246
+#: src/application.vala:247
 #, c-format
 msgid "Bugs may be reported at: %s"
 msgstr ""
 
-#: src/application.vala:610
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
+#: src/application.vala:625
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:126
 #, fuzzy
 msgid "Bring to Focus"
 msgstr "聚焦窗口"
 
 #. translators: time remaining eg. "3 minutes 50 seconds remaining"
-#: src/application.vala:797 src/core/notification-manager.vala:138
+#: src/application.vala:813 src/core/notification-manager.vala:138
+#: src/plugins/sni/indicator-provider.vala:25
 #, fuzzy, c-format
 msgid "%s remaining"
 msgstr "剩余 %s"
 
-#: src/application.vala:840
+#: src/application.vala:856
 msgid "Invalid use. Pass one flag for controlling the timer at a time."
 msgstr ""
 
@@ -314,7 +334,7 @@ msgid "Program \"%s\" not found"
 msgstr "未找到程序“%s”"
 
 #: src/core/event.vala:180
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:54
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:74
 msgid "Actions"
 msgstr "动作集"
 
@@ -449,12 +469,13 @@ msgid "Triggered when session is about to be reset due to inactivity."
 msgstr "在会话因不活动即将被重置时触发。"
 
 #: src/core/notification-manager.vala:354 src/core/state.vala:78
+#: src/plugins/sni/indicator-provider.vala:260
 #: src/ui/main/stats/stats-day-page.ui:98
 #: src/ui/main/stats/stats-day-page.vala:87
 #: src/ui/main/stats/stats-month-page.ui:35
 #: src/ui/main/stats/stats-month-page.vala:43
 #: src/ui/main/stats/stats-week-page.ui:39
-#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:187
+#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:186
 #: src/ui/preferences/automation/action/condition-widget.ui:53
 msgid "Pomodoro"
 msgstr "番茄计时器"
@@ -534,18 +555,17 @@ msgstr "确认开始长休息…"
 msgid "Skip Break"
 msgstr "跳过休息"
 
-#: src/core/sound.vala:371
+#: src/core/sound-player.vala:101
 #, fuzzy
 msgid "Failed to initialize playback"
 msgstr "播放初始化失败"
 
-#. Validate file.
-#: src/core/sound.vala:587
+#: src/core/sounds.vala:112
 #, fuzzy
 msgid "File not found"
 msgstr "未找到文件"
 
-#: src/core/sound.vala:599
+#: src/core/sounds.vala:116
 #, fuzzy
 msgid "File type not supported"
 msgstr "文件类型不支持"
@@ -556,16 +576,16 @@ msgstr "文件类型不支持"
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/core/state.vala:81
+#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:263
 #: src/ui/preferences/automation/action/condition-widget.ui:54
 msgid "Break"
 msgstr "休息"
 
-#: src/core/state.vala:84
+#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:261
 msgid "Short Break"
 msgstr "短休息"
 
-#: src/core/state.vala:87
+#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:262
 msgid "Long Break"
 msgstr "长休息"
 
@@ -581,19 +601,19 @@ msgstr "%u小时"
 msgid "%um"
 msgstr "%u分钟"
 
-#: src/core/utils.vala:72
+#: src/core/utils.vala:71
 #, fuzzy, c-format
 msgid "%u hour"
 msgid_plural "%u hours"
 msgstr[0] "%u 小时"
 
-#: src/core/utils.vala:81
+#: src/core/utils.vala:80
 #, fuzzy, c-format
 msgid "%u minute"
 msgid_plural "%u minutes"
 msgstr[0] "%u 分钟"
 
-#: src/core/utils.vala:90
+#: src/core/utils.vala:89
 #, fuzzy, c-format
 msgid "%u second"
 msgid_plural "%u seconds"
@@ -672,7 +692,7 @@ msgid "Time when the countdown has started."
 msgstr "倒计时开始的时间。"
 
 #: src/plugins/gnome/install-extension-dialog.ui:6
-#: src/plugins/gnome/preferences-window-extension.vala:166
+#: src/plugins/gnome/preferences-window-extension.vala:167
 #, fuzzy
 msgid "GNOME Shell Extension"
 msgstr "GNOME Shell 扩展"
@@ -738,7 +758,7 @@ msgid "_Not Now"
 msgstr "以后再说(_N)"
 
 #: src/plugins/gnome/install-extension-dialog.ui:317
-#: src/plugins/gnome/preferences-window-extension.vala:399
+#: src/plugins/gnome/preferences-window-extension.vala:400
 #, fuzzy
 msgid "Something went wrong"
 msgstr "出了点问题"
@@ -761,19 +781,19 @@ msgid "_Abort"
 msgstr "中止(_A)"
 
 #: src/plugins/gnome/install-extension-dialog.vala:85
-#: src/plugins/gnome/preferences-window-extension.vala:387
+#: src/plugins/gnome/preferences-window-extension.vala:388
 #, fuzzy
 msgid "Time-out reached"
 msgstr "已超时"
 
 #: src/plugins/gnome/install-extension-dialog.vala:90
-#: src/plugins/gnome/preferences-window-extension.vala:391
+#: src/plugins/gnome/preferences-window-extension.vala:392
 #, fuzzy
 msgid "Installing extensions is not allowed"
 msgstr "不允许安装扩展"
 
 #: src/plugins/gnome/install-extension-dialog.vala:95
-#: src/plugins/gnome/preferences-window-extension.vala:395
+#: src/plugins/gnome/preferences-window-extension.vala:396
 #, fuzzy
 msgid "Failed to download the extension"
 msgstr "无法下载扩展"
@@ -795,6 +815,7 @@ msgid "Display As"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:81
+#: src/plugins/sni/indicator-provider.vala:286
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:28
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:32
 #, fuzzy
@@ -817,23 +838,24 @@ msgstr "桌面"
 msgid "Install"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:132
+#. translators: verb
+#: src/plugins/gnome/preferences-window-extension.vala:133
 msgid "Update"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:135
+#: src/plugins/gnome/preferences-window-extension.vala:136
 msgid "Log out to finish the update"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:153
+#: src/plugins/gnome/preferences-window-extension.vala:154
 msgid "Outdated"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:172
+#: src/plugins/gnome/preferences-window-extension.vala:173
 msgid "Manage Notifications"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:173
+#: src/plugins/gnome/preferences-window-extension.vala:174
 msgid "Toggle Do Not Disturb mode during Pomodoro."
 msgstr ""
 
@@ -847,10 +869,47 @@ msgstr "GNOME Shell 扩展可用"
 msgid "Learn More"
 msgstr "了解更多"
 
-#: src/plugins/portal/global-shortcuts-provider.vala:298
+#: src/plugins/portal/global-shortcuts-provider.vala:335
 #, fuzzy
 msgid "Unused"
 msgstr "未使用"
+
+#: src/plugins/sni/indicator-provider.vala:35
+#: src/ui/main/timer/compact-timer-view.vala:73
+#: src/ui/main/timer/timer-view.vala:141
+#, fuzzy
+msgid "Finished!"
+msgstr "已完成！"
+
+#: src/plugins/sni/indicator-provider.vala:42
+#, c-format
+msgid "%u of %u"
+msgstr ""
+
+#: src/plugins/sni/indicator-provider.vala:290
+#: src/plugins/sni/indicator-provider.vala:294 src/ui/main/window.ui:92
+msgid "Stats"
+msgstr "统计"
+
+#: src/plugins/sni/indicator-provider.vala:299 src/ui/main/window.vala:284
+msgid "Quit"
+msgstr "退出"
+
+#: src/plugins/sni/indicator-provider.vala:392
+msgid "Take Break"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:43
+msgid "System Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:47
+msgid "Show Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:48
+msgid "Closing the window keeps the app running in the background."
+msgstr ""
 
 #: src/ui/log/log-window.ui:6
 #, fuzzy
@@ -897,14 +956,15 @@ msgstr "退出代码："
 msgid "Execution Time:"
 msgstr "执行时间："
 
-#: src/ui/main/dialogs/about-dialog.vala:30
+#. translators: Replace this string with your names, one name per line.
+#: src/ui/main/dialogs/about-dialog.vala:31
 msgid "translator-credits"
 msgstr ""
 "Meng Zhuo <mengzhuo1203@gmail.com>, 2012\n"
 "soiamsoNG <83182235@qq.com>, 2017\n"
 "wffger <wffger@163.com>, 2020"
 
-#: src/ui/main/dialogs/about-dialog.vala:36
+#: src/ui/main/dialogs/about-dialog.vala:37
 #, fuzzy
 msgid "Donate"
 msgstr "捐赠"
@@ -1013,12 +1073,6 @@ msgstr "短休息(_S)"
 msgid "_Long Break"
 msgstr "长休息(_L)"
 
-#: src/ui/main/timer/compact-timer-view.vala:73
-#: src/ui/main/timer/timer-view.vala:141
-#, fuzzy
-msgid "Finished!"
-msgstr "已完成！"
-
 #: src/ui/main/timer/menus.ui:26
 #, fuzzy
 msgid "_Break"
@@ -1066,27 +1120,19 @@ msgstr "退出(_Q)"
 msgid "Primary Menu"
 msgstr "主菜单"
 
-#: src/ui/main/window.ui:92
-msgid "Stats"
-msgstr "统计"
-
-#: src/ui/main/window.vala:280
+#: src/ui/main/window.vala:279
 #, fuzzy
 msgid "Keep timer running?"
 msgstr "保持计时器运行？"
 
-#: src/ui/main/window.vala:281
+#: src/ui/main/window.vala:280
 #, fuzzy
 msgid ""
 "You can keep it running in the background — notifications and keyboard "
 "shortcuts will still work."
 msgstr "您可以让它在后台运行 — 通知和键盘快捷键仍将生效。"
 
-#: src/ui/main/window.vala:285
-msgid "Quit"
-msgstr "退出"
-
-#: src/ui/main/window.vala:288
+#: src/ui/main/window.vala:287
 #, fuzzy
 msgid "Run in background"
 msgstr "在后台运行"
@@ -1096,7 +1142,7 @@ msgid "It's time to take a break"
 msgstr "是时候休息一下了"
 
 #: src/ui/preferences/appearance/preferences-panel-appearance.ui:17
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:103
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:123
 #, fuzzy
 msgid "Main Window"
 msgstr "主窗口"
@@ -1433,7 +1479,7 @@ msgid ""
 "shortcut"
 msgstr "按 <b>Esc</b> 取消，或按 <b>Backspace</b> 禁用快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:17
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:21
 #, fuzzy
 msgid ""
 "Global shortcuts let you control the app even when it’s not on screen. They "
@@ -1442,62 +1488,64 @@ msgstr ""
 "全局快捷键让您即使在应用不在屏幕上时也能控制它。只要应用在后台运行，它们就会"
 "生效。"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:20
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:24
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
 #, fuzzy
 msgid "Open app settings for editing global shortcuts"
 msgstr "打开应用设置以编辑全局快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:25
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:29
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:45
 #, fuzzy
 msgid "_Edit"
 msgstr "编辑(_E)"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:41
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:61
 #, fuzzy
 msgid "Enter new shortcut for starting or stopping the timer"
 msgstr "输入用于启动或停止计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:48
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:68
 #, fuzzy
 msgid "Enter new shortcut to start/pause/resume the timer"
 msgstr "输入用于开始/暂停/恢复计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:58
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
 #, fuzzy
 msgid "Enter new shortcut for starting the timer"
 msgstr "输入用于启动计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:65
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
 #, fuzzy
 msgid "Enter new shortcut for stopping the timer"
 msgstr "输入用于停止计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:72
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
 #, fuzzy
 msgid "Enter new shortcut for pausing the timer"
 msgstr "输入用于暂停计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:79
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
 #, fuzzy
 msgid "Enter new shortcut for resuming the timer"
 msgstr "输入用于恢复计时器的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:86
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
 #, fuzzy
 msgid "Enter new shortcut for skipping"
 msgstr "输入用于跳过的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:112
 #, fuzzy
 msgid "Rewind One Minute"
 msgstr "快退一分钟"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:93
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:113
 #, fuzzy
 msgid "Enter new shortcut for rewinding"
 msgstr "输入用于快退的新快捷键"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:107
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:127
 #, fuzzy
 msgid "Enter new shortcut for bringing window to focus"
 msgstr "输入用于将窗口聚焦的新快捷键"
@@ -1686,17 +1734,17 @@ msgstr "单个会话将耗时 <b>%s</b>。"
 msgid "<b>%u%%</b> of the time will be allocated for breaks."
 msgstr "<b>%u%%</b> 的时间将分配给休息。"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:146
+#: src/ui/preferences/timer/preferences-panel-timer.vala:144
 #, fuzzy
 msgid "Apply changes to ongoing Pomodoro?"
 msgstr "应用更改到正在进行的番茄钟？"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:147
+#: src/ui/preferences/timer/preferences-panel-timer.vala:145
 #, fuzzy
 msgid "Apply changes to ongoing break?"
 msgstr "应用更改到正在进行的休息？"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:149
+#: src/ui/preferences/timer/preferences-panel-timer.vala:147
 #, fuzzy
 msgid "Apply"
 msgstr "应用"
@@ -1705,6 +1753,34 @@ msgstr "应用"
 msgctxt "accessibility"
 msgid "Sidebar"
 msgstr "侧边栏"
+
+#, fuzzy
+#~ msgid "Time management utility"
+#~ msgstr "时间管理工具"
+
+#, fuzzy
+#~ msgid "Maintain focus by taking frequent breaks"
+#~ msgstr "通过经常休息来保持专注"
+
+#, fuzzy
+#~ msgid "Visual and audio notifications"
+#~ msgstr "视觉与音频通知"
+
+#, fuzzy
+#~ msgid "Time tracking and statistics"
+#~ msgstr "时间追踪与统计"
+
+#, fuzzy
+#~ msgid "GNOME desktop integration"
+#~ msgstr "GNOME 桌面集成"
+
+#, fuzzy
+#~ msgid "Run custom commands after Pomodoro or break"
+#~ msgstr "在番茄钟或休息结束后运行自定义命令"
+
+#, fuzzy
+#~ msgid "Daily stats"
+#~ msgstr "每日统计"
 
 #, fuzzy
 #~ msgid "Compact timer"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 18:18+0200\n"
+"POT-Creation-Date: 2026-05-07 18:08+0200\n"
 "PO-Revision-Date: 2025-12-23 20:58+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian\n"
@@ -23,25 +23,22 @@ msgstr ""
 
 #. translators: Consider "Concentration Timer" as an alternative.
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:2
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:9 src/main.vala:35
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:7 src/main.vala:35
 #: src/ui/main/dialogs/about-dialog.vala:17
 msgid "Focus Timer"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:3
-msgid "Time management utility"
-msgstr "Utilitas manajemen waktu"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:8
+msgid "Work with regular breaks"
+msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:5
-msgid "pomodoro;timer;"
+#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
+msgid "pomodoro;timer;productivity;time tracker;time management;"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:10
-msgid "Maintain focus by taking frequent breaks"
-msgstr "Menjaga fokus dengan mengambil rehat secara berkala"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:12
 msgid ""
 "A productivity timer that helps you work more effectively by breaking your "
 "time into focused work sessions followed by short breaks. Work for 25 "
@@ -53,203 +50,233 @@ msgstr ""
 "Bekerja selama 25 menit, lalu ambil rehat 5 menit untuk menjaga konsentrasi "
 "dan mencegah kelelahan kerja (burnout)."
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:16
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:14
 msgid "Key features:"
 msgstr "Fitur utama:"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:18
 msgid "Customizable work session and break lengths"
 msgstr "Durasi sesi kerja dan rehat yang dapat disesuaikan"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
-msgid "Visual and audio notifications"
-msgstr "Notifikasi visual dan audio"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
-msgid "Time tracking and statistics"
-msgstr "Pelacakan waktu dan statistik"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
-msgid "GNOME desktop integration"
-msgstr "Integrasi desktop GNOME"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:19
 msgid "Screen overlay during breaks"
 msgstr "Hamparan layar selama rehat"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:25
-msgid "Run custom commands after Pomodoro or break"
-msgstr "Jalankan perintah ubahan setelah Pomodoro atau rehat"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+msgid "System tray icon"
+msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:48
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
+msgid "Hotkeys (global shortcuts)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
+msgid "Daily, weekly, and monthly statistics"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
+msgid "Extensible via custom shell commands, D-Bus, and CLI"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+msgid "GNOME Shell extension for deeper desktop integration"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:45
 msgid "Kamil Prusko"
 msgstr "Kamil Prusko"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:71
-#: src/ui/main/window.ui:76
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:37
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:68
+#: src/plugins/sni/indicator-provider.vala:293 src/ui/main/window.ui:76
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
 #: src/ui/preferences/preferences-window.vala:30
 msgid "Timer"
 msgstr "Timer"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:75
-msgid "Daily stats"
-msgstr "Statistik harian"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:79
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:72
 msgid "Monthly stats"
 msgstr "Statistik bulanan"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:83
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:76
+#: src/plugins/sni/indicator-provider.vala:289
+#: src/plugins/sni/indicator-provider.vala:295
 #: src/ui/preferences/preferences-window.ui:6
 msgid "Preferences"
 msgstr "Preferensi"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:87
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:80
 msgid "Screen overlay"
 msgstr "Hamparan layar"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
-msgid "Overview of changes in focus-timer 1.0:"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:88
+msgid "Overview of changes in focus-timer 1.1.0:"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:97
-msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:90
+msgid "Support for GNOME Shell extension"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:98
-msgid "Automatic daily backup"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:91
+msgid "Option to autostart on login"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:92
+msgid "Reviewed sound files"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
+msgid "Fix build with vala 0.56.19"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:99
-msgid "Removed libcanberra backend for playing notification sounds"
-msgstr ""
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:100
-msgid "Updated Lithuanian translation (thanks @psukys)"
+msgid "Overview of changes in focus-timer 1.0:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:101
+msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:102
+msgid "Automatic daily backup"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:103
+msgid "Removed libcanberra backend for playing notification sounds"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
+msgid "Updated Lithuanian translation (thanks @psukys)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:105
 msgid "Updated Russian translation (thanks @ViktorOn)"
 msgstr ""
 
-#: src/application.vala:153 src/application.vala:595
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
+#: src/application.vala:154 src/application.vala:608
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
 msgid "Start or Stop"
 msgstr "Mulai atau Berhenti"
 
-#: src/application.vala:156 src/application.vala:598
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:47
+#: src/application.vala:157 src/application.vala:611
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
 msgid "Start, Pause or Resume"
 msgstr "Mulai, Jeda, atau Lanjut"
 
-#: src/application.vala:159 src/core/notification-manager.vala:436
+#: src/application.vala:160 src/core/notification-manager.vala:436
 #: src/core/notification-manager.vala:532
+#: src/plugins/sni/indicator-provider.vala:392
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:69
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:308
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:324
 msgid "Start Pomodoro"
 msgstr "Mulai Pomodoro"
 
-#: src/application.vala:162
+#: src/application.vala:163
 msgid "Start break"
 msgstr ""
 
-#: src/application.vala:165
+#: src/application.vala:166
 msgid "Start short break"
 msgstr ""
 
-#: src/application.vala:168
+#: src/application.vala:169
 msgid "Start long break"
 msgstr ""
 
 #. Actions
-#: src/application.vala:171 src/application.vala:600 src/core/event.vala:268
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
+#: src/application.vala:172 src/application.vala:613 src/core/event.vala:268
+#: src/plugins/sni/indicator-provider.vala:239
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:77
 msgid "Start"
 msgstr "Mulai"
 
-#: src/application.vala:174 src/application.vala:602 src/core/event.vala:276
+#: src/application.vala:175 src/application.vala:615 src/core/event.vala:276
+#: src/plugins/sni/indicator-provider.vala:251
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:139
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:64
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:84
 msgid "Stop"
 msgstr "Berhenti"
 
-#: src/application.vala:177 src/application.vala:604 src/core/event.vala:284
+#: src/application.vala:178 src/application.vala:617 src/core/event.vala:284
+#: src/plugins/sni/indicator-provider.vala:242
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:83
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:71
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:91
 msgid "Pause"
 msgstr "Jeda"
 
-#: src/application.vala:180 src/application.vala:606 src/core/event.vala:292
+#: src/application.vala:181 src/application.vala:619 src/core/event.vala:292
+#: src/plugins/sni/indicator-provider.vala:245
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:97
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:98
 msgid "Resume"
 msgstr "Lanjut"
 
-#: src/application.vala:183 src/application.vala:608 src/core/event.vala:300
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
+#: src/application.vala:184 src/application.vala:621 src/core/event.vala:300
+#: src/plugins/sni/indicator-provider.vala:254
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
 msgid "Skip"
 msgstr "Lewati"
 
-#: src/application.vala:186 src/application.vala:610 src/core/event.vala:308
+#: src/application.vala:187 src/application.vala:623 src/core/event.vala:308
 msgid "Rewind"
 msgstr "Putar balik"
 
-#: src/application.vala:187 src/application.vala:190
+#: src/application.vala:188 src/application.vala:191
 msgid "SECONDS"
 msgstr ""
 
-#: src/application.vala:189
+#: src/application.vala:190
 msgid "Extend current pomodoro or break"
 msgstr "Perpanjang pomodoro saat ini atau rehat"
 
-#: src/application.vala:192 src/core/event.vala:316
+#: src/application.vala:193 src/core/event.vala:316
+#: src/plugins/sni/indicator-provider.vala:257
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:39
 msgid "Reset"
 msgstr "Setel ulang"
 
-#: src/application.vala:195
+#: src/application.vala:196
 msgid "Print timer status"
 msgstr ""
 
-#: src/application.vala:198
+#: src/application.vala:199
 msgid "Show preferences"
 msgstr "Tampilkan preferensi"
 
-#: src/application.vala:201
+#: src/application.vala:202
 msgid "Quit application"
 msgstr "Keluar aplikasi"
 
-#: src/application.vala:204
+#: src/application.vala:205
 msgid "Print version information and exit"
 msgstr "Cetak informasi versi dan keluar"
 
-#: src/application.vala:238
+#: src/application.vala:239
 msgid "Timer Options:"
 msgstr ""
 
-#: src/application.vala:239
+#: src/application.vala:240
 msgid "Show options for controlling the timer"
 msgstr ""
 
-#: src/application.vala:246
+#: src/application.vala:247
 #, c-format
 msgid "Bugs may be reported at: %s"
 msgstr ""
 
-#: src/application.vala:612
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
+#: src/application.vala:625
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:126
 msgid "Bring to Focus"
 msgstr "Bawa ke Fokus"
 
 #. translators: time remaining eg. "3 minutes 50 seconds remaining"
-#: src/application.vala:799 src/core/notification-manager.vala:138
+#: src/application.vala:813 src/core/notification-manager.vala:138
+#: src/plugins/sni/indicator-provider.vala:25
 #, c-format
 msgid "%s remaining"
 msgstr "tersisa %s"
 
-#: src/application.vala:842
+#: src/application.vala:856
 msgid "Invalid use. Pass one flag for controlling the timer at a time."
 msgstr ""
 
@@ -294,7 +321,7 @@ msgid "Program \"%s\" not found"
 msgstr "Program \"%s\" tidak ditemukan"
 
 #: src/core/event.vala:180
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:54
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:74
 msgid "Actions"
 msgstr "Aksi"
 
@@ -410,12 +437,13 @@ msgid "Triggered when session is about to be reset due to inactivity."
 msgstr "Dipicu ketika sesi akan disetel ulang karena tidak ada aktivitas."
 
 #: src/core/notification-manager.vala:354 src/core/state.vala:78
+#: src/plugins/sni/indicator-provider.vala:260
 #: src/ui/main/stats/stats-day-page.ui:98
 #: src/ui/main/stats/stats-day-page.vala:87
 #: src/ui/main/stats/stats-month-page.ui:35
 #: src/ui/main/stats/stats-month-page.vala:43
 #: src/ui/main/stats/stats-week-page.ui:39
-#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:187
+#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:186
 #: src/ui/preferences/automation/action/condition-widget.ui:53
 msgid "Pomodoro"
 msgstr "Pomodoro"
@@ -487,16 +515,15 @@ msgstr "Konfirmasi awal rehat panjang…"
 msgid "Skip Break"
 msgstr "Lewati Rehat"
 
-#: src/core/sound.vala:371
+#: src/core/sound-player.vala:101
 msgid "Failed to initialize playback"
 msgstr "Gagal menginisialisasi pemutaran"
 
-#. Validate file.
-#: src/core/sound.vala:587
+#: src/core/sounds.vala:112
 msgid "File not found"
 msgstr "Berkas tidak ditemukan"
 
-#: src/core/sound.vala:599
+#: src/core/sounds.vala:116
 msgid "File type not supported"
 msgstr "Tipe berkas tidak didukung"
 
@@ -505,16 +532,16 @@ msgstr "Tipe berkas tidak didukung"
 msgid "Stopped"
 msgstr "Dihentikan"
 
-#: src/core/state.vala:81
+#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:263
 #: src/ui/preferences/automation/action/condition-widget.ui:54
 msgid "Break"
 msgstr "Rehat"
 
-#: src/core/state.vala:84
+#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:261
 msgid "Short Break"
 msgstr "Rehat Pendek"
 
-#: src/core/state.vala:87
+#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:262
 msgid "Long Break"
 msgstr "Rehat Panjang"
 
@@ -530,19 +557,19 @@ msgstr "%uj"
 msgid "%um"
 msgstr "%um"
 
-#: src/core/utils.vala:72
+#: src/core/utils.vala:71
 #, c-format
 msgid "%u hour"
 msgid_plural "%u hours"
 msgstr[0] "%u jam"
 
-#: src/core/utils.vala:81
+#: src/core/utils.vala:80
 #, c-format
 msgid "%u minute"
 msgid_plural "%u minutes"
 msgstr[0] "%u menit"
 
-#: src/core/utils.vala:90
+#: src/core/utils.vala:89
 #, c-format
 msgid "%u second"
 msgid_plural "%u seconds"
@@ -716,6 +743,7 @@ msgid "Display As"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:81
+#: src/plugins/sni/indicator-provider.vala:286
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:28
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:32
 msgid "Screen Overlay"
@@ -766,9 +794,45 @@ msgstr "Ekstensi GNOME Shell tersedia"
 msgid "Learn More"
 msgstr "Pelajari Selengkapnya"
 
-#: src/plugins/portal/global-shortcuts-provider.vala:298
+#: src/plugins/portal/global-shortcuts-provider.vala:335
 msgid "Unused"
 msgstr "Tidak digunakan"
+
+#: src/plugins/sni/indicator-provider.vala:35
+#: src/ui/main/timer/compact-timer-view.vala:73
+#: src/ui/main/timer/timer-view.vala:141
+msgid "Finished!"
+msgstr "Selesai!"
+
+#: src/plugins/sni/indicator-provider.vala:42
+#, c-format
+msgid "%u of %u"
+msgstr ""
+
+#: src/plugins/sni/indicator-provider.vala:290
+#: src/plugins/sni/indicator-provider.vala:294 src/ui/main/window.ui:92
+msgid "Stats"
+msgstr "Statistik"
+
+#: src/plugins/sni/indicator-provider.vala:299 src/ui/main/window.vala:284
+msgid "Quit"
+msgstr "Keluar"
+
+#: src/plugins/sni/indicator-provider.vala:392
+msgid "Take Break"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:43
+msgid "System Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:47
+msgid "Show Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:48
+msgid "Closing the window keeps the app running in the background."
+msgstr ""
 
 #: src/ui/log/log-window.ui:6
 msgid "Log"
@@ -917,11 +981,6 @@ msgstr "Rehat Pende_k"
 msgid "_Long Break"
 msgstr "Rehat Panjan_g"
 
-#: src/ui/main/timer/compact-timer-view.vala:73
-#: src/ui/main/timer/timer-view.vala:141
-msgid "Finished!"
-msgstr "Selesai!"
-
 #: src/ui/main/timer/menus.ui:26
 msgid "_Break"
 msgstr "_Rehat"
@@ -963,15 +1022,11 @@ msgstr "_Keluar"
 msgid "Primary Menu"
 msgstr "Menu Utama"
 
-#: src/ui/main/window.ui:92
-msgid "Stats"
-msgstr "Statistik"
-
-#: src/ui/main/window.vala:280
+#: src/ui/main/window.vala:279
 msgid "Keep timer running?"
 msgstr "Biarkan timer berjalan?"
 
-#: src/ui/main/window.vala:281
+#: src/ui/main/window.vala:280
 msgid ""
 "You can keep it running in the background — notifications and keyboard "
 "shortcuts will still work."
@@ -979,11 +1034,7 @@ msgstr ""
 "Anda dapat membiarkannya berjalan di latar belakang — notifikasi dan "
 "pintasan papan ketik akan tetap berfungsi."
 
-#: src/ui/main/window.vala:285
-msgid "Quit"
-msgstr "Keluar"
-
-#: src/ui/main/window.vala:288
+#: src/ui/main/window.vala:287
 msgid "Run in background"
 msgstr "Jalankan di latar belakang"
 
@@ -992,7 +1043,7 @@ msgid "It's time to take a break"
 msgstr "Waktunya rehat"
 
 #: src/ui/preferences/appearance/preferences-panel-appearance.ui:17
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:103
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:123
 msgid "Main Window"
 msgstr "Jendela Utama"
 
@@ -1276,7 +1327,7 @@ msgstr ""
 "Tekan <b>Esc</b> untuk membatalkan atau <b>Backspace</b> untuk menonaktifkan "
 "pintasan papan ketik"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:17
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:21
 msgid ""
 "Global shortcuts let you control the app even when it’s not on screen. They "
 "work as long as the app is running in the background."
@@ -1284,51 +1335,53 @@ msgstr ""
 "Pintasan global memungkinkan Anda mengontrol aplikasi bahkan saat tidak ada "
 "di layar. Pintasan ini berfungsi selama aplikasi berjalan di latar belakang."
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:20
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:24
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
 msgid "Open app settings for editing global shortcuts"
 msgstr "Buka pengaturan aplikasi untuk menyunting pintasan global"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:25
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:29
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:45
 msgid "_Edit"
 msgstr "_Sunting"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:41
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:61
 msgid "Enter new shortcut for starting or stopping the timer"
 msgstr "Masukkan pintasan baru untuk memulai atau menghentikan timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:48
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:68
 msgid "Enter new shortcut to start/pause/resume the timer"
 msgstr "Masukkan pintasan baru untuk memulai/menjeda/melanjutkan timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:58
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
 msgid "Enter new shortcut for starting the timer"
 msgstr "Masukkan pintasan baru untuk memulai timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:65
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
 msgid "Enter new shortcut for stopping the timer"
 msgstr "Masukkan pintasan baru untuk menghentikan timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:72
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
 msgid "Enter new shortcut for pausing the timer"
 msgstr "Masukkan pintasan baru untuk menjeda timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:79
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
 msgid "Enter new shortcut for resuming the timer"
 msgstr "Masukkan pintasan baru untuk melanjutkan timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:86
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
 msgid "Enter new shortcut for skipping"
 msgstr "Masukkan pintasan baru untuk melewati"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:112
 msgid "Rewind One Minute"
 msgstr "Putar Balik Satu Menit"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:93
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:113
 msgid "Enter new shortcut for rewinding"
 msgstr "Masukkan pintasan baru untuk memutar balik"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:107
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:127
 msgid "Enter new shortcut for bringing window to focus"
 msgstr "Masukkan pintasan baru untuk membawa jendela ke fokus"
 
@@ -1490,15 +1543,15 @@ msgstr "Satu sesi tunggal akan memakan waktu <b>%s</b>."
 msgid "<b>%u%%</b> of the time will be allocated for breaks."
 msgstr "<b>%u%%</b> waktu akan dialokasikan untuk rehat."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:146
+#: src/ui/preferences/timer/preferences-panel-timer.vala:144
 msgid "Apply changes to ongoing Pomodoro?"
 msgstr "Terapkan perubahan pada Pomodoro yang sedang berjalan?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:147
+#: src/ui/preferences/timer/preferences-panel-timer.vala:145
 msgid "Apply changes to ongoing break?"
 msgstr "Terapkan perubahan pada rehat yang sedang berjalan?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:149
+#: src/ui/preferences/timer/preferences-panel-timer.vala:147
 msgid "Apply"
 msgstr "Terapkan"
 
@@ -1506,6 +1559,27 @@ msgstr "Terapkan"
 msgctxt "accessibility"
 msgid "Sidebar"
 msgstr "Bilah Sisi"
+
+#~ msgid "Time management utility"
+#~ msgstr "Utilitas manajemen waktu"
+
+#~ msgid "Maintain focus by taking frequent breaks"
+#~ msgstr "Menjaga fokus dengan mengambil rehat secara berkala"
+
+#~ msgid "Visual and audio notifications"
+#~ msgstr "Notifikasi visual dan audio"
+
+#~ msgid "Time tracking and statistics"
+#~ msgstr "Pelacakan waktu dan statistik"
+
+#~ msgid "GNOME desktop integration"
+#~ msgstr "Integrasi desktop GNOME"
+
+#~ msgid "Run custom commands after Pomodoro or break"
+#~ msgstr "Jalankan perintah ubahan setelah Pomodoro atau rehat"
+
+#~ msgid "Daily stats"
+#~ msgstr "Statistik harian"
 
 #~ msgid "15 seconds"
 #~ msgstr "15 detik"

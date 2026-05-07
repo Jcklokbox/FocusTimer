@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 11:06+0200\n"
+"POT-Creation-Date: 2026-05-07 18:10+0200\n"
 "PO-Revision-Date: 2023-03-25 14:18+0100\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh\n"
@@ -20,29 +20,24 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#. translators: consider 'Concentration Timer' as an alternative, whichever sounds more natural
+#. translators: Consider "Concentration Timer" as an alternative.
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:2
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:9 src/main.vala:35
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:7 src/main.vala:35
 #: src/ui/main/dialogs/about-dialog.vala:17
 msgid "Focus Timer"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:3
-#, fuzzy
-msgid "Time management utility"
-msgstr "Уақытты басқару утилитасы"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:8
+msgid "Work with regular breaks"
+msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:5
-msgid "pomodoro;timer;"
+#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
+msgid "pomodoro;timer;productivity;time tracker;time management;"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:10
-#, fuzzy
-msgid "Maintain focus by taking frequent breaks"
-msgstr "Жиі үзіліс жасау арқылы зейінді сақтаңыз"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:12
 #, fuzzy
 msgid ""
 "A productivity timer that helps you work more effectively by breaking your "
@@ -55,218 +50,243 @@ msgstr ""
 "және шаршап қалмау үшін 25 минут жұмыс істеп, содан кейін 5 минут үзіліс "
 "жасаңыз."
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:16
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:14
 #, fuzzy
 msgid "Key features:"
 msgstr "Негізгі мүмкіндіктері:"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:18
 #, fuzzy
 msgid "Customizable work session and break lengths"
 msgstr "Жұмыс және үзіліс ұзақтығын теңшеу"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
-#, fuzzy
-msgid "Visual and audio notifications"
-msgstr "Визуалды және дыбыстық хабарламалар"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
-#, fuzzy
-msgid "Time tracking and statistics"
-msgstr "Уақытты бақылау және статистика"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
-#, fuzzy
-msgid "GNOME desktop integration"
-msgstr "GNOME жұмыс үстелімен интеграция"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:19
 #, fuzzy
 msgid "Screen overlay during breaks"
 msgstr "Үзіліс кезіндегі экран қабаты"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:25
-#, fuzzy
-msgid "Run custom commands after Pomodoro or break"
-msgstr "Помодоро немесе үзілістен кейін командаларды орындау"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
+msgid "System tray icon"
+msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:48
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
+msgid "Hotkeys (global shortcuts)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
+msgid "Daily, weekly, and monthly statistics"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
+msgid "Extensible via custom shell commands, D-Bus, and CLI"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
+msgid "GNOME Shell extension for deeper desktop integration"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:45
 msgid "Kamil Prusko"
 msgstr "Kamil Prusko"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:71
-#: src/ui/main/window.ui:76
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:37
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:68
+#: src/plugins/sni/indicator-provider.vala:293 src/ui/main/window.ui:76
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
 #: src/ui/preferences/preferences-window.vala:30
 msgid "Timer"
 msgstr "Таймер"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:75
-#, fuzzy
-msgid "Daily stats"
-msgstr "Күндік статистика"
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:79
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:72
 #, fuzzy
 msgid "Monthly stats"
 msgstr "Айлық статистика"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:83
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:76
+#: src/plugins/sni/indicator-provider.vala:289
+#: src/plugins/sni/indicator-provider.vala:295
 #: src/ui/preferences/preferences-window.ui:6
 msgid "Preferences"
 msgstr "Баптаулар"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:87
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:80
 #, fuzzy
 msgid "Screen overlay"
 msgstr "Экран қабаты"
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
-msgid "Overview of changes in focus-timer 1.0:"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:88
+msgid "Overview of changes in focus-timer 1.1.0:"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:97
-msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:90
+msgid "Support for GNOME Shell extension"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:98
-msgid "Automatic daily backup"
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:91
+msgid "Option to autostart on login"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:92
+msgid "Reviewed sound files"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
+msgid "Fix build with vala 0.56.19"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:99
-msgid "Removed libcanberra backend for playing notification sounds"
-msgstr ""
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:100
-msgid "Updated Lithuanian translation (thanks @psukys)"
+msgid "Overview of changes in focus-timer 1.0:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:101
+msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:102
+msgid "Automatic daily backup"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:103
+msgid "Removed libcanberra backend for playing notification sounds"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
+msgid "Updated Lithuanian translation (thanks @psukys)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:105
 msgid "Updated Russian translation (thanks @ViktorOn)"
 msgstr ""
 
-#: src/application.vala:153 src/application.vala:593
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
+#: src/application.vala:154 src/application.vala:608
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
 #, fuzzy
 msgid "Start or Stop"
 msgstr "Бастау немесе Тоқтату"
 
-#: src/application.vala:156 src/application.vala:596
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:47
+#: src/application.vala:157 src/application.vala:611
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
 #, fuzzy
 msgid "Start, Pause or Resume"
 msgstr "Бастау, Кідірту немесе Жалғастыру"
 
-#: src/application.vala:159 src/core/notification-manager.vala:436
+#: src/application.vala:160 src/core/notification-manager.vala:436
 #: src/core/notification-manager.vala:532
+#: src/plugins/sni/indicator-provider.vala:392
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:69
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:308
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:324
 msgid "Start Pomodoro"
 msgstr "Помодороны бастау"
 
-#: src/application.vala:162
+#: src/application.vala:163
 msgid "Start break"
 msgstr ""
 
-#: src/application.vala:165
+#: src/application.vala:166
 msgid "Start short break"
 msgstr ""
 
-#: src/application.vala:168
+#: src/application.vala:169
 msgid "Start long break"
 msgstr ""
 
 #. Actions
-#: src/application.vala:171 src/application.vala:598 src/core/event.vala:268
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
+#: src/application.vala:172 src/application.vala:613 src/core/event.vala:268
+#: src/plugins/sni/indicator-provider.vala:239
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:77
 msgid "Start"
 msgstr "Бастау"
 
-#: src/application.vala:174 src/application.vala:600 src/core/event.vala:276
+#: src/application.vala:175 src/application.vala:615 src/core/event.vala:276
+#: src/plugins/sni/indicator-provider.vala:251
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:139
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:64
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:84
 msgid "Stop"
 msgstr "Тоқтату"
 
-#: src/application.vala:177 src/application.vala:602 src/core/event.vala:284
+#: src/application.vala:178 src/application.vala:617 src/core/event.vala:284
+#: src/plugins/sni/indicator-provider.vala:242
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:83
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:71
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:91
 msgid "Pause"
 msgstr "Кідірту"
 
-#: src/application.vala:180 src/application.vala:604 src/core/event.vala:292
+#: src/application.vala:181 src/application.vala:619 src/core/event.vala:292
+#: src/plugins/sni/indicator-provider.vala:245
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:97
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:98
 msgid "Resume"
 msgstr "Жалғастыру"
 
-#: src/application.vala:183 src/application.vala:606 src/core/event.vala:300
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
+#: src/application.vala:184 src/application.vala:621 src/core/event.vala:300
+#: src/plugins/sni/indicator-provider.vala:254
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
 msgid "Skip"
 msgstr "Аттап кету"
 
-#: src/application.vala:186 src/application.vala:608 src/core/event.vala:308
+#: src/application.vala:187 src/application.vala:623 src/core/event.vala:308
 #, fuzzy
 msgid "Rewind"
 msgstr "Кері айналдыру"
 
-#: src/application.vala:187 src/application.vala:190
+#: src/application.vala:188 src/application.vala:191
 msgid "SECONDS"
 msgstr ""
 
-#: src/application.vala:189
+#: src/application.vala:190
 msgid "Extend current pomodoro or break"
 msgstr "Ағымдағы помодороны немесе үзілісті ұзарту"
 
-#: src/application.vala:192 src/core/event.vala:316
+#: src/application.vala:193 src/core/event.vala:316
+#: src/plugins/sni/indicator-provider.vala:257
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:39
 #, fuzzy
 msgid "Reset"
 msgstr "Тастау"
 
-#: src/application.vala:195
+#: src/application.vala:196
 msgid "Print timer status"
 msgstr ""
 
-#: src/application.vala:198
+#: src/application.vala:199
 msgid "Show preferences"
 msgstr "Баптауларды көрсету"
 
-#: src/application.vala:201
+#: src/application.vala:202
 msgid "Quit application"
 msgstr "Қолданбадан шығу"
 
-#: src/application.vala:204
+#: src/application.vala:205
 msgid "Print version information and exit"
 msgstr "Нұсқа ақпаратын шығару және шығу"
 
-#: src/application.vala:238
+#: src/application.vala:239
 msgid "Timer Options:"
 msgstr ""
 
-#: src/application.vala:239
+#: src/application.vala:240
 msgid "Show options for controlling the timer"
 msgstr ""
 
-#: src/application.vala:246
+#: src/application.vala:247
 #, c-format
 msgid "Bugs may be reported at: %s"
 msgstr ""
 
-#: src/application.vala:610
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
+#: src/application.vala:625
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:126
 #, fuzzy
 msgid "Bring to Focus"
 msgstr "Назарға алу"
 
 #. translators: time remaining eg. "3 minutes 50 seconds remaining"
-#: src/application.vala:797 src/core/notification-manager.vala:138
+#: src/application.vala:813 src/core/notification-manager.vala:138
+#: src/plugins/sni/indicator-provider.vala:25
 #, fuzzy, c-format
 msgid "%s remaining"
 msgstr "%s қалды"
 
-#: src/application.vala:840
+#: src/application.vala:856
 msgid "Invalid use. Pass one flag for controlling the timer at a time."
 msgstr ""
 
@@ -316,7 +336,7 @@ msgid "Program \"%s\" not found"
 msgstr "\"%s\" бағдарламасы табылмады"
 
 #: src/core/event.vala:180
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:54
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:74
 msgid "Actions"
 msgstr "Әрекеттер"
 
@@ -455,12 +475,13 @@ msgid "Triggered when session is about to be reset due to inactivity."
 msgstr "Әрекетсіздікке байланысты сеанс тасталу алдында іске қосылады."
 
 #: src/core/notification-manager.vala:354 src/core/state.vala:78
+#: src/plugins/sni/indicator-provider.vala:260
 #: src/ui/main/stats/stats-day-page.ui:98
 #: src/ui/main/stats/stats-day-page.vala:87
 #: src/ui/main/stats/stats-month-page.ui:35
 #: src/ui/main/stats/stats-month-page.vala:43
 #: src/ui/main/stats/stats-week-page.ui:39
-#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:187
+#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:186
 #: src/ui/preferences/automation/action/condition-widget.ui:53
 msgid "Pomodoro"
 msgstr "Помодоро"
@@ -540,18 +561,17 @@ msgstr "Ұзақ үзілістің басталуын растаңыз…"
 msgid "Skip Break"
 msgstr "Үзілісті аттап кету"
 
-#: src/core/sound.vala:371
+#: src/core/sound-player.vala:101
 #, fuzzy
 msgid "Failed to initialize playback"
 msgstr "Ойнатуды іске қосу сәтсіз аяқталды"
 
-#. Validate file.
-#: src/core/sound.vala:587
+#: src/core/sounds.vala:112
 #, fuzzy
 msgid "File not found"
 msgstr "Файл табылмады"
 
-#: src/core/sound.vala:599
+#: src/core/sounds.vala:116
 #, fuzzy
 msgid "File type not supported"
 msgstr "Файл түріне қолдау көрсетілмейді"
@@ -562,16 +582,16 @@ msgstr "Файл түріне қолдау көрсетілмейді"
 msgid "Stopped"
 msgstr "Тоқтатылды"
 
-#: src/core/state.vala:81
+#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:263
 #: src/ui/preferences/automation/action/condition-widget.ui:54
 msgid "Break"
 msgstr "Үзіліс"
 
-#: src/core/state.vala:84
+#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:261
 msgid "Short Break"
 msgstr "Қысқа үзіліс"
 
-#: src/core/state.vala:87
+#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:262
 msgid "Long Break"
 msgstr "Ұзақ үзіліс"
 
@@ -587,19 +607,19 @@ msgstr "%u сағ"
 msgid "%um"
 msgstr "%u мин"
 
-#: src/core/utils.vala:72
+#: src/core/utils.vala:71
 #, fuzzy, c-format
 msgid "%u hour"
 msgid_plural "%u hours"
 msgstr[0] "%u сағат"
 
-#: src/core/utils.vala:81
+#: src/core/utils.vala:80
 #, fuzzy, c-format
 msgid "%u minute"
 msgid_plural "%u minutes"
 msgstr[0] "%u минут"
 
-#: src/core/utils.vala:90
+#: src/core/utils.vala:89
 #, fuzzy, c-format
 msgid "%u second"
 msgid_plural "%u seconds"
@@ -677,7 +697,7 @@ msgid "Time when the countdown has started."
 msgstr "Кері санақ басталған уақыт."
 
 #: src/plugins/gnome/install-extension-dialog.ui:6
-#: src/plugins/gnome/preferences-window-extension.vala:166
+#: src/plugins/gnome/preferences-window-extension.vala:167
 #, fuzzy
 msgid "GNOME Shell Extension"
 msgstr "GNOME Shell кеңейтімі"
@@ -745,7 +765,7 @@ msgid "_Not Now"
 msgstr "_Қазір емес"
 
 #: src/plugins/gnome/install-extension-dialog.ui:317
-#: src/plugins/gnome/preferences-window-extension.vala:399
+#: src/plugins/gnome/preferences-window-extension.vala:400
 #, fuzzy
 msgid "Something went wrong"
 msgstr "Бірдеңе дұрыс болмады"
@@ -768,19 +788,19 @@ msgid "_Abort"
 msgstr "_Тоқтату"
 
 #: src/plugins/gnome/install-extension-dialog.vala:85
-#: src/plugins/gnome/preferences-window-extension.vala:387
+#: src/plugins/gnome/preferences-window-extension.vala:388
 #, fuzzy
 msgid "Time-out reached"
 msgstr "Күту уақыты аяқталды"
 
 #: src/plugins/gnome/install-extension-dialog.vala:90
-#: src/plugins/gnome/preferences-window-extension.vala:391
+#: src/plugins/gnome/preferences-window-extension.vala:392
 #, fuzzy
 msgid "Installing extensions is not allowed"
 msgstr "Кеңейтімдерді орнатуға рұқсат етілмейді"
 
 #: src/plugins/gnome/install-extension-dialog.vala:95
-#: src/plugins/gnome/preferences-window-extension.vala:395
+#: src/plugins/gnome/preferences-window-extension.vala:396
 #, fuzzy
 msgid "Failed to download the extension"
 msgstr "Кеңейтімді жүктеп алу сәтсіз аяқталды"
@@ -802,6 +822,7 @@ msgid "Display As"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:81
+#: src/plugins/sni/indicator-provider.vala:286
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:28
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:32
 #, fuzzy
@@ -824,23 +845,24 @@ msgstr "Жұмыс үстелі"
 msgid "Install"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:132
+#. translators: verb
+#: src/plugins/gnome/preferences-window-extension.vala:133
 msgid "Update"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:135
+#: src/plugins/gnome/preferences-window-extension.vala:136
 msgid "Log out to finish the update"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:153
+#: src/plugins/gnome/preferences-window-extension.vala:154
 msgid "Outdated"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:172
+#: src/plugins/gnome/preferences-window-extension.vala:173
 msgid "Manage Notifications"
 msgstr ""
 
-#: src/plugins/gnome/preferences-window-extension.vala:173
+#: src/plugins/gnome/preferences-window-extension.vala:174
 msgid "Toggle Do Not Disturb mode during Pomodoro."
 msgstr ""
 
@@ -854,10 +876,47 @@ msgstr "GNOME Shell кеңейтімі қолжетімді"
 msgid "Learn More"
 msgstr "Көбірек білу"
 
-#: src/plugins/portal/global-shortcuts-provider.vala:298
+#: src/plugins/portal/global-shortcuts-provider.vala:335
 #, fuzzy
 msgid "Unused"
 msgstr "Қолданылмаған"
+
+#: src/plugins/sni/indicator-provider.vala:35
+#: src/ui/main/timer/compact-timer-view.vala:73
+#: src/ui/main/timer/timer-view.vala:141
+#, fuzzy
+msgid "Finished!"
+msgstr "Аяқталды!"
+
+#: src/plugins/sni/indicator-provider.vala:42
+#, c-format
+msgid "%u of %u"
+msgstr ""
+
+#: src/plugins/sni/indicator-provider.vala:290
+#: src/plugins/sni/indicator-provider.vala:294 src/ui/main/window.ui:92
+msgid "Stats"
+msgstr "Статистика"
+
+#: src/plugins/sni/indicator-provider.vala:299 src/ui/main/window.vala:284
+msgid "Quit"
+msgstr "Шығу"
+
+#: src/plugins/sni/indicator-provider.vala:392
+msgid "Take Break"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:43
+msgid "System Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:47
+msgid "Show Tray Icon"
+msgstr ""
+
+#: src/plugins/sni/preferences-window-extension.vala:48
+msgid "Closing the window keeps the app running in the background."
+msgstr ""
 
 #: src/ui/log/log-window.ui:6
 #, fuzzy
@@ -904,11 +963,12 @@ msgstr "Шығу коды:"
 msgid "Execution Time:"
 msgstr "Орындалу уақыты:"
 
-#: src/ui/main/dialogs/about-dialog.vala:30
+#. translators: Replace this string with your names, one name per line.
+#: src/ui/main/dialogs/about-dialog.vala:31
 msgid "translator-credits"
 msgstr "Baurzhan Muftakhidinov <baurthefirst@gmail.com>"
 
-#: src/ui/main/dialogs/about-dialog.vala:36
+#: src/ui/main/dialogs/about-dialog.vala:37
 #, fuzzy
 msgid "Donate"
 msgstr "Донат жасау"
@@ -1017,12 +1077,6 @@ msgstr "Қы_сқа үзіліс"
 msgid "_Long Break"
 msgstr "Ұ_зақ үзіліс"
 
-#: src/ui/main/timer/compact-timer-view.vala:73
-#: src/ui/main/timer/timer-view.vala:141
-#, fuzzy
-msgid "Finished!"
-msgstr "Аяқталды!"
-
 #: src/ui/main/timer/menus.ui:26
 #, fuzzy
 msgid "_Break"
@@ -1070,16 +1124,12 @@ msgstr "_Шығу"
 msgid "Primary Menu"
 msgstr "Негізгі мәзір"
 
-#: src/ui/main/window.ui:92
-msgid "Stats"
-msgstr "Статистика"
-
-#: src/ui/main/window.vala:280
+#: src/ui/main/window.vala:279
 #, fuzzy
 msgid "Keep timer running?"
 msgstr "Таймер жұмысын жалғастыра берсін бе?"
 
-#: src/ui/main/window.vala:281
+#: src/ui/main/window.vala:280
 #, fuzzy
 msgid ""
 "You can keep it running in the background — notifications and keyboard "
@@ -1088,11 +1138,7 @@ msgstr ""
 "Сіз оны фондық режимде қалдыра аласыз — хабарламалар мен пернетақта "
 "жарлықтары әлі де жұмыс істейтін болады."
 
-#: src/ui/main/window.vala:285
-msgid "Quit"
-msgstr "Шығу"
-
-#: src/ui/main/window.vala:288
+#: src/ui/main/window.vala:287
 #, fuzzy
 msgid "Run in background"
 msgstr "Фонда орындау"
@@ -1102,7 +1148,7 @@ msgid "It's time to take a break"
 msgstr "Үзіліс жасайтын уақыт келді"
 
 #: src/ui/preferences/appearance/preferences-panel-appearance.ui:17
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:103
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:123
 #, fuzzy
 msgid "Main Window"
 msgstr "Негізгі терезе"
@@ -1445,7 +1491,7 @@ msgid ""
 msgstr ""
 "Бас тарту үшін <b>Esc</b>, ал жарлықты сөндіру үшін <b>Backspace</b> басыңыз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:17
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:21
 #, fuzzy
 msgid ""
 "Global shortcuts let you control the app even when it’s not on screen. They "
@@ -1454,62 +1500,64 @@ msgstr ""
 "Глобалды жарлықтар қолданба экранда болмаса да оны басқаруға мүмкіндік "
 "береді. Олар қолданба фонда жұмыс істеп тұрғанда істей береді."
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:20
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:24
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:40
 #, fuzzy
 msgid "Open app settings for editing global shortcuts"
 msgstr "Глобалды жарлықтарды өңдеу үшін баптауларды ашу"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:25
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:29
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:45
 #, fuzzy
 msgid "_Edit"
 msgstr "_Өңдеу"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:41
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:61
 #, fuzzy
 msgid "Enter new shortcut for starting or stopping the timer"
 msgstr "Таймерді бастау немесе тоқтату үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:48
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:68
 #, fuzzy
 msgid "Enter new shortcut to start/pause/resume the timer"
 msgstr "Таймерді бастау/кідірту/жалғастыру үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:58
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
 #, fuzzy
 msgid "Enter new shortcut for starting the timer"
 msgstr "Таймерді бастау үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:65
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
 #, fuzzy
 msgid "Enter new shortcut for stopping the timer"
 msgstr "Таймерді тоқтату үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:72
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
 #, fuzzy
 msgid "Enter new shortcut for pausing the timer"
 msgstr "Таймерді кідірту үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:79
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
 #, fuzzy
 msgid "Enter new shortcut for resuming the timer"
 msgstr "Таймерді жалғастыру үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:86
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
 #, fuzzy
 msgid "Enter new shortcut for skipping"
 msgstr "Аттап кету үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:112
 #, fuzzy
 msgid "Rewind One Minute"
 msgstr "Бір минутқа кері айналдыру"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:93
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:113
 #, fuzzy
 msgid "Enter new shortcut for rewinding"
 msgstr "Кері айналдыру үшін жаңа жарлықты енгізіңіз"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:107
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:127
 #, fuzzy
 msgid "Enter new shortcut for bringing window to focus"
 msgstr "Терезені назарға алу үшін жаңа жарлықты енгізіңіз"
@@ -1698,17 +1746,17 @@ msgstr "Бір сеанс <b>%s</b> уақыт алады."
 msgid "<b>%u%%</b> of the time will be allocated for breaks."
 msgstr "Уақыттың <b>%u%%</b> үзілістерге бөлінеді."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:146
+#: src/ui/preferences/timer/preferences-panel-timer.vala:144
 #, fuzzy
 msgid "Apply changes to ongoing Pomodoro?"
 msgstr "Өзгерістерді ағымдағы помодороға қолдану керек пе?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:147
+#: src/ui/preferences/timer/preferences-panel-timer.vala:145
 #, fuzzy
 msgid "Apply changes to ongoing break?"
 msgstr "Өзгерістерді ағымдағы үзіліске қолдану керек пе?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:149
+#: src/ui/preferences/timer/preferences-panel-timer.vala:147
 #, fuzzy
 msgid "Apply"
 msgstr "Қолдану"
@@ -1718,6 +1766,34 @@ msgstr "Қолдану"
 msgctxt "accessibility"
 msgid "Sidebar"
 msgstr "Бүйірлік панель"
+
+#, fuzzy
+#~ msgid "Time management utility"
+#~ msgstr "Уақытты басқару утилитасы"
+
+#, fuzzy
+#~ msgid "Maintain focus by taking frequent breaks"
+#~ msgstr "Жиі үзіліс жасау арқылы зейінді сақтаңыз"
+
+#, fuzzy
+#~ msgid "Visual and audio notifications"
+#~ msgstr "Визуалды және дыбыстық хабарламалар"
+
+#, fuzzy
+#~ msgid "Time tracking and statistics"
+#~ msgstr "Уақытты бақылау және статистика"
+
+#, fuzzy
+#~ msgid "GNOME desktop integration"
+#~ msgstr "GNOME жұмыс үстелімен интеграция"
+
+#, fuzzy
+#~ msgid "Run custom commands after Pomodoro or break"
+#~ msgstr "Помодоро немесе үзілістен кейін командаларды орындау"
+
+#, fuzzy
+#~ msgid "Daily stats"
+#~ msgstr "Күндік статистика"
 
 #, fuzzy
 #~ msgid "Compact timer"
