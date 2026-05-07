@@ -11,7 +11,6 @@ libft_plugin_freedesktop = static_library(
     'freedesktop.vala',
     'lock-screen-provider.vala',
     'notification-backend-provider.vala',
-    'screen-saver-provider.vala',
     'sleep-monitor-provider.vala',
     'timezone-monitor-provider.vala',
   ) + freedesktop_plugin_resources,

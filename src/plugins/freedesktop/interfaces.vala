@@ -37,15 +37,6 @@ namespace Freedesktop
     }
 
 
-    [DBus (name = "org.freedesktop.ScreenSaver")]
-    public interface ScreenSaver : GLib.Object
-    {
-        public abstract async bool get_active () throws GLib.DBusError, GLib.IOError;
-
-        public signal void active_changed (bool active);
-    }
-
-
     [DBus (name = "org.freedesktop.timedate1")]
     public interface TimeDate : GLib.Object
     {

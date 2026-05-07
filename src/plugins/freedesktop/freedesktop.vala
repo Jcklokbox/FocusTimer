@@ -17,9 +17,6 @@ namespace Freedesktop
         object_module.register_extension_type (typeof (Ft.LockScreenProvider),
                                                typeof (Freedesktop.LockScreenProvider));
 
-        object_module.register_extension_type (typeof (Ft.ScreenSaverProvider),
-                                               typeof (Freedesktop.ScreenSaverProvider));
-
         object_module.register_extension_type (typeof (Ft.SleepMonitorProvider),
                                                typeof (Freedesktop.SleepMonitorProvider));
 

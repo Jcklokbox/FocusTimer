@@ -18,7 +18,6 @@
     "--system-talk-name=org.freedesktop.timedate1",
     "--talk-name=org.freedesktop.Flatpak",
     "--talk-name=org.freedesktop.Notifications",
-    "--talk-name=org.freedesktop.ScreenSaver",
     "--talk-name=org.gnome.Mutter.IdleMonitor",
     "--talk-name=org.gnome.ScreenSaver",
     "--talk-name=org.gnome.Shell",
