@@ -85,7 +85,6 @@ namespace Ft
     {
         private const uint TOAST_DISMISS_TIMEOUT = 3;
 
-
         [CCode (notify = false)]
         public Ft.WindowSize size {
             get {

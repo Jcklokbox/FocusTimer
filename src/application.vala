@@ -322,6 +322,7 @@ namespace Ft
             }
 
             if (view != Ft.WindowView.DEFAULT) {
+                window.size = Ft.WindowSize.NORMAL;
                 window.view = view;
             }
 
