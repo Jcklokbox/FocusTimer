@@ -1,3 +1,11 @@
+2026-05-07  Kamil Prusko  <kamilprusko@gmail.com>
+	Release version 1.1.1:
+
+	* System tray icon
+	* Smoother sound transitions
+	* Fix break overlay scaling on HiDPI displays
+	* Fix missing sounds after switching soundcards
+
 2026-04-16  Kamil Prusko  <kamilprusko@gmail.com>
 	Release version 1.1.0:
 

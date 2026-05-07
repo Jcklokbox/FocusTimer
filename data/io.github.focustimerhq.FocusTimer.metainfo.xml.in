@@ -87,6 +87,17 @@
 
   <!-- Releases -->
   <releases>
+    <release version="1.1.1" date="2026-05-07">
+      <description translate="no">
+        <p>Overview of changes in focus-timer 1.1.1:</p>
+        <ul>
+          <li>System tray icon</li>
+          <li>Smoother sound transitions</li>
+          <li>Fix break overlay scaling on HiDPI displays</li>
+          <li>Fix missing sounds after switching soundcards</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.0" date="2026-04-16">
       <description translate="no">
         <p>Overview of changes in focus-timer 1.1.0:</p>
