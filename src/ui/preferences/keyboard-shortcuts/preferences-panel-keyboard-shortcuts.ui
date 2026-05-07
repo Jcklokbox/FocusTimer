@@ -24,9 +24,6 @@
                         <property name="tooltip-text" translatable="yes">Open app settings for editing global shortcuts</property>
                         <property name="margin-start">20</property>
                         <property name="valign">center</property>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
                         <child>
                           <object class="AdwButtonContent">
                             <property name="label" translatable="yes">_Edit</property>
@@ -43,9 +40,6 @@
                         <property name="tooltip-text" translatable="yes">Open app settings for editing global shortcuts</property>
                         <property name="halign">center</property>
                         <property name="margin-top">4</property>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
                         <child>
                           <object class="AdwButtonContent">
                             <property name="label" translatable="yes">_Edit</property>

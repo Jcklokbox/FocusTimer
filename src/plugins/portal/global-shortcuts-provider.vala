@@ -9,6 +9,43 @@ using GLib;
 
 namespace Portal
 {
+    private bool has_dbus_interface (GLib.DBusConnection connection,
+                                     string              bus_name,
+                                     string              object_path,
+                                     string              interface_name,
+                                     int                 timeout = -1)
+    {
+        try {
+            var result = connection.call_sync (
+                    bus_name,
+                    object_path,
+                    "org.freedesktop.DBus.Introspectable",
+                    "Introspect",
+                    null,
+                    new GLib.VariantType ("(s)"),
+                    GLib.DBusCallFlags.NONE,
+                    timeout);
+
+            string xml_data;
+            result.get ("(s)", out xml_data);
+
+            var node_info = new GLib.DBusNodeInfo.for_xml (xml_data);
+
+            foreach (var iface in node_info.interfaces)
+            {
+                if (iface.name == interface_name) {
+                    return true;
+                }
+            }
+        }
+        catch (GLib.Error error) {
+            GLib.debug ("Failed to introspect %s: %s", bus_name, error.message);
+        }
+
+        return false;
+    }
+
+
     private errordomain GlobalShortcutsError
     {
         REQUEST,
@@ -363,8 +400,14 @@ namespace Portal
                                        string              name,
                                        string              name_owner)
         {
-            this.available = true;
-            this.connection = connection;
+            if (has_dbus_interface (connection,
+                                    name,
+                                    "/org/freedesktop/portal/desktop",
+                                    "org.freedesktop.portal.GlobalShortcuts"))
+            {
+                this.available = true;
+                this.connection = connection;
+            }
         }
 
         private void on_name_vanished (GLib.DBusConnection? connection,
