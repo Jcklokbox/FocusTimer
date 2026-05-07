@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-07 18:08+0200\n"
-"PO-Revision-Date: 2026-04-05 11:24+0200\n"
+"PO-Revision-Date: 2026-05-07 18:23+0200\n"
 "Last-Translator: Kamil Prusko <kamilprusko@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -31,12 +31,12 @@ msgstr "Minutnik Koncentracji"
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:3
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:8
 msgid "Work with regular breaks"
-msgstr ""
+msgstr "Pracuj z regularnymi przerwami"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
 msgid "pomodoro;timer;productivity;time tracker;time management;"
-msgstr ""
+msgstr "pomodoro;minutnik;produktywność;śledzenie czasu;zarządzanie czasem;"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:10
 msgid ""
@@ -63,23 +63,23 @@ msgstr "Nakładka ekranowa podczas przerw"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
 msgid "System tray icon"
-msgstr ""
+msgstr "Ikona w zasobniku"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:21
 msgid "Hotkeys (global shortcuts)"
-msgstr ""
+msgstr "Klawisze skrótu (skróty globalne)"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:22
 msgid "Daily, weekly, and monthly statistics"
-msgstr ""
+msgstr "Statystyki dzienne, tygodniowe i miesięczne"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:23
 msgid "Extensible via custom shell commands, D-Bus, and CLI"
-msgstr ""
+msgstr "Możliwość rozszerzenia przez własne polecenia powłoki, D-Bus i CLI"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:24
 msgid "GNOME Shell extension for deeper desktop integration"
-msgstr ""
+msgstr "Rozszerzenie GNOME Shell dla głębszej integracji z pulpitem"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:45
 msgid "Kamil Prusko"
@@ -109,47 +109,49 @@ msgstr "Nakładka ekranowa"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:88
 msgid "Overview of changes in focus-timer 1.1.0:"
-msgstr ""
+msgstr "Przegląd zmian w focus-timer 1.1.0:"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:90
 msgid "Support for GNOME Shell extension"
-msgstr ""
+msgstr "Wsparcie dla rozszerzenia GNOME Shell"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:91
 msgid "Option to autostart on login"
-msgstr ""
+msgstr "Opcja automatycznego uruchamiania przy logowaniu"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:92
 msgid "Reviewed sound files"
-msgstr ""
+msgstr "Zweryfikowane pliki dźwiękowe"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
 msgid "Fix build with vala 0.56.19"
-msgstr ""
+msgstr "Naprawiono kompatebilność z vala 0.56.19"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:99
 msgid "Overview of changes in focus-timer 1.0:"
-msgstr ""
+msgstr "Przegląd zmian w focus-timer 1.0:"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:101
 msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
 msgstr ""
+"Naprawiono skalowanie nakładki przerwy na wyświetlaczach HiDPI "
+"(podziękowania dla @scholzri)"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:102
 msgid "Automatic daily backup"
-msgstr ""
+msgstr "Automatyczna codzienna kopia zapasowa"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:103
 msgid "Removed libcanberra backend for playing notification sounds"
-msgstr ""
+msgstr "Usunięto libcanberra do odtwarzania dźwięków powiadomień"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
 msgid "Updated Lithuanian translation (thanks @psukys)"
-msgstr ""
+msgstr "Zaktualizowano tłumaczenie litewskie (podziękowania dla @psukys)"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:105
 msgid "Updated Russian translation (thanks @ViktorOn)"
-msgstr ""
+msgstr "Zaktualizowano tłumaczenie rosyjskie (podziękowania dla @ViktorOn)"
 
 #: src/application.vala:154 src/application.vala:608
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
@@ -820,7 +822,7 @@ msgstr "Zakończono!"
 #: src/plugins/sni/indicator-provider.vala:42
 #, c-format
 msgid "%u of %u"
-msgstr ""
+msgstr "%u z %u"
 
 #: src/plugins/sni/indicator-provider.vala:290
 #: src/plugins/sni/indicator-provider.vala:294 src/ui/main/window.ui:92
@@ -833,19 +835,19 @@ msgstr "Zakończ"
 
 #: src/plugins/sni/indicator-provider.vala:392
 msgid "Take Break"
-msgstr ""
+msgstr "Zrób przerwę"
 
 #: src/plugins/sni/preferences-window-extension.vala:43
 msgid "System Tray Icon"
-msgstr ""
+msgstr "Ikona w Zasobniku"
 
 #: src/plugins/sni/preferences-window-extension.vala:47
 msgid "Show Tray Icon"
-msgstr ""
+msgstr "Pokaż Ikonę w Zasobniku"
 
 #: src/plugins/sni/preferences-window-extension.vala:48
 msgid "Closing the window keeps the app running in the background."
-msgstr ""
+msgstr "Zamknięcie okna sprawia, że aplikacja nadal działa w tle."
 
 #: src/ui/log/log-window.ui:6
 msgid "Log"
@@ -1596,8 +1598,8 @@ msgstr "Panel boczny"
 #~ msgid "Run custom commands after Pomodoro or break"
 #~ msgstr "Odpalanie własnych poleceń"
 
-#~ msgid "Daily stats"
-#~ msgstr "Statystyki dzienne"
+msgid "Daily stats"
+msgstr "Statystyki dzienne"
 
 #~ msgid "15 seconds"
 #~ msgstr "15 sekund"
@@ -2104,7 +2106,7 @@ msgstr "Panel boczny"
 
 #, fuzzy
 #~ msgid ""
-#~ "System notifications including chat messages won't show up during "
+#~ "System notifications including chat messages won't show up during "
 #~ "pomodoro."
 #~ msgstr ""
 #~ "Powiadomienia systemowe, łącznie z powiadomieniami komunikatora,będą "
@@ -2112,13 +2114,13 @@ msgstr "Panel boczny"
 
 #, fuzzy
 #~ msgid ""
-#~ "System notifications including chat messages won't show up during break."
+#~ "System notifications including chat messages won't show up during break."
 #~ msgstr ""
 #~ "Powiadomienia systemowe, łącznie z powiadomieniami komunikatora,będą "
 #~ "ukryte podczas przerwy."
 
 #, fuzzy
-#~ msgid "System notifications including chat messages won't show up."
+#~ msgid "System notifications including chat messages won't show up."
 #~ msgstr ""
 #~ "Powiadomienia systemowe, łącznie z powiadomieniami komunikatora,będą "
 #~ "ukryte."
