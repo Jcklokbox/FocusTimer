@@ -113,7 +113,6 @@ namespace Sni
             "22x22/status/indicator-pomodoro-100-symbolic.svg",
             "22x22/status/indicator-pomodoro-paused-symbolic.svg",
             "22x22/status/indicator-stopped-symbolic.svg",
-            "32x32/status/indicator-stopped-symbolic.svg",
             "scalable/actions/ornament-check-symbolic.svg",
             "scalable/actions/ornament-dot-checked-symbolic.svg",
             "scalable/actions/ornament-dot-unchecked-symbolic.svg",

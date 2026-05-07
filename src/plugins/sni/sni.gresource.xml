@@ -46,7 +46,6 @@
     <file compressed="true" preprocess="xml-stripblanks">icons/22x22/status/indicator-pomodoro-100-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/22x22/status/indicator-pomodoro-paused-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/22x22/status/indicator-stopped-symbolic.svg</file>
-    <file compressed="true" preprocess="xml-stripblanks">icons/32x32/status/indicator-stopped-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/actions/ornament-check-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/actions/ornament-dot-checked-symbolic.svg</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/actions/ornament-dot-unchecked-symbolic.svg</file>

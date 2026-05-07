@@ -1,21 +1,12 @@
 [Icon Theme]
 Name=Hicolor
 Hidden=true
-Directories=22x22/status,32x32/status,scalable/actions,scalable/status
+Directories=22x22/status,scalable/actions,scalable/status
 
 [22x22/status]
 Context=Status
-Type=Scalable
-MinSize=22
+Type=Fixed
 Size=22
-MaxSize=32
-
-[32x32/status]
-Context=Status
-Type=Scalable
-MinSize=32
-Size=32
-MaxSize=512
 
 [scalable/actions]
 Context=Actions
