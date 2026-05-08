@@ -21,12 +21,11 @@ namespace Freedesktop
 
         private void update_active ()
         {
-            var previous_active = this._active;
             var active = this.session_proxy != null
-                ? !this.session_proxy.active || this.session_proxy.locked_hint
-                : false;
+                    ? !this.session_proxy.active || this.session_proxy.locked_hint
+                    : false;
 
-            if (active != previous_active) {
+            if (this._active != active) {
                 this._active = active;
                 this.notify_property ("active");
             }

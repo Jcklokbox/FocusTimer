@@ -134,6 +134,7 @@ namespace Ft
         private Ft.ScreenOverlayManager?    screen_overlay_manager;
         private Ft.BackgroundManager?       background_manager;
         private Ft.SoundManager?            sound_manager;
+        private Ft.ScreenSaver?             screensaver;
         private Ft.Indicator?               indicator;
         private Ft.Logger?                  logger;
         private GLib.Settings?              settings;
@@ -631,6 +632,8 @@ namespace Ft
         {
             this.screen_overlay_manager.add_provider (
                     new Ft.DefaultScreenOverlayProvider (), Ft.Priority.DEFAULT);
+            this.screensaver.add_provider (
+                    new Ft.DefaultScreenSaverProvider (), Ft.Priority.DEFAULT);
         }
 
         private void setup_plugins ()
@@ -688,6 +691,8 @@ namespace Ft
             this.job_queue              = new Ft.JobQueue ();
             this.logger                 = new Ft.Logger ();
             this.indicator              = new Ft.Indicator ();
+            this.screensaver            = new Ft.ScreenSaver ();
+
 
 #if ENABLE_AUTOMATION
             this.action_manager = new Ft.ActionManager ();
@@ -979,6 +984,8 @@ namespace Ft
             this.job_queue = null;
             this.action_manager = null;
             this.logger = null;
+            this.indicator = null;
+            this.screensaver = null;
             this.background_manager = null;
             this.sound_manager = null;
             this.notification_manager = null;

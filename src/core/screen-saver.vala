@@ -25,7 +25,9 @@ namespace Ft
 
         private void update_active ()
         {
-            var active = this.provider != null && this.provider.enabled ? this.provider.active : false;
+            var active = this.provider != null && this.provider.enabled
+                    ? this.provider.active
+                    : false;
 
             if (this._active != active)
             {
@@ -39,6 +41,13 @@ namespace Ft
                                        GLib.ParamSpec pspec)
         {
             this.update_active ();
+        }
+
+        // TODO: providers should be registered staticly
+        public void add_provider (Ft.ScreenSaverProvider provider,
+                                  Ft.Priority            priority = Ft.Priority.DEFAULT)
+        {
+            this.providers.add (provider, priority);
         }
 
         protected override void initialize ()
