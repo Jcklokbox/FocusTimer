@@ -26,3 +26,9 @@ option(
   value: 'enabled',
   description: 'Enable indicator.'
 )
+option(
+  'plugin_xfce',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Enable XFCE integration.'
+)

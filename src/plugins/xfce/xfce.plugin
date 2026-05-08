@@ -1,0 +1,6 @@
+[Plugin]
+Name=XFCE
+Module=xfce
+Builtin=true
+Embedded=xfce_peas_register_types
+X-Priority=high
