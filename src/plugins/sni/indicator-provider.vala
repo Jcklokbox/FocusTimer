@@ -48,6 +48,12 @@ namespace Sni
     }
 
 
+    private string normalize_separators (string resource_path)
+    {
+        return resource_path.replace ("/", GLib.Path.DIR_SEPARATOR_S);
+    }
+
+
     private errordomain IndicatorError
     {
         CONNECTION,
@@ -68,6 +74,51 @@ namespace Sni
 
         private const uint ICON_STEPS = 20U;
         private const string[] ICONS = {
+            "16x16/status/indicator-break-000-symbolic.svg",
+            "16x16/status/indicator-break-005-symbolic.svg",
+            "16x16/status/indicator-break-010-symbolic.svg",
+            "16x16/status/indicator-break-015-symbolic.svg",
+            "16x16/status/indicator-break-020-symbolic.svg",
+            "16x16/status/indicator-break-025-symbolic.svg",
+            "16x16/status/indicator-break-030-symbolic.svg",
+            "16x16/status/indicator-break-035-symbolic.svg",
+            "16x16/status/indicator-break-040-symbolic.svg",
+            "16x16/status/indicator-break-045-symbolic.svg",
+            "16x16/status/indicator-break-050-symbolic.svg",
+            "16x16/status/indicator-break-055-symbolic.svg",
+            "16x16/status/indicator-break-060-symbolic.svg",
+            "16x16/status/indicator-break-065-symbolic.svg",
+            "16x16/status/indicator-break-070-symbolic.svg",
+            "16x16/status/indicator-break-075-symbolic.svg",
+            "16x16/status/indicator-break-080-symbolic.svg",
+            "16x16/status/indicator-break-085-symbolic.svg",
+            "16x16/status/indicator-break-090-symbolic.svg",
+            "16x16/status/indicator-break-095-symbolic.svg",
+            "16x16/status/indicator-break-100-symbolic.svg",
+            "16x16/status/indicator-break-paused-symbolic.svg",
+            "16x16/status/indicator-pomodoro-000-symbolic.svg",
+            "16x16/status/indicator-pomodoro-005-symbolic.svg",
+            "16x16/status/indicator-pomodoro-010-symbolic.svg",
+            "16x16/status/indicator-pomodoro-015-symbolic.svg",
+            "16x16/status/indicator-pomodoro-020-symbolic.svg",
+            "16x16/status/indicator-pomodoro-025-symbolic.svg",
+            "16x16/status/indicator-pomodoro-030-symbolic.svg",
+            "16x16/status/indicator-pomodoro-035-symbolic.svg",
+            "16x16/status/indicator-pomodoro-040-symbolic.svg",
+            "16x16/status/indicator-pomodoro-045-symbolic.svg",
+            "16x16/status/indicator-pomodoro-050-symbolic.svg",
+            "16x16/status/indicator-pomodoro-055-symbolic.svg",
+            "16x16/status/indicator-pomodoro-060-symbolic.svg",
+            "16x16/status/indicator-pomodoro-065-symbolic.svg",
+            "16x16/status/indicator-pomodoro-070-symbolic.svg",
+            "16x16/status/indicator-pomodoro-075-symbolic.svg",
+            "16x16/status/indicator-pomodoro-080-symbolic.svg",
+            "16x16/status/indicator-pomodoro-085-symbolic.svg",
+            "16x16/status/indicator-pomodoro-090-symbolic.svg",
+            "16x16/status/indicator-pomodoro-095-symbolic.svg",
+            "16x16/status/indicator-pomodoro-100-symbolic.svg",
+            "16x16/status/indicator-pomodoro-paused-symbolic.svg",
+            "16x16/status/indicator-stopped-symbolic.svg",
             "22x22/status/indicator-break-000-symbolic.svg",
             "22x22/status/indicator-break-005-symbolic.svg",
             "22x22/status/indicator-break-010-symbolic.svg",
@@ -122,52 +173,11 @@ namespace Sni
             "scalable/actions/timer-skip-symbolic-rtl.svg",
             "scalable/actions/timer-start-symbolic.svg",
             "scalable/actions/timer-stop-symbolic.svg",
-            "scalable/status/indicator-break-000-symbolic.svg",
-            "scalable/status/indicator-break-005-symbolic.svg",
-            "scalable/status/indicator-break-010-symbolic.svg",
-            "scalable/status/indicator-break-015-symbolic.svg",
-            "scalable/status/indicator-break-020-symbolic.svg",
-            "scalable/status/indicator-break-025-symbolic.svg",
-            "scalable/status/indicator-break-030-symbolic.svg",
-            "scalable/status/indicator-break-035-symbolic.svg",
-            "scalable/status/indicator-break-040-symbolic.svg",
-            "scalable/status/indicator-break-045-symbolic.svg",
-            "scalable/status/indicator-break-050-symbolic.svg",
-            "scalable/status/indicator-break-055-symbolic.svg",
-            "scalable/status/indicator-break-060-symbolic.svg",
-            "scalable/status/indicator-break-065-symbolic.svg",
-            "scalable/status/indicator-break-070-symbolic.svg",
-            "scalable/status/indicator-break-075-symbolic.svg",
-            "scalable/status/indicator-break-080-symbolic.svg",
-            "scalable/status/indicator-break-085-symbolic.svg",
-            "scalable/status/indicator-break-090-symbolic.svg",
-            "scalable/status/indicator-break-095-symbolic.svg",
-            "scalable/status/indicator-break-100-symbolic.svg",
-            "scalable/status/indicator-break-paused-symbolic.svg",
-            "scalable/status/indicator-pomodoro-000-symbolic.svg",
-            "scalable/status/indicator-pomodoro-005-symbolic.svg",
-            "scalable/status/indicator-pomodoro-010-symbolic.svg",
-            "scalable/status/indicator-pomodoro-015-symbolic.svg",
-            "scalable/status/indicator-pomodoro-020-symbolic.svg",
-            "scalable/status/indicator-pomodoro-025-symbolic.svg",
-            "scalable/status/indicator-pomodoro-030-symbolic.svg",
-            "scalable/status/indicator-pomodoro-035-symbolic.svg",
-            "scalable/status/indicator-pomodoro-040-symbolic.svg",
-            "scalable/status/indicator-pomodoro-045-symbolic.svg",
-            "scalable/status/indicator-pomodoro-050-symbolic.svg",
-            "scalable/status/indicator-pomodoro-055-symbolic.svg",
-            "scalable/status/indicator-pomodoro-060-symbolic.svg",
-            "scalable/status/indicator-pomodoro-065-symbolic.svg",
-            "scalable/status/indicator-pomodoro-070-symbolic.svg",
-            "scalable/status/indicator-pomodoro-075-symbolic.svg",
-            "scalable/status/indicator-pomodoro-080-symbolic.svg",
-            "scalable/status/indicator-pomodoro-085-symbolic.svg",
-            "scalable/status/indicator-pomodoro-090-symbolic.svg",
-            "scalable/status/indicator-pomodoro-095-symbolic.svg",
-            "scalable/status/indicator-pomodoro-100-symbolic.svg",
-            "scalable/status/indicator-pomodoro-paused-symbolic.svg",
-            "scalable/status/indicator-stopped-symbolic.svg",
             "index.theme",
+        };
+        private const string[] SCALES = {
+            "@2",
+            "@3",
         };
 
         private GLib.DBusConnection?               connection = null;
@@ -444,6 +454,7 @@ namespace Sni
 
             var icons_theme_path = GLib.Path.build_filename (icons_path, "hicolor");
             var directories = new GLib.GenericSet<string> (GLib.str_hash, GLib.str_equal);
+            var sizes = new GLib.GenericSet<string> (GLib.str_hash, GLib.str_equal);
 
             foreach (var filename in ICONS)
             {
@@ -451,30 +462,29 @@ namespace Sni
                     return;
                 }
 
-                var icon_file = GLib.File.new_for_path (
-                        GLib.Path.build_filename (icons_theme_path, filename));
-                var directory = icon_file.get_parent ();
-
                 try {
-                    if (!directories.contains (directory.get_path ()))
-                    {
-                        directories.add (directory.get_path ());
-
-                        if (!directory.query_exists ()) {
-                            directory.make_directory_with_parents ();
-                        }
-                    }
-                }
-                catch (GLib.Error error) {
-                    GLib.warning ("Failed to create directory %s: %s",
-                                  directory.get_path (), error.message);
-                    throw error;
-                }
-
-                try {
+                    var icon_file = GLib.File.new_build_filename (
+                            icons_theme_path,
+                            normalize_separators (filename));
                     var icon_data = GLib.resources_lookup_data (
                             @"/plugins/sni/icons/$(filename)",
                             GLib.ResourceLookupFlags.NONE);
+                    var directory = icon_file.get_parent ();
+                    var directory_path = directory.get_path ();
+
+                    if (!directories.contains (directory_path))
+                    {
+                        directories.add (directory_path);
+
+                        if (!directory.query_exists ()) {
+                            directory.make_directory_with_parents (cancellable);
+                        }
+
+                        var filename_parts = filename.split ("/");
+                        if (filename_parts.length == 3) {  // size, category, icon name
+                            sizes.add (filename_parts[0]);
+                        }
+                    }
 
                     yield icon_file.replace_contents_async (
                             icon_data.get_data (),
@@ -489,6 +499,27 @@ namespace Sni
                     throw error;
                 }
             }
+
+            sizes.@foreach (
+                (size) => {
+                    if (size == "scalable") {
+                        return;
+                    }
+
+                    foreach (var scale in SCALES)
+                    {
+                        try {
+                            var scale_directory = GLib.File.new_for_path (
+                                    GLib.Path.build_filename (icons_theme_path, size + scale));
+                            if (!scale_directory.query_exists ()) {
+                                scale_directory.make_symbolic_link (size, cancellable);
+                            }
+                        }
+                        catch (GLib.Error error) {
+                            GLib.warning ("Failed to make symbolic link: %s", error.message);
+                        }
+                    }
+                });
         }
 
         private void export_menu (string menu_object_path,
