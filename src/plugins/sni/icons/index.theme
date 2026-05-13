@@ -1,7 +1,7 @@
 [Icon Theme]
 Name=Hicolor
 Hidden=true
-Directories=16x16/status,16x16@2/status,16x16@3/status,22x22/status,22x22@2/status,22x22@3/status,scalable/actions
+Directories=16x16/status,16x16@2/status,22x22/status,22x22@2/status,scalable/actions
 
 [16x16/status]
 Context=Status
@@ -14,12 +14,6 @@ Type=Fixed
 Size=16
 Scale=2
 
-[16x16@3/status]
-Context=Status
-Type=Fixed
-Size=16
-Scale=3
-
 [22x22/status]
 Context=Status
 Type=Fixed
@@ -30,12 +24,6 @@ Context=Status
 Type=Fixed
 Size=22
 Scale=2
-
-[22x22@3/status]
-Context=Status
-Type=Fixed
-Size=22
-Scale=3
 
 [scalable/actions]
 Context=Actions

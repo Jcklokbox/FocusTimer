@@ -17,17 +17,22 @@ foreach i:icon_dirs
 endforeach
 
 install_data(
-  [
-    'scalable/io.github.focustimerhq.FocusTimer.svg',
-    'scalable/io.github.focustimerhq.FocusTimer.Devel.svg',
-  ],
+  'scalable/io.github.focustimerhq.FocusTimer.svg',
   install_dir: hicolor_icondir / 'scalable/apps',
 )
-
 install_data(
-  [
-    'symbolic/io.github.focustimerhq.FocusTimer-symbolic.svg',
-    'symbolic/io.github.focustimerhq.FocusTimer.Devel-symbolic.svg',
-  ],
+  'symbolic/io.github.focustimerhq.FocusTimer-symbolic.svg',
   install_dir: hicolor_icondir / 'symbolic/apps',
 )
+
+if get_option('profile') == 'development'
+  install_data(
+    'scalable/io.github.focustimerhq.FocusTimer.Devel.svg',
+    install_dir: hicolor_icondir / 'scalable/apps',
+  )
+  install_data(
+    'symbolic/io.github.focustimerhq.FocusTimer.Devel-symbolic.svg',
+    install_dir: hicolor_icondir / 'symbolic/apps',
+  )
+endif
+

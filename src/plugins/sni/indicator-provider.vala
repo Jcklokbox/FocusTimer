@@ -177,7 +177,6 @@ namespace Sni
         };
         private const string[] SCALES = {
             "@2",
-            "@3",
         };
 
         private GLib.DBusConnection?               connection = null;

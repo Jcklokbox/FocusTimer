@@ -62,6 +62,7 @@
     <file preprocess="xml-stripblanks">icons/16x16/actions/timer-skip-symbolic-rtl.svg</file>
     <file preprocess="xml-stripblanks">icons/16x16/actions/timer-start-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/16x16/actions/timer-stop-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/16x16@2/actions/timer-rewind-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/24x24/actions/timer-pause-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/24x24/actions/timer-reset-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/24x24/actions/timer-rewind-symbolic.svg</file>
