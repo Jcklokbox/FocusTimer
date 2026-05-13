@@ -47,8 +47,8 @@
     <name translate="no">Kamil Prusko</name>
   </developer>
   <branding>
-    <color type="primary" scheme_preference="light">#adcae6</color>
-    <color type="primary" scheme_preference="dark">#94b4d1</color>
+    <color type="primary" scheme_preference="light">#bedaf4</color>
+    <color type="primary" scheme_preference="dark">#a4c9ea</color>
   </branding>
 
   <!-- License -->
@@ -59,12 +59,13 @@
   <url type="homepage">https://github.com/focustimerhq/FocusTimer</url>
   <url type="bugtracker">https://github.com/focustimerhq/FocusTimer/issues</url>
   <url type="vcs-browser">https://github.com/focustimerhq/FocusTimer</url>
+  <url type="translate">https://github.com/focustimerhq/FocusTimer/blob/main/CONTRIBUTING.md#translating</url>
   <url type="donation">https://liberapay.com/kamilprusko</url>
 
   <!-- Screenshots -->
   <screenshots>
     <screenshot type="default">
-      <image>https://gnomepomodoro.org/release/1.1/timer.png</image>
+      <image scale="2">https://gnomepomodoro.org/release/1.1/timer@2.png</image>
       <caption>Timer</caption>
     </screenshot>
     <screenshot>
