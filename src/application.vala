@@ -1053,6 +1053,17 @@ namespace Ft
             base.dbus_unregister (connection, object_path);
         }
 
+        public new void send_notification (string          id,
+                                           Ft.Notification notification)
+        {
+            this.notification_manager?.backend.send_notification (id, notification);
+        }
+
+        public new void withdraw_notification (string id)
+        {
+            this.notification_manager?.backend.withdraw_notification (id);
+        }
+
         private void on_settings_changed (GLib.Settings settings,
                                           string        key)
         {

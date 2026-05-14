@@ -23,6 +23,7 @@ libft_core_sources = files(
   'lock-screen.vala',
   'logger.vala',
   'matrix.vala',
+  'notification.vala',
   'notification-backend.vala',
   'notification-manager.vala',
   'priority.vala',

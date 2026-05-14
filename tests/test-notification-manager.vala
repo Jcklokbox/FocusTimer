@@ -1,6 +1,6 @@
 namespace Tests
 {
-    private class MockNotificationBackend : GLib.Object, Ft.NotificationBackend
+    private class MockNotificationBackend : GLib.Object, Ft.NotificationBackendInterface
     {
         public string name { get; default = ""; }
         public string vendor { get; default = ""; }
@@ -19,18 +19,21 @@ namespace Tests
             this.log += @"withdraw:$(id)";
         }
 
-        public void send_notification (string            id,
-                                       GLib.Notification notification)
+        public void send_notification (string          id,
+                                       Ft.Notification notification)
         {
-            var hash = notification.get_data<string> ("hash");
+            var entry = @"send:$(id):$(notification.title):$(notification.body)";
 
-            this.log += @"send:$(id):$(hash)";
+            this.log += entry;
+            this.logged (entry);
         }
 
         public void clear ()
         {
             this.log = {};
         }
+
+        public signal void logged (string entry);
 
         public override void dispose ()
         {
@@ -62,6 +65,8 @@ namespace Tests
 
         public override void setup ()
         {
+            base.setup ();
+
             Ft.Timestamp.freeze_to (2000000000 * Ft.Interval.SECOND);
             Ft.Timestamp.set_auto_advance (Ft.Interval.MICROSECOND);
 
@@ -115,7 +120,7 @@ namespace Tests
 
             this.timer.start ();
             assert_cmpstrv (backend.log, {
-                "send:timer:pomodoro:time-block-started"
+                "send:timer:Pomodoro:25 minutes remaining"
             });
         }
 
@@ -137,7 +142,7 @@ namespace Tests
             backend.clear ();
             this.timer.resume ();
             assert_cmpstrv (backend.log, {
-                "send:timer:pomodoro:time-block-running:-1"
+                "send:timer:Pomodoro:24 minutes remaining"
             });
         }
 
@@ -164,7 +169,7 @@ namespace Tests
             Ft.Timestamp.freeze_to (timestamp_2);
             this.timer.tick (timestamp_2);
             assert_cmpstrv (backend.log, {
-                @"send:timer:pomodoro:time-block-about-to-end:$(timestamp_2)"
+                @"send:timer:Pomodoro is about to end:"
             });
 
             // Another tick should NOT trigger another notification
@@ -189,7 +194,7 @@ namespace Tests
             Ft.Timestamp.freeze_to (now);
             this.timer.finish (now);
             assert_cmpstrv (backend.log, {
-                "send:timer:short-break:time-block-ended"
+                "send:timer:Break is over!:Get ready…"
             });
         }
 
@@ -219,7 +224,7 @@ namespace Tests
                 1
             );
             assert_cmpstrv (backend.log, {
-                "send:timer:pomodoro:confirm-advancement"
+                "send:timer:Pomodoro is over!:Confirm the start of a short break…"
             });
         }
 
@@ -249,7 +254,7 @@ namespace Tests
                 1
             );
             assert_cmpstrv (backend.log, {
-                "send:timer:short-break:confirm-advancement"
+                "send:timer:Break is over!:Confirm the start of a Pomodoro…"
             });
         }
 
@@ -306,12 +311,19 @@ namespace Tests
             });
 
             // Simulate overlay closed
-            var tick_time = Ft.Timestamp.advance (Ft.Interval.MINUTE);
-            this.timer.tick (tick_time);
+            // Expect notification to be sent after a delay
+            Ft.Timestamp.advance (Ft.Interval.MINUTE);
             backend.clear ();
+            backend.logged.connect ((entry) => {
+                this.quit_main_loop ();
+            });
+
             this.notification_manager.emit_screen_overlay_closed ();
+            assert_cmpstrv (backend.log, {});
+
+            assert_true (this.run_main_loop (500));
             assert_cmpstrv (backend.log, {
-                @"send:timer:short-break:time-block-running:$(tick_time)"
+                @"send:timer:Short Break:4 minutes remaining"
             });
         }
     }

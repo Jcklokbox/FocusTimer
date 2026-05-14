@@ -13,16 +13,17 @@ namespace Ft
         public abstract string name { get; }
         public abstract string vendor { get; }
         public abstract string version { get; }
-        public abstract bool has_actions { get; }
+        public abstract bool   has_actions { get; }
+        public abstract bool   has_persistence { get; }
 
-        public abstract void withdraw_notification (string id);
+        public abstract async void send_notification (string          id,
+                                                      Ft.Notification notification);
 
-        public abstract void send_notification (string            id,
-                                                GLib.Notification notification);
+        public abstract async void withdraw_notification (string id);
     }
 
 
-    internal class DefaultNotificationBackendProvider : Ft.Provider, Ft.NotificationBackendProvider
+    private class FallbackNotificationBackendProvider : Ft.Provider, Ft.NotificationBackendProvider
     {
         public string name {
             get {
@@ -48,17 +49,40 @@ namespace Ft
             }
         }
 
-        private GLib.Application? application = null;
-
-        public void withdraw_notification (string id)
-        {
-            this.application?.withdraw_notification (id);
+        public bool has_persistence {
+            get {
+                return true;
+            }
         }
 
-        public void send_notification (string            id,
-                                       GLib.Notification notification)
+        private GLib.Application? application = null;
+
+        public async void send_notification (string          id,
+                                             Ft.Notification notification)
         {
-            this.application?.send_notification (id, notification);
+            var glib_notification = new GLib.Notification (notification.title);
+            glib_notification.set_body (notification.body != "" ? notification.body : null);
+            glib_notification.set_priority (notification.priority);
+            glib_notification.set_category (notification.category);
+            glib_notification.set_icon (notification.icon);
+
+            if (notification.default_action != null) {
+                glib_notification.set_default_action_and_target_value (
+                        notification.default_action,
+                        notification.default_target_value);
+            }
+
+            notification.foreach_button (
+                (label, action, target_value) => {
+                    glib_notification.add_button_with_target_value (label, action, target_value);
+                });
+
+            this.application?.send_notification (id, glib_notification);
+        }
+
+        public async void withdraw_notification (string id)
+        {
+            this.application?.withdraw_notification (id);
         }
 
         public override async void initialize (GLib.Cancellable? cancellable) throws GLib.Error
@@ -81,28 +105,51 @@ namespace Ft
     }
 
 
-    public interface NotificationBackend : GLib.Object
+    public interface NotificationBackendInterface : GLib.Object
     {
         public abstract string name { get; }
         public abstract string vendor { get; }
         public abstract string version { get; }
-        public abstract bool has_actions { get; }
+        public abstract bool   has_actions { get; }
+
+        public abstract void send_notification (string          id,
+                                                Ft.Notification notification);
 
         public abstract void withdraw_notification (string id);
+    }
 
-        public abstract void send_notification (string            id,
-                                                GLib.Notification notification);
+
+    [Compact]
+    private class QueuedNotification
+    {
+        public string           id;
+        public Ft.Notification? notification;
+        public ulong            serial;
+
+        public QueuedNotification (string           id,
+                                   Ft.Notification? notification,
+                                   ulong            serial)
+        {
+            this.id = id;
+            this.notification = notification;
+            this.serial = serial;
+        }
+
+        ~QueuedNotification ()
+        {
+            this.notification = null;
+        }
     }
 
 
     /**
-     * It's an over-engineered wrapper around `Application.send_notification()`.
-     *
-     * We need to have info about the backend used. That's why it uses providers.
-     *
-     * For testing we want whole `DefaultNotificationBackend` to be swapped with a mock.
+     * `Application.send_notification()` already supports multiple backends, which works fine on
+     * GNOME, but not so much on other desktops - especially when using "portal" backend.
+     * On top of it, we would like some lower-level access to suppress notification sounds and to
+     * handle rate limits. That's why a custom backend is needed in our case.
      */
-    internal class DefaultNotificationBackend : Ft.ProvidedObject<Ft.NotificationBackendProvider>, Ft.NotificationBackend
+    [SingleInstance]
+    public class NotificationBackend : Ft.ProvidedObject<Ft.NotificationBackendProvider>, Ft.NotificationBackendInterface
     {
         public string name {
             get {
@@ -128,11 +175,13 @@ namespace Ft
             }
         }
 
-        private string                                     _name;
-        private string                                     _vendor;
-        private string                                     _version;
-        private bool                                       _has_actions;
-        private GLib.HashTable<string, GLib.Notification?> notifications;
+        private string                          _name;
+        private string                          _vendor;
+        private string                          _version;
+        private bool                            _has_actions;
+        private GLib.Queue<QueuedNotification>  queue;
+        private bool                            processing_queue = false;
+        private ulong                           next_serial = 1U;
 
         construct
         {
@@ -140,9 +189,61 @@ namespace Ft
             this._vendor = "";
             this._version = "";
             this._has_actions = true;
+            this.queue = new GLib.Queue<QueuedNotification> ();
+        }
 
-            // Store notifications in case provider is initialized after a delay
-            this.notifications = new GLib.HashTable<string, GLib.Notification?> (GLib.str_hash, GLib.str_equal);
+        private void process_queue ()
+        {
+            var provider = this.provider;
+            if (provider == null || !provider.enabled || this.processing_queue) {
+                return;
+            }
+
+            var item = this.queue.pop_head ();
+            if (item != null)
+            {
+                this.processing_queue = true;
+
+                if (item.notification != null) {
+                    provider.send_notification.begin (
+                        item.id,
+                        item.notification,
+                        (obj, res) => {
+                            provider.send_notification.end (res);
+
+                            this.processing_queue = false;
+                            this.process_queue ();
+                        });
+                }
+                else {
+                    provider.withdraw_notification.begin (
+                        item.id,
+                        (obj, res) => {
+                            provider.withdraw_notification.end (res);
+
+                            this.processing_queue = false;
+                            this.process_queue ();
+                        });
+                }
+            }
+        }
+
+        private void remove_from_queue (string id)
+        {
+            unowned var link = this.queue.head;
+
+            while (link != null)
+            {
+                if (link.data.id == id)
+                {
+                    unowned var next_link = link.next;
+                    this.queue.delete_link (link);
+                    link = next_link;
+                }
+                else {
+                    link = link.next;
+                }
+            }
         }
 
         protected override void initialize ()
@@ -151,7 +252,7 @@ namespace Ft
 
         protected override void setup_providers ()
         {
-            this.providers.add (new Ft.DefaultNotificationBackendProvider (), Ft.Priority.DEFAULT);
+            this.providers.add (new Ft.FallbackNotificationBackendProvider (), Ft.Priority.LOW);
         }
 
         protected override void provider_enabled (Ft.NotificationBackendProvider provider)
@@ -161,60 +262,58 @@ namespace Ft
             this._version = provider.version;
             this._has_actions = provider.has_actions;
 
-            GLib.debug ("Notification backend:\n  class: %s\n  name: %s\n  vendor: %s\n  version: %s\n  has-actions: %s",
+            // TODO: move it to about dialog, troubleshooting section
+            GLib.debug ("Notification backend:\n  class: %s\n  name: %s\n  vendor: %s\n  version: %s\n  has-actions: %s\n  has-persistence: %s",
                         provider.get_type ().name (),
                         provider.name,
                         provider.vendor,
                         provider.version,
-                        provider.has_actions.to_string ());
+                        provider.has_actions.to_string (),
+                        provider.has_persistence.to_string ());
 
-            this.notifications.for_each (
-                (id, notification) => {
-                    if (notification != null) {
-                        provider.send_notification (id, notification);
-                    }
-                    else {
-                        provider.withdraw_notification (id);
-                    }
-                });
-
-            this.notifications.remove_all ();
+            this.process_queue ();
         }
 
         protected override void provider_disabled (Ft.NotificationBackendProvider provider)
         {
         }
 
-        public void withdraw_notification (string id)
+        public void send_notification (string          id,
+                                       Ft.Notification notification)
         {
-            unowned var provider = this.provider;
+            this.remove_from_queue (id);
+            this.queue.push_tail (new QueuedNotification (id, notification, this.next_serial++));
 
-            if (provider != null) {
-                provider.withdraw_notification (id);
-            }
-            else {
-                this.notifications.insert (id, null);
-            }
+            this.process_queue ();
         }
 
-        public void send_notification (string            id,
-                                       GLib.Notification notification)
+        public void withdraw_notification (string id)
         {
-            unowned var provider = this.provider;
+            this.remove_from_queue (id);
+            this.queue.push_tail (new QueuedNotification (id, null, this.next_serial++));
 
-            if (provider != null) {
-                provider.send_notification (id, notification);
-            }
-            else {
-                this.notifications.insert (id, notification);
-            }
+            // Prioritise withdrawals over sending new notifications
+            this.queue.sort (
+                (a, b) => {
+                    if (a.notification == null && b.notification != null) {
+                        return -1;
+                    }
+
+                    if (a.notification != null && b.notification == null) {
+                        return 1;
+                    }
+
+                    return a.serial < b.serial ? -1 : 1;
+                });
+
+            this.process_queue ();
         }
 
         public override void dispose ()
         {
-            if (this.notifications != null) {
-                this.notifications.remove_all ();
-                this.notifications = null;
+            if (this.queue != null) {
+                this.queue.clear ();
+                this.queue = null;
             }
 
             base.dispose ();

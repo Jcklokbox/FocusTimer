@@ -1,0 +1,32 @@
+[Global]
+Name=Focus Timer
+DesktopEntry=io.github.focustimerhq.FocusTimer
+
+[Event/time-block-started]
+Name=Countdown started
+Action=Popup
+Urgency=High
+
+[Event/time-block-running]
+Name=Countdown state
+Action=Popup
+Urgency=High
+
+[Event/time-block-about-to-end]
+Name=Announce countdown is about to end
+Action=Popup
+Urgency=Critical
+
+[Event/time-block-ended]
+Name=Countdown finished
+Action=Popup
+Urgency=Critical
+
+[Event/confirm-advancement]
+Name=Confirm advancement
+Action=Popup
+Urgency=Critical
+
+[Event/action-failed]
+Name=Custom action error
+Urgency=High

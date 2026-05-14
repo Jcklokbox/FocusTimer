@@ -34,6 +34,8 @@ namespace Ft
 
         private const uint SCREEN_OVERLAY_OPEN_TIMEOUT = 1000;  // milliseconds
 
+        private const int EXPIRY_TIMEOUT = 5000;  // milliseconds
+
         private const int64 TIME_BLOCK_ABOUT_TO_END_SHORTER_TIMEOUT = 10 * Ft.Interval.SECOND;
         private const int64 TIME_BLOCK_ABOUT_TO_END_LONGER_TIMEOUT = 15 * Ft.Interval.SECOND;
         private const int64 TIME_BLOCK_ABOUT_TO_END_TOLERANCE = 5 * Ft.Interval.SECOND;
@@ -63,7 +65,7 @@ namespace Ft
             }
         }
 
-        public Ft.NotificationBackend backend {
+        public Ft.NotificationBackendInterface backend {
             get {
                 return this._backend;
             }
@@ -74,7 +76,7 @@ namespace Ft
 
         private Ft.Timer?               _timer = null;
         private Ft.SessionManager?      _session_manager = null;
-        private Ft.NotificationBackend? _backend = null;
+        private Ft.NotificationBackendInterface? _backend = null;
         private GLib.Settings?          settings = null;
         private Ft.IdleMonitor?         idle_monitor = null;
         private Ft.LockScreen?          lock_screen = null;
@@ -86,20 +88,19 @@ namespace Ft
         private int                     inhibit_count = 0;
         private bool                    screen_overlay_active = false;
         private uint                    screen_overlay_open_timeout_id = 0U;
+        private uint                    update_timeout_id = 0U;
         private uint                    withdraw_timeout_id = 0U;
         private uint                    lock_screen_idle_id = 0U;
         private uint                    reopen_screen_overlay_idle_id = 0U;
-        private GLib.Notification?      notification = null;
+        private Ft.Notification?        notification = null;
         private Ft.NotificationType     notification_type = NotificationType.NULL;
         private weak Ft.TimeBlock?      notification_time_block = null;
-        private bool                    debug = false;
 
         construct
         {
             this.settings = Ft.get_settings ();
             this.idle_monitor = new Ft.IdleMonitor ();
             this.lock_screen = new Ft.LockScreen ();
-            this.debug = Ft.is_test ();
 
             this.settings_changed_id = this.settings.changed.connect (this.on_settings_changed);
 
@@ -115,11 +116,11 @@ namespace Ft
             GLib.Object (
                 timer: Ft.Timer.get_default (),
                 session_manager: Ft.SessionManager.get_default (),
-                backend: new Ft.DefaultNotificationBackend ()
+                backend: new Ft.NotificationBackend ()
             );
         }
 
-        public NotificationManager.with_backend (Ft.NotificationBackend backend)
+        public NotificationManager.with_backend (Ft.NotificationBackendInterface backend)
         {
             GLib.Object (
                 timer: Ft.Timer.get_default (),
@@ -217,7 +218,7 @@ namespace Ft
         private void add_lock_screen_idle_watch ()
         {
             var lock_delay = Ft.Timestamp.from_milliseconds_uint (
-                    this.settings.get_uint ("screen-overlay-lock-delay") * 1000);
+                    this.settings.get_uint ("screen-overlay-lock-delay") * 1000U);
 
             if (this.lock_screen_idle_id == 0 && lock_delay > 0 && this.idle_monitor.enabled) {
                 this.lock_screen_idle_id = this.idle_monitor.add_idle_watch (lock_delay,
@@ -311,12 +312,14 @@ namespace Ft
                                         "Ft.NotificationManager.schedule_withdraw_notifications");
         }
 
-        private GLib.Notification create_notification (string title,
-                                                       string body,
-                                                       bool   activate_screen_overlay = false)
+        private Ft.Notification create_notification (string title,
+                                                     string body,
+                                                     bool   activate_screen_overlay = false)
         {
-            var notification = new GLib.Notification (title);
-            notification.set_priority (GLib.NotificationPriority.HIGH);
+            var notification = new Ft.Notification (title, body);
+            notification.priority = GLib.NotificationPriority.HIGH;
+            notification.is_transient = true;
+            notification.suppress_sound = true;
 
             if (activate_screen_overlay) {
                 notification.set_default_action ("app.screen-overlay");
@@ -325,17 +328,6 @@ namespace Ft
                 notification.set_default_action_and_target_value ("app.window",
                                                                   new GLib.Variant.string ("timer"));
             }
-
-            if (body != "") {
-                notification.set_body (body);
-            }
-
-            // try {
-            //     notification.set_icon (GLib.Icon.new_for_string (Config.PACKAGE_NAME));
-            // }
-            // catch (GLib.Error error) {
-            //     GLib.warning (error.message);
-            // }
 
             return notification;
         }
@@ -370,16 +362,16 @@ namespace Ft
                     assert_not_reached ();
             }
 
-            this.notification = this.create_notification (
+            var notification = this.create_notification (
                     title,
                     body,
                     time_block.state.is_break ());
+            notification.event_id = "time-block-started";
+            notification.expire_timeout = EXPIRY_TIMEOUT;
+
+            this.notification = notification;
             this.notification_type = Ft.NotificationType.TIME_BLOCK_STARTED;
             this.notification_time_block = time_block;
-
-            if (this.debug) {
-                this.notification.set_data<string> ("hash", @"$(time_block.state.to_string()):time-block-started");
-            }
 
             this._backend.send_notification ("timer", this.notification);
 
@@ -394,19 +386,16 @@ namespace Ft
             var title = time_block.state.get_label ();
             var body = this.format_remaining_time (time_block);
 
-            this.notification = this.create_notification (
+            var notification = this.create_notification (
                     title,
                     body,
                     time_block.state.is_break ());
+            notification.event_id = "time-block-running";
+            notification.expire_timeout = EXPIRY_TIMEOUT;
+
+            this.notification = notification;
             this.notification_type = Ft.NotificationType.TIME_BLOCK_RUNNING;
             this.notification_time_block = time_block;
-
-            if (this.debug) {
-                var timestamp = this._timer.get_last_tick_time ();
-                this.notification.set_data<string> (
-                        "hash",
-                        @"$(time_block.state.to_string()):time-block-running:$(timestamp)");
-            }
 
             this._backend.send_notification ("timer", this.notification);
 
@@ -441,18 +430,16 @@ namespace Ft
             }
 
             var notification = this.create_notification (title, body, false);
-            notification.set_priority (GLib.NotificationPriority.URGENT);
-            notification.add_button_with_target_value (_("+1 minute"), "app.extend", 60);
+            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.event_id = "time-block-about-to-end";
+            notification.add_button_with_target_value (_("+1 minute"),
+                                                       "app.extend",
+                                                       new GLib.Variant.int32 (60));
             notification.add_button (action_label, "app.advance");
 
             this.notification = notification;
             this.notification_type = Ft.NotificationType.TIME_BLOCK_ABOUT_TO_END;
             this.notification_time_block = time_block;
-
-            if (this.debug) {
-                var timestamp = this._timer.get_last_tick_time ();
-                this.notification.set_data<string> ("hash", @"$(time_block.state.to_string()):time-block-about-to-end:$(timestamp)");
-            }
 
             this._backend.send_notification ("timer", this.notification);
 
@@ -485,14 +472,13 @@ namespace Ft
                     assert_not_reached ();
             }
 
-            this.notification = this.create_notification (title, body, false);
+            var notification = this.create_notification (title, body, false);
+            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.event_id = "time-block-ended";
+
+            this.notification = notification;
             this.notification_type = Ft.NotificationType.TIME_BLOCK_ENDED;
             this.notification_time_block = previous_time_block;
-
-            if (this.debug) {
-                this.notification.set_data<string> (
-                        "hash", @"$(previous_time_block.state.to_string()):time-block-ended");
-            }
 
             this._backend.send_notification ("timer", this.notification);
 
@@ -552,7 +538,8 @@ namespace Ft
             }
 
             var notification = this.create_notification (title, body, false);
-            notification.set_priority (GLib.NotificationPriority.URGENT);
+            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.event_id = "confirm-advancement";
 
             if (next_time_block.state.is_break ()) {
                 notification.add_button_with_target_value (_("Skip Break"),
@@ -566,11 +553,6 @@ namespace Ft
             this.notification_type = Ft.NotificationType.CONFIRM_ADVANCEMENT;
             this.notification_time_block = current_time_block;
 
-            if (this.debug) {
-                this.notification.set_data<string> (
-                        "hash", @"$(current_time_block.state.to_string()):confirm-advancement");
-            }
-
             this._backend.send_notification ("timer", this.notification);
 
             this.remove_withdraw_timeout ();
@@ -581,10 +563,6 @@ namespace Ft
             if (!this.settings.get_boolean ("announce-about-to-end")) {
                 return 0;
             }
-
-            // if (this.capability_manager.is_enabled ("indicator")) {
-            //     return TIME_BLOCK_ABOUT_TO_END_SHORTER_TIMEOUT;
-            // }
 
             if (this._backend != null && this._backend.has_actions) {
                 return TIME_BLOCK_ABOUT_TO_END_SHORTER_TIMEOUT;
@@ -600,6 +578,11 @@ namespace Ft
             if (this.session_manager.current_session == null) {
                 this.withdraw_notifications ();
                 return;
+            }
+
+            if (this.update_timeout_id != 0U) {
+                GLib.Source.remove (this.update_timeout_id);
+                this.update_timeout_id = 0U;
             }
 
             var current_time_block = current_state.user_data as Ft.TimeBlock;
@@ -870,7 +853,16 @@ namespace Ft
             this.screen_overlay_active = false;
 
             this.remove_lock_screen_idle_watch ();
-            this.update (false);
+
+            // Let the notification server acknowledge there is no full-screen window,
+            // otherwise notification could get blocked.
+            this.update_timeout_id = GLib.Timeout.add (100,
+                () => {
+                    this.update_timeout_id = 0;
+                    this.update (false);
+
+                    return GLib.Source.REMOVE;
+                });
         }
 
         public signal void request_screen_overlay_open ();
@@ -880,6 +872,11 @@ namespace Ft
         public void destroy ()
         {
             this.withdraw_notifications ();
+
+            if (this.update_timeout_id != 0U) {
+                GLib.Source.remove (this.update_timeout_id);
+                this.update_timeout_id = 0U;
+            }
 
             if (this.screen_overlay_open_timeout_id != 0U) {
                 GLib.Source.remove (this.screen_overlay_open_timeout_id);

@@ -13,8 +13,7 @@ namespace Ft
     {
         var about_dialog = new Adw.AboutDialog ();
         about_dialog.application_icon = Config.APPLICATION_ID;
-        // translators: Consider "Concentration Timer" as an alternative.
-        about_dialog.application_name = _("Focus Timer");
+        about_dialog.application_name = GLib.Environment.get_application_name ();
         about_dialog.version = Config.PACKAGE_VERSION;
         about_dialog.website = Config.PACKAGE_WEBSITE;
         about_dialog.issue_url = Config.PACKAGE_ISSUE_URL;

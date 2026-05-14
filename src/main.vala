@@ -32,6 +32,7 @@ public int main (string[] args)
     GLib.Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
     GLib.Intl.textdomain (Config.GETTEXT_PACKAGE);
 
+    // translators: Consider "Concentration Timer" as an alternative.
     GLib.Environment.set_application_name (_("Focus Timer"));
     GLib.Environment.set_prgname (Config.APPLICATION_ID);
 

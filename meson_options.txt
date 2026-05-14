@@ -21,6 +21,12 @@ option(
   description: 'Enable GNOME integration.'
 )
 option(
+  'plugin_kde',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Enable KDE integration.'
+)
+option(
   'plugin_sni',
   type: 'feature',
   value: 'enabled',

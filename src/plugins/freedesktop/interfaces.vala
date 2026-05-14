@@ -44,6 +44,49 @@ namespace Freedesktop
     }
 
 
+    public enum NotificationDestroyedReason
+    {
+        EXPIRED = 1,
+        DISMISSED = 2,
+        CLOSED = 3,
+        UNKNOWN = 4;
+
+        public static NotificationDestroyedReason from_uint (uint32 value)
+        {
+            switch (value)
+            {
+                case EXPIRED:
+                    return EXPIRED;
+
+                case DISMISSED:
+                    return DISMISSED;
+
+                case CLOSED:
+                    return CLOSED;
+
+                default:
+                    return UNKNOWN;
+            }
+        }
+    }
+
+
+    public enum NotificationUrgency
+    {
+        LOW = 0,
+        NORMAL = 1,
+        CRITICAL = 2;
+
+        public GLib.Variant to_variant ()
+        {
+            return new GLib.Variant.byte ((uint8) this);
+        }
+    }
+
+
+    /**
+     * https://specifications.freedesktop.org/notification/latest/protocol.html
+     */
     [DBus (name = "org.freedesktop.Notifications")]
     public interface Notifications : GLib.Object
     {
@@ -53,5 +96,22 @@ namespace Freedesktop
                                                            out string vendor,
                                                            out string version,
                                                            out string spec_version) throws GLib.DBusError, GLib.IOError;
+
+        public abstract async uint32 notify (string                               app_name,
+                                         	 uint32                               replaces_id,
+                                         	 string                               app_icon,
+                                         	 string                               summary,
+                                         	 string                               body,
+                                         	 string[]                             actions,
+                                         	 GLib.HashTable<string, GLib.Variant> hints,
+                                         	 int32                                expire_timeout,  // milliseconds
+                                         	 GLib.Cancellable?                    cancellable = null)
+                                         	 throws GLib.DBusError, GLib.IOError;
+
+        public abstract async void close_notification (uint32 id) throws GLib.DBusError, GLib.IOError;
+
+        public signal void notification_closed (uint32 id, uint32 reason);
+        public signal void action_invoked (uint32 id, string action_key);
+        public signal void activation_token (uint32 id, string activation_token);
     }
 }

@@ -20,6 +20,7 @@ namespace Ft
         public Ft.ActionListModel model { get; construct; }
 
         private Ft.Logger? logger = null;
+        private Ft.NotificationBackend? notification_backend = null;
 
         construct
         {
@@ -28,6 +29,7 @@ namespace Ft
             this.model.action_removed.connect (this.on_action_removed);
 
             this.logger = new Ft.Logger ();
+            this.notification_backend = new Ft.NotificationBackend ();
 
             this.bind_actions ();
         }
@@ -105,15 +107,12 @@ namespace Ft
          */
         private void notify_action_failed (Ft.Action           action,
                                            Ft.CommandExecution execution,
-                                           ulong                     entry_id)
+                                           ulong               entry_id)
         {
-            var notification = new GLib.Notification (
-                    _("Custom action \"%s\" has failed").printf (action.display_name));
-
-            if (execution.error != null) {
-                notification.set_body (execution.error.message);
-            }
-
+            var notification = new Ft.Notification (
+                    _("Custom action \"%s\" has failed").printf (action.display_name),
+                    execution.error != null ? execution.error.message : "");
+            notification.event_id = "action-failed";
             notification.set_default_action_and_target_value (
                     "app.log",
                     new GLib.Variant.uint64 ((uint64) entry_id));
@@ -125,8 +124,7 @@ namespace Ft
             //     GLib.warning (error.message);
             // }
 
-            GLib.Application.get_default ()?
-                            .send_notification (@"action:$(action.uuid)", notification);
+            this.notification_backend.send_notification (@"action:$(action.uuid)", notification);
         }
 
         private void watch_action_failed (Ft.Action            action,
@@ -206,8 +204,7 @@ namespace Ft
 
             // TODO: log action removed
 
-            GLib.Application.get_default ()?
-                            .withdraw_notification (@"action:$(action.uuid)");
+            this.notification_backend.withdraw_notification (@"action:$(action.uuid)");
         }
 
         public void destroy ()
@@ -227,6 +224,7 @@ namespace Ft
 
             // this.model = null;
             this.logger = null;
+            this.notification_backend = null;
 
             base.dispose ();
         }

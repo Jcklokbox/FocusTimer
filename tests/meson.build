@@ -3,6 +3,7 @@ libtests_common = static_library(
   'tests',
   'common.vala',
   dependencies: libft_core_dep,
+  include_directories: config_h_dir,
   install: false
 )
 
@@ -34,7 +35,8 @@ test_names = [
 ]
 
 test_env = environment()
-test_env.set('LANGUAGE', 'C')
+test_env.set('LANGUAGE', '')
+test_env.set('LANG', 'C')
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('G_DEBUG', 'gc-friendly')
