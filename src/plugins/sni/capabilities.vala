@@ -79,7 +79,7 @@ namespace Sni.Capabilities
                 return true;
 
             case "lxqt":
-                return true;
+                return true;  // doesn't re-color symbolic icons though
 
             case "cosmic":
                 return false;
@@ -229,7 +229,7 @@ namespace Sni.Capabilities
                 return false;  // shows app title
 
             case "lxqt":
-                return true;  // no description
+                return false;  // no description
 
             case "cosmic":
                 return false;

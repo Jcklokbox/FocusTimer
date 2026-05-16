@@ -184,6 +184,7 @@ namespace Sni
         private Ft.Timer?                          timer = null;
         private Ft.SessionManager?                 session_manager = null;
         private Ft.NotificationManager?            notification_manager = null;
+        private GLib.Settings?                     application_settings = null;
         private Sni.IndicatorActionGroup?          action_group = null;
         private uint                               name_owner_id = 0;
         private Sni.StatusNotifierItemDBusService? service = null;
@@ -212,6 +213,7 @@ namespace Sni
             this.timer = Ft.Timer.get_default ();
             this.session_manager = Ft.SessionManager.get_default ();
             this.notification_manager = new Ft.NotificationManager ();
+            this.application_settings = new GLib.Settings ("io.github.focustimerhq.FocusTimer");
             this.action_group = new Sni.IndicatorActionGroup ();
             this.have_icon_theme = Sni.Capabilities.have_icon_theme ();
             this.have_passive_status = Sni.Capabilities.have_passive_status ();
@@ -235,6 +237,7 @@ namespace Sni
             this.action_group = null;
             this.timer = null;
             this.session_manager = null;
+            this.application_settings = null;
             this.notification_manager = null;
             this.primary_item = null;
             this.secondary_item = null;
@@ -436,7 +439,8 @@ namespace Sni
             // Windows
             var screen_overlay_item = this.menu_service.lookup_menu_item ("screen-overlay");
             screen_overlay_item.enabled = is_break && !is_finished;
-            screen_overlay_item.visible = is_break;
+            screen_overlay_item.visible = is_break &&
+                    this.application_settings.get_boolean ("screen-overlay");
 
             menu_service.emit_updates ();
         }
@@ -849,16 +853,33 @@ namespace Sni
             this.queue_update ();
         }
 
+        private void on_application_settings_changed (GLib.Settings settings,
+                                                      string        key)
+        {
+            switch (key)
+            {
+                case "screen-overlay":
+                    this.update_menu_items ();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void connect_signals ()
         {
             this.timer.state_changed.connect (this.on_timer_state_changed);
-            this.session_manager.notify["current-session"].connect (this.on_session_manager_notify_current_session);
-            this.session_manager.notify["current-state"].connect (this.on_session_manager_notify_current_state);
-            this.session_manager.notify["has-uniform-breaks"].connect (this.on_session_manager_notify_has_uniform_breaks);
 
             if (this.have_tooltips) {
                 this.timer.tick.connect (this.update_tooltip);
             }
+
+            this.session_manager.notify["current-session"].connect (this.on_session_manager_notify_current_session);
+            this.session_manager.notify["current-state"].connect (this.on_session_manager_notify_current_state);
+            this.session_manager.notify["has-uniform-breaks"].connect (this.on_session_manager_notify_has_uniform_breaks);
+
+            this.application_settings.changed.connect (this.on_application_settings_changed);
         }
 
         private void disconnect_signals ()
@@ -873,6 +894,10 @@ namespace Sni
                 this.session_manager.notify["current-session"].disconnect (this.on_session_manager_notify_current_session);
                 this.session_manager.notify["current-state"].disconnect (this.on_session_manager_notify_current_state);
                 this.session_manager.notify["has-uniform-breaks"].disconnect (this.on_session_manager_notify_has_uniform_breaks);
+            }
+
+            if (this.application_settings != null) {
+                this.application_settings.changed.disconnect (this.on_application_settings_changed);
             }
         }
 
