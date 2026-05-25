@@ -595,11 +595,25 @@ namespace Ft
             this.providers.remove_all ();
         }
 
+        private void add_extension (Peas.PluginInfo info,
+                                    GLib.Object     extension)
+        {
+            Ft.Priority priority = Ft.Priority.DEFAULT;
+
+            unowned var priority_pspec = extension.get_class ().find_property ("priority");
+
+            if (priority_pspec is GLib.ParamSpecEnum) {
+                extension.@get ("priority", ref priority);
+            }
+            else {
+                priority = Ft.Priority.from_string (info.get_external_data ("Priority"));
+            }
+
+            this.add ((T) extension, priority);
+        }
+
         /**
-         * Start watching for Peas extensions.
-         *
-         * Already-loaded plugins are picked up immediately; future plugin
-         * loads / unloads are handled reactively via ExtensionSet signals.
+         * Initialize Peas extensions discovery.
          */
         public void discover ()
         {
@@ -620,12 +634,8 @@ namespace Ft
                 var info = (Peas.PluginInfo) engine.get_item (i);
                 var extension = this.extension_set.get_extension (info);
 
-                if (extension != null && extension is Ft.Provider)
-                {
-                    var priority = Ft.Priority.from_string (
-                            info.get_external_data ("Priority"));
-
-                    this.add ((T) extension, priority);
+                if (extension != null && extension is Ft.Provider) {
+                    this.add_extension (info, extension);
                 }
             }
         }
@@ -633,12 +643,8 @@ namespace Ft
         private void on_extension_added (Peas.PluginInfo info,
                                          GLib.Object     extension)
         {
-            if (extension is Ft.Provider)
-            {
-                var priority = Ft.Priority.from_string (
-                        info.get_external_data ("Priority"));
-
-                this.add ((T) extension, priority);
+            if (extension is Ft.Provider) {
+                this.add_extension (info, extension);
             }
         }
 
