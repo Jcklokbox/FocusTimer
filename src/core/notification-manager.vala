@@ -36,8 +36,7 @@ namespace Ft
 
         private const int EXPIRY_TIMEOUT = 5000;  // milliseconds
 
-        private const int64 TIME_BLOCK_ABOUT_TO_END_SHORTER_TIMEOUT = 10 * Ft.Interval.SECOND;
-        private const int64 TIME_BLOCK_ABOUT_TO_END_LONGER_TIMEOUT = 15 * Ft.Interval.SECOND;
+        private const int64 TIME_BLOCK_ABOUT_TO_END_TIMEOUT = 10 * Ft.Interval.SECOND;
         private const int64 TIME_BLOCK_ABOUT_TO_END_TOLERANCE = 5 * Ft.Interval.SECOND;
 
         public Ft.Timer timer {
@@ -317,7 +316,7 @@ namespace Ft
                                                      bool   activate_screen_overlay = false)
         {
             var notification = new Ft.Notification (title, body);
-            notification.priority = GLib.NotificationPriority.HIGH;
+            notification.priority = Ft.NotificationPriority.HIGH;
             notification.is_transient = true;
             notification.suppress_sound = true;
 
@@ -430,7 +429,7 @@ namespace Ft
             }
 
             var notification = this.create_notification (title, body, false);
-            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.priority = Ft.NotificationPriority.URGENT;
             notification.event_id = "time-block-about-to-end";
             notification.add_button_with_target_value (_("+1 minute"),
                                                        "app.extend",
@@ -473,7 +472,7 @@ namespace Ft
             }
 
             var notification = this.create_notification (title, body, false);
-            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.priority = Ft.NotificationPriority.URGENT;
             notification.event_id = "time-block-ended";
 
             this.notification = notification;
@@ -538,7 +537,7 @@ namespace Ft
             }
 
             var notification = this.create_notification (title, body, false);
-            notification.priority = GLib.NotificationPriority.URGENT;
+            notification.priority = Ft.NotificationPriority.URGENT;
             notification.event_id = "confirm-advancement";
 
             if (next_time_block.state.is_break ()) {
@@ -564,11 +563,7 @@ namespace Ft
                 return 0;
             }
 
-            if (this._backend != null && this._backend.has_actions) {
-                return TIME_BLOCK_ABOUT_TO_END_SHORTER_TIMEOUT;
-            }
-
-            return TIME_BLOCK_ABOUT_TO_END_LONGER_TIMEOUT;
+            return TIME_BLOCK_ABOUT_TO_END_TIMEOUT;
         }
 
         private void update_full (Ft.TimerState current_state,

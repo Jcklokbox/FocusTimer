@@ -90,7 +90,7 @@ namespace Freedesktop
     [DBus (name = "org.freedesktop.Notifications")]
     public interface Notifications : GLib.Object
     {
-        public abstract async void get_capabilities (out string[] capabilities) throws GLib.DBusError, GLib.IOError;
+        public abstract async string[] get_capabilities () throws GLib.DBusError, GLib.IOError;
 
         public abstract async void get_server_information (out string name,
                                                            out string vendor,
@@ -110,8 +110,8 @@ namespace Freedesktop
 
         public abstract async void close_notification (uint32 id) throws GLib.DBusError, GLib.IOError;
 
-        public signal void notification_closed (uint32 id, uint32 reason);
         public signal void action_invoked (uint32 id, string action_key);
         public signal void activation_token (uint32 id, string activation_token);
+        public signal void notification_closed (uint32 id, uint32 reason);
     }
 }

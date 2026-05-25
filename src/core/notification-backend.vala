@@ -10,12 +10,6 @@ namespace Ft
 {
     public interface NotificationBackendProvider : Ft.Provider
     {
-        public abstract string name { get; }
-        public abstract string vendor { get; }
-        public abstract string version { get; }
-        public abstract bool   has_actions { get; }
-        public abstract bool   has_persistence { get; }
-
         public abstract async void send_notification (string          id,
                                                       Ft.Notification notification);
 
@@ -25,44 +19,35 @@ namespace Ft
 
     private class FallbackNotificationBackendProvider : Ft.Provider, Ft.NotificationBackendProvider
     {
-        public string name {
-            get {
-                return "";
-            }
-        }
-
-        public string vendor {
-            get {
-                return "";
-            }
-        }
-
-        public string version {
-            get {
-                return "";
-            }
-        }
-
-        public bool has_actions {
-            get {
-                return true;
-            }
-        }
-
-        public bool has_persistence {
-            get {
-                return true;
-            }
-        }
-
         private GLib.Application? application = null;
+
+        private static GLib.NotificationPriority transform_priority (Ft.NotificationPriority priority)
+        {
+            switch (priority)
+            {
+                case Ft.NotificationPriority.LOW:
+                    return GLib.NotificationPriority.LOW;
+
+                case Ft.NotificationPriority.NORMAL:
+                    return GLib.NotificationPriority.NORMAL;
+
+                case Ft.NotificationPriority.HIGH:
+                    return GLib.NotificationPriority.HIGH;
+
+                case Ft.NotificationPriority.URGENT:
+                    return GLib.NotificationPriority.URGENT;
+
+                default:
+                    assert_not_reached ();
+            }
+        }
 
         public async void send_notification (string          id,
                                              Ft.Notification notification)
         {
             var glib_notification = new GLib.Notification (notification.title);
             glib_notification.set_body (notification.body != "" ? notification.body : null);
-            glib_notification.set_priority (notification.priority);
+            glib_notification.set_priority (transform_priority (notification.priority));
             glib_notification.set_category (notification.category);
             glib_notification.set_icon (notification.icon);
 
@@ -105,20 +90,6 @@ namespace Ft
     }
 
 
-    public interface NotificationBackendInterface : GLib.Object
-    {
-        public abstract string name { get; }
-        public abstract string vendor { get; }
-        public abstract string version { get; }
-        public abstract bool   has_actions { get; }
-
-        public abstract void send_notification (string          id,
-                                                Ft.Notification notification);
-
-        public abstract void withdraw_notification (string id);
-    }
-
-
     [Compact]
     private class QueuedNotification
     {
@@ -142,6 +113,15 @@ namespace Ft
     }
 
 
+    public interface NotificationBackendInterface : GLib.Object
+    {
+        public abstract void send_notification (string          id,
+                                                Ft.Notification notification);
+
+        public abstract void withdraw_notification (string id);
+    }
+
+
     /**
      * `Application.send_notification()` already supports multiple backends, which works fine on
      * GNOME, but not so much on other desktops - especially when using "portal" backend.
@@ -151,44 +131,12 @@ namespace Ft
     [SingleInstance]
     public class NotificationBackend : Ft.ProvidedObject<Ft.NotificationBackendProvider>, Ft.NotificationBackendInterface
     {
-        public string name {
-            get {
-                return this._name;
-            }
-        }
-
-        public string vendor {
-            get {
-                return this._vendor;
-            }
-        }
-
-        public string version {
-            get {
-                return this._version;
-            }
-        }
-
-        public bool has_actions {
-            get {
-                return this._has_actions;
-            }
-        }
-
-        private string                          _name;
-        private string                          _vendor;
-        private string                          _version;
-        private bool                            _has_actions;
         private GLib.Queue<QueuedNotification>  queue;
         private bool                            processing_queue = false;
         private ulong                           next_serial = 1U;
 
         construct
         {
-            this._name = "";
-            this._vendor = "";
-            this._version = "";
-            this._has_actions = true;
             this.queue = new GLib.Queue<QueuedNotification> ();
         }
 
@@ -257,20 +205,6 @@ namespace Ft
 
         protected override void provider_enabled (Ft.NotificationBackendProvider provider)
         {
-            this._name = provider.name;
-            this._vendor = provider.vendor;
-            this._version = provider.version;
-            this._has_actions = provider.has_actions;
-
-            // TODO: move it to about dialog, troubleshooting section
-            GLib.debug ("Notification backend:\n  class: %s\n  name: %s\n  vendor: %s\n  version: %s\n  has-actions: %s\n  has-persistence: %s",
-                        provider.get_type ().name (),
-                        provider.name,
-                        provider.vendor,
-                        provider.version,
-                        provider.has_actions.to_string (),
-                        provider.has_persistence.to_string ());
-
             this.process_queue ();
         }
 

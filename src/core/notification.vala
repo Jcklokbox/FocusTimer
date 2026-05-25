@@ -16,6 +16,36 @@ namespace Ft
     }
 
 
+    public enum NotificationPriority
+    {
+        LOW,
+        NORMAL,
+        HIGH,
+        URGENT;
+
+        public string to_string ()
+        {
+            switch (this)
+            {
+                case LOW:
+                    return "low";
+
+                case NORMAL:
+                    return "normal";
+
+                case HIGH:
+                    return "high";
+
+                case URGENT:
+                    return "urgent";
+
+                default:
+                    assert_not_reached ();
+            }
+        }
+    }
+
+
     public delegate void NotificationForeachButtonFunc (string        label,
                                                         string        action,
                                                         GLib.Variant? target_value);
@@ -33,7 +63,7 @@ namespace Ft
         public GLib.Icon?                   icon = null;
         public bool                         is_transient = false;
         public bool                         suppress_sound = false;
-        public GLib.NotificationPriority    priority = GLib.NotificationPriority.NORMAL;
+        public Ft.NotificationPriority      priority = Ft.NotificationPriority.NORMAL;
         public string?                      default_action = null;
         public GLib.Variant?                default_target_value = null;
         public int                          expire_timeout = -1;
@@ -118,7 +148,7 @@ namespace Ft
         /**
          * Compare visible fields and tell whether notifications are roughly the same.
          */
-        public bool equals (Ft.Notification other)
+        public bool is_similar (Ft.Notification other)
         {
             if (this.title != other.title) {
                 return false;

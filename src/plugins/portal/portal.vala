@@ -16,5 +16,8 @@ namespace Portal
 
         object_module.register_extension_type (typeof (Ft.GlobalShortcutsProvider),
                                                typeof (Portal.GlobalShortcutsProvider));
+
+        object_module.register_extension_type (typeof (Ft.NotificationBackendProvider),
+                                               typeof (Portal.NotificationBackendProvider));
     }
 }

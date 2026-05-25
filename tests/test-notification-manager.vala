@@ -2,11 +2,6 @@ namespace Tests
 {
     private class MockNotificationBackend : GLib.Object, Ft.NotificationBackendInterface
     {
-        public string name { get; default = ""; }
-        public string vendor { get; default = ""; }
-        public string version { get; default = ""; }
-        public bool has_actions { get; default = true; }
-
         public string[] log;
 
         construct

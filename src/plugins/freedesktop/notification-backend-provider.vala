@@ -29,11 +29,11 @@ namespace Freedesktop
     {
         switch (server_name)
         {
-            case "Xfce Notify Daemon":
             case "cinnamon":
             case "cosmic-notifications":
                 return @"$(Config.APPLICATION_ID)-symbolic";
 
+            case "Xfce Notify Daemon":
             case "lxqt-notificationd":
                 return Config.APPLICATION_ID;
 
@@ -43,18 +43,18 @@ namespace Freedesktop
     }
 
 
-    private Freedesktop.NotificationUrgency priority_to_urgency (GLib.NotificationPriority priority)
+    private Freedesktop.NotificationUrgency priority_to_urgency (Ft.NotificationPriority priority)
     {
         switch (priority)
         {
-            case GLib.NotificationPriority.LOW:
+            case Ft.NotificationPriority.LOW:
                 return Freedesktop.NotificationUrgency.LOW;
 
-            case GLib.NotificationPriority.NORMAL:
-            case GLib.NotificationPriority.HIGH:
+            case Ft.NotificationPriority.NORMAL:
+            case Ft.NotificationPriority.HIGH:
                 return Freedesktop.NotificationUrgency.NORMAL;
 
-            case GLib.NotificationPriority.URGENT:
+            case Ft.NotificationPriority.URGENT:
                 return Freedesktop.NotificationUrgency.CRITICAL;
 
             default:
@@ -89,48 +89,8 @@ namespace Freedesktop
         private const int DEFAULT_EXPIRY = -1;
         private const int NO_EXPIRY = 0;
 
-        public string name {
-            get {
-                return this._name;
-            }
-        }
-
-        public string vendor {
-            get {
-                return this._vendor;
-            }
-        }
-
-        public string version {
-            get {
-                return this._version;
-            }
-        }
-
-        public string spec_version {
-            get {
-                return this._spec_version;
-            }
-        }
-
-        public bool has_actions {
-            get {
-                return this._has_actions;
-            }
-        }
-
-        public bool has_persistence {
-            get {
-                return this._has_persistence;
-            }
-        }
-
-        private string                        _name = null;
-        private string                        _vendor = null;
-        private string                        _version = null;
-        private string                        _spec_version = null;
-        private bool                          _has_actions = false;
-        private bool                          _has_persistence;
+        private bool                          has_actions = false;
+        private bool                          has_persistence;
         private bool                          has_default_action;
         private uint                          watcher_id = 0;
         private Freedesktop.Notifications?    proxy = null;
@@ -178,35 +138,57 @@ namespace Freedesktop
 
         public override async void enable (GLib.Cancellable? cancellable) throws GLib.Error
         {
-            var capabilities = new GLib.GenericSet<string> (GLib.str_hash, GLib.str_equal);
-            string[] capabilities_strv;
+            this.cancellable = cancellable != null
+                    ? cancellable
+                    : new GLib.Cancellable ();
 
-            var proxy = yield GLib.Bus.get_proxy<Freedesktop.Notifications> (
-                        GLib.BusType.SESSION,
-                        "org.freedesktop.Notifications",
-                        "/org/freedesktop/Notifications",
-                        GLib.DBusProxyFlags.DO_NOT_AUTO_START);
+            try {
+                string name;
+                string vendor;
+                string version;
+                string spec_version;
 
-            yield proxy.get_server_information (out this._name,
-                                                out this._vendor,
-                                                out this._version,
-                                                out this._spec_version);
-            yield proxy.get_capabilities (out capabilities_strv);
+                var proxy = yield GLib.Bus.get_proxy<Freedesktop.Notifications> (
+                            GLib.BusType.SESSION,
+                            "org.freedesktop.Notifications",
+                            "/org/freedesktop/Notifications",
+                            GLib.DBusProxyFlags.DO_NOT_AUTO_START,
+                            this.cancellable);
 
-            foreach (var capability in capabilities_strv) {
-                capabilities.add (capability);
+                yield proxy.get_server_information (out name,
+                                                    out vendor,
+                                                    out version,
+                                                    out spec_version);
+
+                var capabilities_strv = yield proxy.get_capabilities ();
+                // TODO: move it to about dialog, troubleshooting section
+                GLib.debug ("Notification backend:\n  name: %s\n  vendor: %s\n  version: %s\n  spec_version: %s\n  capabilities: %s",
+                            name,
+                            vendor,
+                            version,
+                            spec_version,
+                            string.joinv (", ",capabilities_strv));
+
+                var capabilities = new GLib.GenericSet<string> (GLib.str_hash, GLib.str_equal);
+                foreach (var capability in capabilities_strv) {
+                    capabilities.add (capability);
+                }
+
+                this.has_actions = capabilities.contains ("actions");
+                this.has_persistence = capabilities.contains ("persistence");
+                this.has_default_action = have_default_action (name);
+                this.application_icon = get_application_icon (name);
+
+                this.notifications = new GLib.SList<NotificationInfo> ();
+
+                this.proxy = proxy;
+                this.proxy.action_invoked.connect (this.on_action_invoked);
+                this.proxy.notification_closed.connect (this.on_notification_closed);
             }
-
-            this.notifications = new GLib.SList<NotificationInfo> ();
-            this._has_actions = capabilities.contains ("actions");
-            this._has_persistence = capabilities.contains ("persistence");
-            this.has_default_action = have_default_action (this._name);
-            this.application_icon = get_application_icon (this._name);
-            this.cancellable = new GLib.Cancellable ();
-
-            this.proxy = proxy;
-            this.proxy.notification_closed.connect (this.on_notification_closed);
-            this.proxy.action_invoked.connect (this.on_action_invoked);
+            catch (GLib.Error error) {
+                GLib.warning ("Error while creating notifications proxy: %s", error.message);
+                throw error;
+            }
         }
 
         public override async void disable () throws GLib.Error
@@ -226,18 +208,13 @@ namespace Freedesktop
 
             if (this.proxy != null)
             {
-                this.proxy.notification_closed.disconnect (this.on_notification_closed);
                 this.proxy.action_invoked.disconnect (this.on_action_invoked);
+                this.proxy.notification_closed.disconnect (this.on_notification_closed);
                 this.proxy = null;
             }
 
             this.notifications = null;
             this.cancellable = null;
-            this._name = null;
-            this._vendor = null;
-            this._version = null;
-            this._spec_version = null;
-            this._has_actions = false;
         }
 
         private unowned NotificationInfo? lookup_by_id (string id)
@@ -334,7 +311,7 @@ namespace Freedesktop
 
             // HACK: Prevent server from putting the notification into history.
             //       It doesn't help if notification hasn't been shown, i.e. in Do Not Disturb mode.
-            if (this._has_persistence &&
+            if (this.has_persistence &&
                 reason == Freedesktop.NotificationDestroyedReason.EXPIRED &&
                 notification_info.notification.is_transient)
             {
@@ -395,30 +372,6 @@ namespace Freedesktop
             }
         }
 
-        public async void withdraw_notification (string id)
-                                                 requires (this.proxy != null)
-        {
-            if (this.cancellable == null || this.cancellable.is_cancelled ()) {
-                return;
-            }
-
-            unowned var notification_info = this.lookup_by_id (id);
-            if (notification_info == null) {
-                return;
-            }
-
-            var external_id = notification_info != null
-                    ? notification_info.external_id
-                    : 0U;
-            if (external_id != 0U) {
-                this.remove_by_external_id (external_id);
-                yield this.withdraw_notification_internal (external_id);
-            }
-            else {
-                this.notifications.remove (notification_info);
-            }
-        }
-
         public async void send_notification (string          id,
                                              Ft.Notification notification)
                                              requires (this.proxy != null)
@@ -429,7 +382,7 @@ namespace Freedesktop
 
             unowned var existing_notification_info = this.lookup_by_id (id);
             if (existing_notification_info != null &&
-                existing_notification_info.notification.equals (notification))
+                existing_notification_info.notification.is_similar (notification))
             {
                 return;
             }
@@ -444,7 +397,7 @@ namespace Freedesktop
                 actions += "";
             }
 
-            if (this._has_actions) {
+            if (this.has_actions) {
                 notification.foreach_button (
                     (label, action, target_value) => {
                         actions += GLib.Action.print_detailed_name (action, target_value);
@@ -472,7 +425,7 @@ namespace Freedesktop
                 hints.insert ("event-id", new GLib.Variant.string (notification.event_id));
             }
 
-            var expire_timeout = notification.priority != GLib.NotificationPriority.URGENT
+            var expire_timeout = notification.priority != Ft.NotificationPriority.URGENT
                     ? notification.expire_timeout
                     : NO_EXPIRY;
 
@@ -518,6 +471,30 @@ namespace Freedesktop
                     this.remove_by_external_id (replace_id);
                     yield this.withdraw_notification_internal (replace_id);
                 }
+            }
+        }
+
+        public async void withdraw_notification (string id)
+                                                 requires (this.proxy != null)
+        {
+            if (this.cancellable == null || this.cancellable.is_cancelled ()) {
+                return;
+            }
+
+            unowned var notification_info = this.lookup_by_id (id);
+            if (notification_info == null) {
+                return;
+            }
+
+            var external_id = notification_info != null
+                    ? notification_info.external_id
+                    : 0U;
+            if (external_id != 0U) {
+                this.remove_by_external_id (external_id);
+                yield this.withdraw_notification_internal (external_id);
+            }
+            else {
+                this.notifications.remove (notification_info);
             }
         }
 
