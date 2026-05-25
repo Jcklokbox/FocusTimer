@@ -693,10 +693,9 @@ namespace Ft
             this.indicator              = new Ft.Indicator ();
             this.screensaver            = new Ft.ScreenSaver ();
 
-
-#if ENABLE_AUTOMATION
+            #if ENABLE_AUTOMATION
             this.action_manager = new Ft.ActionManager ();
-#endif
+            #endif
 
             this.sound_manager = this.settings.get_boolean ("sounds")
                     ? new Ft.SoundManager ()
@@ -1004,13 +1003,11 @@ namespace Ft
                                             string              object_path)
                                             throws GLib.Error
         {
-            if (!base.dbus_register (connection, object_path)) {
-                return false;
-            }
+            try {
+                base.dbus_register (connection, object_path);
 
-            if (this.dbus_service == null)
-            {
-                try {
+                if (this.dbus_service == null)
+                {
                     this.dbus_service = new Ft.ApplicationDBusService (
                             connection,
                             object_path,
@@ -1018,12 +1015,12 @@ namespace Ft
                             Ft.get_settings ());
                     this.dbus_service_id = connection.register_object (object_path, dbus_service);
                 }
-                catch (GLib.IOError error) {
-                    GLib.warning ("Error while initializing application dbus service: %s",
-                                  error.message);
-                    this.dbus_service = null;
-                    return false;
-                }
+            }
+            catch (GLib.IOError error) {
+                GLib.warning ("Error while initializing dbus service: %s",
+                              error.message);
+                this.dbus_service = null;
+                throw error;
             }
 
             return true;

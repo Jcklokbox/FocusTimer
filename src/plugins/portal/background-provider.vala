@@ -18,6 +18,12 @@ namespace Portal
 
         private const string[] COMMANDLINE = {"focus-timer", "--gapplication-service"};
 
+        public Ft.Priority priority {
+            get {
+                return Ft.Priority.HIGH;
+            }
+        }
+
         public new bool background_allowed {
             get {
                 return this._background_allowed;
@@ -91,7 +97,7 @@ namespace Portal
                 }
             }
             catch (GLib.Error error) {
-                GLib.warning ("Error while creating global shortcuts session: %s", error.message);
+                GLib.warning ("Error while enabling background provider: %s", error.message);
                 throw error;
             }
         }

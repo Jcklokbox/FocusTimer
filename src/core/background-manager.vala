@@ -59,7 +59,7 @@ Exec=focus-timer --gapplication-service
 
         public override async void initialize (GLib.Cancellable? cancellable) throws GLib.Error
         {
-            this.available = Ft.is_flatpak ();
+            this.available = !Ft.is_flatpak ();
         }
 
         public override async void enable (GLib.Cancellable? cancellable) throws GLib.Error
@@ -217,7 +217,7 @@ Exec=focus-timer --gapplication-service
         public uint hold_sync (string parent_window = "")
         {
             var hold_id = Ft.BackgroundManager.next_hold_id;
-            BackgroundManager.next_hold_id++;
+            Ft.BackgroundManager.next_hold_id++;
 
             this.holds.add (hold_id);
             this.hold_application ();
@@ -264,7 +264,7 @@ Exec=focus-timer --gapplication-service
 
         protected override void setup_providers ()
         {
-            this.providers.add (new Ft.DefaultBackgroundProvider (), Ft.Priority.LOW);
+            this.providers.add (new Ft.DefaultBackgroundProvider ());
         }
 
         protected override void provider_enabled (Ft.BackgroundProvider provider)
