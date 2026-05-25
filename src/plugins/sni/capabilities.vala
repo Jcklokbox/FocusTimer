@@ -25,36 +25,6 @@ namespace Sni.Capabilities
 
 
     /**
-     * Guess the tray implementation by the desktop name.
-     */
-    private string get_host_name ()
-    {
-        var host_name = GLib.Environment.get_variable ("XDG_SESSION_DESKTOP") ?? "";
-
-        if (host_name == "") {
-            host_name = GLib.Environment.get_variable ("XDG_CURRENT_DESKTOP") ?? "";
-        }
-
-        host_name = host_name.ascii_down ();
-
-        switch (host_name)
-        {
-            case "ubuntu":
-                return "gnome";
-
-            case "lubuntu":
-                return "lxqt";
-
-            case "budgie-desktop":
-                return "budgie";
-
-            default:
-                return host_name;
-        }
-    }
-
-
-    /**
      * Whether the host supports icon themes. Without it, we only can display app icon.
      */
     internal bool have_icon_theme ()
@@ -64,7 +34,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return true;
@@ -101,7 +71,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return false;
@@ -138,7 +108,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return false;
@@ -175,7 +145,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return false;  // via double-click
@@ -214,7 +184,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return false;
@@ -251,7 +221,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return false;  // broken icons
@@ -294,7 +264,7 @@ namespace Sni.Capabilities
             return (bool) env_value;
         }
 
-        switch (get_host_name ())
+        switch (Ft.get_desktop_name ())
         {
             case "gnome":
                 return true;

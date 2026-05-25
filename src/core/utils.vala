@@ -10,6 +10,7 @@ using GLib;
 namespace Ft
 {
     private static int _is_flatpak = -1;
+    private static string? _desktop_name = null;
 
 
     public delegate bool FilterFunc<T> (T item);
@@ -126,6 +127,47 @@ namespace Ft
         return GLib.Environment.get_variable ("G_TEST_ROOT_PROCESS") != null ||
                GLib.Environment.get_variable ("G_TEST_BUILDDIR") != null ||
                GLib.Environment.get_variable ("MESON_TEST_ITERATION") != null;
+    }
+
+
+    public string get_desktop_name ()
+    {
+        if (_desktop_name == null)
+        {
+            var desktop_name = GLib.Environment.get_variable ("XDG_SESSION_DESKTOP") ?? "";
+
+            if (desktop_name == "") {
+                desktop_name = GLib.Environment.get_variable ("XDG_CURRENT_DESKTOP") ?? "";
+            }
+
+            desktop_name = desktop_name.ascii_down ();
+
+            switch (desktop_name)
+            {
+                case "ubuntu":
+                    desktop_name = "gnome";
+                    break;
+
+                case "xubuntu":
+                    desktop_name = "xfce";
+                    break;
+
+                case "lubuntu":
+                    desktop_name = "lxqt";
+                    break;
+
+                case "budgie-desktop":
+                    desktop_name = "budgie";
+                    break;
+
+                default:
+                    break;
+            }
+
+            _desktop_name = desktop_name;
+        }
+
+        return _desktop_name;
     }
 
 

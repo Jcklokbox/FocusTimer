@@ -11,6 +11,10 @@ namespace Xfce
     {
         var object_module = module as Peas.ObjectModule;
 
+        if (Ft.get_desktop_name () != "xfce") {
+            return;
+        }
+
         object_module.register_extension_type (typeof (Ft.ScreenSaverProvider),
                                                typeof (Xfce.ScreenSaverProvider));
     }
