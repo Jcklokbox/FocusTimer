@@ -1,0 +1,6 @@
+[Plugin]
+Name=KDE
+Module=kde
+Builtin=true
+Embedded=kde_peas_register_types
+X-Priority=high
