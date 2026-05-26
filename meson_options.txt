@@ -33,6 +33,12 @@ option(
   description: 'Enable indicator.'
 )
 option(
+  'plugin_wayland',
+  type: 'feature',
+  value: 'auto',
+  description: 'Enable Wayland integration.'
+)
+option(
   'plugin_xfce',
   type: 'feature',
   value: 'enabled',

@@ -17,9 +17,9 @@ gio_dep = dependency('gio-2.0', version: '>=2.50')
 gtk_dep = dependency('gtk4', version: '>=4.18')
 cairo_dep = dependency('cairo')
 graphene_dep = dependency('graphene-gobject-1.0')
-libadwaita_dep = dependency('libadwaita-1', version: '>= 1.8.0')
+libadwaita_dep = dependency('libadwaita-1', version: '>= 1.7.0')
 introspection_dep = dependency('gobject-introspection-1.0', version: '>=0.10.1')
-peas_dep = dependency('libpeas-2', version: '>=2.2.0')
+peas_dep = dependency('libpeas-2', version: '>=2.0.0')
 gom_dep = dependency('gom-1.0', version: '>=0.5.0')
 gstreamer_dep = dependency('gstreamer-1.0', version: '>=1.0.10')
 gstreamer_controller_dep = dependency('gstreamer-controller-1.0')
@@ -27,7 +27,9 @@ json_dep = dependency('json-glib-1.0', version: '>=1.6.2')
 sqlite_dep = dependency('sqlite3')
 pangocairo_dep = dependency('pangocairo')
 gtk_x11_dep = dependency('gtk4-x11', required: false)
-gtk_wayland_dep = dependency('gtk4-wayland', required: false)
+gtk_wayland_dep = dependency('gtk4-wayland', required: get_option('plugin_wayland'))
+wayland_client_dep = dependency('wayland-client', required: get_option('plugin_wayland'))
+wayland_scanner = find_program('wayland-scanner', required: get_option('plugin_wayland'))
 bash_completion_dep = dependency('bash-completion', required: false)
 
 cc = meson.get_compiler('c')
@@ -131,6 +133,13 @@ if get_option('profile') == 'development'
   application_name = '@0@ (Development)'.format(application_name)
 endif
 
+enable_plugin_wayland = (
+  not get_option('plugin_wayland').disabled()
+  and gtk_wayland_dep.found()
+  and wayland_client_dep.found()
+  and wayland_scanner.found()
+)
+
 conf = configuration_data()
 
 conf.set_quoted(
@@ -194,3 +203,25 @@ subdir('po')
 subdir('data')
 subdir('src')
 subdir('tests')
+
+summary(
+  {
+    'freedesktop': true,
+    'portal': true,
+    'gnome': get_option('plugin_gnome').enabled(),
+    'kde': get_option('plugin_kde').enabled(),
+    'sni': get_option('plugin_sni').enabled(),
+    'wayland': enable_plugin_wayland,
+    'xfce': get_option('plugin_xfce').enabled(),
+  },
+  section: 'Plugins',
+  bool_yn: true,
+)
+
+summary(
+  {
+    'automation': get_option('automation').enabled(),
+  },
+  section: 'Features',
+  bool_yn: true,
+)

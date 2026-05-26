@@ -10,8 +10,8 @@ namespace Gnome
     {
         /**
          * We typically define the timeout relative to a given reference-time. Mutter counts idle-time from the
-         * perspective of a user and refers to idle-time as an interval since the watch may be triggered repeatedly.
-         * Allow some tolerance in order not to schedule relative timeouts, and prefer native intervals.
+         * perspective of a user and refers to idle-time as an interval, since the watch may be triggered repeatedly.
+         * Allow some tolerance in order not to schedule relative timeouts and prefer native intervals.
          */
         private const int64 TIMEOUT_TOLERANCE = 100 * Ft.Interval.MILLISECOND;
 
@@ -24,6 +24,18 @@ namespace Gnome
             public int64  reference_time = Ft.Timestamp.UNDEFINED;
             public bool   has_active_watch = false;
             public bool   invalid = false;
+        }
+
+        public Ft.Priority priority {
+            get {
+                return Ft.Priority.DEFAULT;
+            }
+        }
+
+        public bool can_ignore_inhibitors {
+            get {
+                return false;
+            }
         }
 
         private Gnome.IdleMonitor?            proxy = null;
@@ -73,6 +85,25 @@ namespace Gnome
 
                 this.proxy.remove_watch (watch_id);
             }
+        }
+
+        private int64 get_idle_time () throws GLib.Error
+        {
+            if (this.idle_time_freeze_count > 0 && this.idle_time >= 0) {
+                return this.idle_time;
+            }
+
+            if (this.proxy == null) {
+                return 0;
+            }
+
+            var idle_time = this.from_milliseconds (this.proxy.get_idletime ());
+
+            if (this.idle_time_freeze_count > 0) {
+                this.idle_time = idle_time;
+            }
+
+            return idle_time;
         }
 
         private void on_name_appeared (GLib.DBusConnection connection,
@@ -204,27 +235,9 @@ namespace Gnome
             this.proxy = null;
         }
 
-        public int64 get_idle_time () throws GLib.Error
-        {
-            if (this.idle_time_freeze_count > 0 && this.idle_time >= 0) {
-                return this.idle_time;
-            }
-
-            if (this.proxy == null) {
-                return 0;
-            }
-
-            var idle_time = this.from_milliseconds (this.proxy.get_idletime ());
-
-            if (this.idle_time_freeze_count > 0) {
-                this.idle_time = idle_time;
-            }
-
-            return idle_time;
-        }
-
-        public uint32 add_idle_watch (int64 timeout,
-                                      int64 monotonic_time) throws GLib.Error
+        public uint32 add_idle_watch (int64                   timeout,
+                                      bool                    ignore_inhibitors,
+                                      int64                   monotonic_time) throws GLib.Error
                                       requires (this.proxy != null)
         {
             int64 relative_timeout = timeout;
@@ -286,7 +299,8 @@ namespace Gnome
 
             watch.invalid = true;
 
-            if (watch.has_active_watch) {
+            /*
+            if (watch.has_active_watch) {  // XXX: why do we need this?
                 try {
                     this.remove_active_watch ();
                     watch.has_active_watch = false;
@@ -295,6 +309,7 @@ namespace Gnome
                     GLib.warning ("Unable to remove active watch: %s", error.message);
                 }
             }
+            */
 
             try {
                 this.proxy.remove_watch (watch.id);
@@ -318,7 +333,7 @@ namespace Gnome
                 return id;
             }
 
-            var new_id = this.add_idle_watch (watch.relative_timeout, monotonic_time);
+            var new_id = this.add_idle_watch (watch.relative_timeout, false, monotonic_time);
 
             try {
                 this.proxy.remove_watch (watch.id);
@@ -334,7 +349,7 @@ namespace Gnome
         }
 
         public void add_active_watch () throws GLib.Error
-                                      requires (this.proxy != null)
+                                        requires (this.proxy != null)
         {
             if (this.active_watch_id == 0) {
                 this.active_watch_id = this.proxy.add_user_active_watch ();

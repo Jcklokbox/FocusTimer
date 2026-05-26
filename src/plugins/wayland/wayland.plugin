@@ -1,0 +1,6 @@
+[Plugin]
+Name=Wayland
+Module=wayland
+Builtin=true
+Embedded=wayland_peas_register_types
+X-Priority=high

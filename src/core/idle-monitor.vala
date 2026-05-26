@@ -8,16 +8,33 @@
 
 namespace Ft
 {
-    public delegate void UserIdleFunc ();
-    public delegate void UserActiveFunc ();
+    public delegate void Callback ();
 
 
     public interface IdleMonitorProvider : Ft.Provider
     {
-        public abstract int64 get_idle_time () throws GLib.Error;
-        public abstract uint32 add_idle_watch (int64 timeout, int64 monotonic_time) throws GLib.Error;
-        public abstract void remove_idle_watch (uint32 id) throws GLib.Error;
+        public abstract bool can_ignore_inhibitors { get; }
+
+        /**
+         * Register an idle watch with the session idle monitor.
+         *
+         * Fires `became_idle` after `timeout` microseconds without user activity.
+         *
+         * When `monotonic_time` is defined, idle time is counted from from the given timestamp.
+         *
+         * When `ignore_inhibitors` is `true`, the watch reacts to real user input (not supported
+         * by all providers).
+         */
+        public abstract uint32 add_idle_watch (int64 timeout, bool ignore_inhibitors, int64 monotonic_time) throws GLib.Error;
+
+        /**
+         * Reschedule an idle watch. It ensures that it'll not fire before `timeout` passes
+         * counting from the current time.
+         */
         public abstract uint32 reset_idle_watch (uint32 id, int64 monotonic_time) throws GLib.Error;
+
+        public abstract void remove_idle_watch (uint32 id) throws GLib.Error;
+
         public abstract void add_active_watch () throws GLib.Error;
         public abstract void remove_active_watch () throws GLib.Error;
 
@@ -25,9 +42,8 @@ namespace Ft
         public signal void became_active ();
 
         /**
-         * Mutter.IdleMonitor schedules a callback relative to users last activity, not from the time we add a watch.
-         *
-         * Calculate timeout that is relative to users last activity.
+         * Convert an idle interval anchored at `reference_time` into one relative to the
+         * user's last activity.
          */
         public static int64 calculate_absolute_timeout (int64 relative_timeout,
                                                         int64 idle_time,
@@ -38,12 +54,12 @@ namespace Ft
                 return relative_timeout;
             }
 
-            var last_activity_time = GLib.get_monotonic_time () - idle_time;
-            var absolute_timeout = relative_timeout + reference_time - last_activity_time;
+            var last_active_time = GLib.get_monotonic_time () - idle_time;
+            var absolute_timeout = relative_timeout + reference_time - last_active_time;
 
             return absolute_timeout > 0
-                ? absolute_timeout
-                : relative_timeout;
+                    ? absolute_timeout
+                    : relative_timeout;
         }
     }
 
@@ -51,6 +67,12 @@ namespace Ft
     // TODO: should be defined in tests
     public class DummyIdleMonitorProvider : Ft.Provider, Ft.IdleMonitorProvider
     {
+        public bool can_ignore_inhibitors {
+            get {
+                return false;
+            }
+        }
+
         public override async void initialize (GLib.Cancellable? cancellable) throws GLib.Error
         {
             this.available = true;
@@ -75,21 +97,24 @@ namespace Ft
             return 0;
         }
 
-        public uint32 add_idle_watch (int64 timeout, int64 monotonic_time) throws GLib.Error
+        public uint32 add_idle_watch (int64 timeout,
+                                      bool  ignore_inhibitors,
+                                      int64 monotonic_time) throws GLib.Error
         {
             return 1;
         }
 
-        public void remove_idle_watch (uint32 id) throws GLib.Error
-        {
-        }
-
-        public uint32 reset_idle_watch (uint32 id, int64 monotonic_time) throws GLib.Error
+        public uint32 reset_idle_watch (uint32 id,
+                                        int64 monotonic_time) throws GLib.Error
         {
             return 1;
         }
 
         public void add_active_watch () throws GLib.Error
+        {
+        }
+
+        public void remove_idle_watch (uint32 id) throws GLib.Error
         {
         }
 
@@ -111,8 +136,9 @@ namespace Ft
             public uint32                          external_id = 0U;
             public int64                           timeout = 0;
             public int64                           reference_time = Ft.Timestamp.UNDEFINED;
-            public Ft.UserIdleFunc?                idle_callback = null;
-            public Ft.UserActiveFunc?              active_callback = null;
+            public bool                            ignore_inhibitors = false;
+            public Ft.Callback?                    idle_callback = null;
+            public Ft.Callback?                    active_callback = null;
             public unowned Ft.IdleMonitorProvider? provider = null;
             public bool                            invalid = false;
 
@@ -206,7 +232,10 @@ namespace Ft
             this.watches.@foreach (
                 (id, watch) => {
                     try {
-                        watch.external_id = provider.add_idle_watch (watch.timeout, watch.reference_time);
+                        watch.external_id = provider.add_idle_watch (
+                                watch.timeout,
+                                watch.ignore_inhibitors && provider.can_ignore_inhibitors,
+                                watch.reference_time);
                     }
                     catch (GLib.Error error) {
                         GLib.warning ("Error while adding idle watch: %s", error.message);
@@ -232,71 +261,16 @@ namespace Ft
                 });
         }
 
-        public int64 get_idle_time ()
-        {
-            if (this.provider == null) {
-                return 0;
-            }
-
-            try {
-                return this.provider.get_idle_time ();
-            }
-            catch (GLib.Error error) {
-                GLib.warning ("Unable to get idle-time: %s", error.message);
-                return 0;
-            }
-        }
-
-        public bool is_idle (int64 duration = Ft.Interval.SECOND,
-                             int64 monotonic_time = Ft.Timestamp.UNDEFINED)
-        {
-            if (this.provider == null) {
-                return false;
-            }
-
-            if (duration == 0) {
-                return false;
-            }
-
-            if (Ft.Timestamp.is_undefined (monotonic_time)) {
-                monotonic_time = GLib.get_monotonic_time ();
-            }
-
-            if (monotonic_time - this.last_activity_time < duration) {
-                return false;
-            }
-
-            try {
-                return this.provider.get_idle_time () >= duration;
-            }
-            catch (GLib.Error error) {
-                GLib.warning ("Unable to determine if user is idle: %s", error.message);
-                return false;
-            }
-        }
-
-        // public void mark_activity (int64 monotonic_time = Ft.Timestamp.UNDEFINED)
-        // {
-        //     if (Ft.Timestamp.is_undefined (monotonic_time)) {
-        //         monotonic_time = GLib.get_monotonic_time ();
-        //     }
-        //
-        //     if (this.last_activity_time < monotonic_time) {
-        //         this.last_activity_time = monotonic_time;
-        //     }
-        //
-        //     // TODO: trigger active watches
-        // }
-
         /**
          * Register an idle watch.
          *
          * `reference_time` specifies whether idle-time should be detected from this point of time,
          * otherwise the callback will be called counting from the time of users last activity.
          */
-        public uint add_idle_watch (int64                 timeout,
-                                    owned Ft.UserIdleFunc callback,
-                                    int64                 monotonic_time = Ft.Timestamp.UNDEFINED)
+        public uint add_idle_watch (int64                   timeout,
+                                    bool                    ignore_inhibitors,
+                                    owned Ft.Callback       callback,
+                                    int64                   monotonic_time = Ft.Timestamp.UNDEFINED)
         {
             if (timeout == 0) {
                 return 0;
@@ -308,6 +282,7 @@ namespace Ft
             var watch = new Watch ();
             watch.id = watch_id;
             watch.timeout = timeout;
+            watch.ignore_inhibitors = ignore_inhibitors;
             watch.idle_callback = (owned) callback;
             watch.reference_time = monotonic_time;
             watch.provider = this.provider;
@@ -315,7 +290,10 @@ namespace Ft
             if (this.provider != null && this.provider.enabled)
             {
                 try {
-                    watch.external_id = this.provider.add_idle_watch (timeout, monotonic_time);
+                    watch.external_id = this.provider.add_idle_watch (
+                            timeout,
+                            ignore_inhibitors && this.provider.can_ignore_inhibitors,
+                            monotonic_time);
                 }
                 catch (GLib.Error error) {
                     GLib.warning ("Unable to add an idle-watch: %s", error.message);
@@ -333,8 +311,8 @@ namespace Ft
         /**
          * Trigger callback on first user activity counting from now.
          */
-        public uint add_active_watch (owned Ft.UserActiveFunc callback,
-                                      int64                   monotonic_time = Ft.Timestamp.UNDEFINED)
+        public uint add_active_watch (owned Ft.Callback callback,
+                                      int64             monotonic_time = Ft.Timestamp.UNDEFINED)
         {
             var watch_id = Ft.IdleMonitor.next_watch_id;
             Ft.IdleMonitor.next_watch_id++;
@@ -403,3 +381,4 @@ namespace Ft
         }
     }
 }
+

@@ -221,6 +221,7 @@ namespace Ft
 
             if (this.lock_screen_idle_id == 0 && lock_delay > 0 && this.idle_monitor.enabled) {
                 this.lock_screen_idle_id = this.idle_monitor.add_idle_watch (lock_delay,
+                                                                             true,
                                                                              this.on_lock_screen_idle,
                                                                              GLib.get_monotonic_time ());
             }
@@ -251,6 +252,7 @@ namespace Ft
 
             this.reopen_screen_overlay_idle_id = this.idle_monitor.add_idle_watch (
                     reopen_delay,
+                    false,
                     this.on_reopen_screen_overlay_idle,
                     GLib.get_monotonic_time ());
         }
