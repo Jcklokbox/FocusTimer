@@ -317,7 +317,7 @@ namespace Ft
                 window_created = true;
                 this.add_window (window);
 
-                if (this.application_id.has_suffix ("Devel")) {
+                if (Ft.is_devel ()) {
                     window.add_css_class ("devel");
                 }
             }

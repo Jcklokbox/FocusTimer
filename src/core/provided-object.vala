@@ -115,7 +115,9 @@ namespace Ft
 
         private void on_provider_enabled (T provider)
         {
-            if (this._provider == provider) {
+            var _provider = (Ft.Provider) provider;
+
+            if (this._provider == _provider) {
                 this.enabled = true;
             }
 
@@ -124,7 +126,9 @@ namespace Ft
 
         private void on_provider_disabled (T provider)
         {
-            if (this._provider == provider) {
+            var _provider = (Ft.Provider) provider;
+
+            if (this._provider == _provider) {
                 this.enabled = false;
             }
 

@@ -130,6 +130,12 @@ namespace Ft
     }
 
 
+    public bool is_devel ()
+    {
+        return Config.APPLICATION_ID.has_suffix (".Devel");
+    }
+
+
     public string get_desktop_name ()
     {
         if (_desktop_name == null)

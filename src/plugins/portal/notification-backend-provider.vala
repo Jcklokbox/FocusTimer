@@ -14,7 +14,7 @@ namespace Portal
         switch (Ft.get_desktop_name ())
         {
             case "gnome":
-                return true;
+                return !Ft.is_devel ();
 
             default:
                 return false;
@@ -103,6 +103,7 @@ namespace Portal
         public override async void initialize (GLib.Cancellable? cancellable) throws GLib.Error
         {
             if (!have_notifications_portal ()) {
+                this.available = false;
                 return;
             }
 

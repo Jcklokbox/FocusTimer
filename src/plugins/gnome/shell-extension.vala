@@ -76,7 +76,7 @@ namespace Gnome
             this.extension_info = Gnome.ExtensionInfo (EXTENSION_UUID);
             this.cancellable = new GLib.Cancellable ();
 
-            if (!Config.APPLICATION_ID.has_suffix ("Devel"))
+            if (!Ft.is_devel ())
             {
                 this.shell_watcher_id = GLib.Bus.watch_name (
                         GLib.BusType.SESSION,

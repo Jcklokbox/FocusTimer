@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 focus-timer contributors
+ * Copyright (c) 2024-2026 focus-timer contributors
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
@@ -15,6 +15,7 @@ namespace Ft
     private const int64 AVAILABILITY_TIMEOUT_TOLERANCE = Ft.Interval.MILLISECOND * 20;
 
 
+    // XXX: remove - only SINGLE is used
     public enum SelectionMode
     {
         NONE,
@@ -50,21 +51,53 @@ namespace Ft
     }
 
 
+    private enum ProviderAvailability
+    {
+        UNKNOWN,
+        AVAILABLE,
+        UNAVAILABLE;
+
+        public static int compare (ProviderAvailability value,
+                                   ProviderAvailability other)
+        {
+            if (value == other) {
+                return 0;
+            }
+
+            if (value == ProviderAvailability.AVAILABLE) {
+                return -1;
+            }
+
+            if (other == ProviderAvailability.AVAILABLE) {
+                return 1;
+            }
+
+            return value == ProviderAvailability.UNKNOWN ? -1 : 1;
+        }
+    }
+
+
     private class ProviderInfo
     {
         public Ft.Provider       instance;
         public Ft.Priority       priority;
         public Ft.ProviderStatus status = Ft.ProviderStatus.NOT_INITIALIZED;
         public bool              selected = false;
-        public bool              destroying = false;
         public GLib.Cancellable? cancellable = null;
         public int64             initialization_time = Ft.Timestamp.UNDEFINED;
+        public bool              destroying = false;
 
         public ProviderInfo (Ft.Provider instance,
                              Ft.Priority priority)
         {
             this.instance = instance;
             this.priority = priority;
+        }
+
+        ~ProviderInfo ()
+        {
+            // Expect to use .destroy() until provider gets unintialized
+            assert (this.instance == null);
         }
 
         public int64 get_availability_timeout (ref int64 monotonic_time)
@@ -84,14 +117,67 @@ namespace Ft
             return monotonic_time - this.initialization_time;
         }
 
-        ~ProviderInfo ()
+        private void destroy_internal ()
         {
+            var provider = this.instance;
+
+            if (provider == null || this.status.is_transient ()) {
+                return;
+            }
+
+            if (this.status == Ft.ProviderStatus.ENABLED)
+            {
+                this.status = Ft.ProviderStatus.DISABLING;
+                provider.enabled = false;
+                provider.disable.begin (
+                    (obj, res) => {
+                        try {
+                            provider.disable.end (res);
+                        }
+                        catch (GLib.Error error) {
+                            GLib.warning ("Error while disabling %s: %s",
+                                          provider.get_type ().name (),
+                                          error.message);
+                        }
+
+                        this.status = Ft.ProviderStatus.DISABLED;
+                        this.destroy_internal ();
+                    });
+            }
+            else if (this.status == Ft.ProviderStatus.DISABLED)
+            {
+                this.status = Ft.ProviderStatus.UNINITIALIZING;
+                provider.uninitialize.begin (
+                    (obj, res) => {
+                        try {
+                            provider.uninitialize.end (res);
+                        }
+                        catch (GLib.Error error) {
+                            GLib.warning ("Error while uninitializing %s: %s",
+                                          provider.get_type ().name (),
+                                          error.message);
+                        }
+
+                        this.status = Ft.ProviderStatus.NOT_INITIALIZED;
+                        this.destroy_internal ();
+                    });
+            }
+            else if (this.status == Ft.ProviderStatus.NOT_INITIALIZED)
+            {
+                this.instance = null;
+            }
+        }
+
+        public void destroy ()
+        {
+            this.destroying = true;
+
             if (this.cancellable != null) {
                 this.cancellable.cancel ();
                 this.cancellable = null;
             }
 
-            this.instance = null;
+            this.destroy_internal ();
         }
     }
 
@@ -139,13 +225,17 @@ namespace Ft
         {
             var provider = provider_info.instance;
 
+            if (provider == null || provider_info.destroying) {
+                return;
+            }
+
             // Each action should call check_provider_status() at the end, so if the status is transient
             // we can ignore it.
             if (provider_info.status.is_transient ()) {
                 return;
             }
 
-            if (provider_info.selected && !provider_info.destroying)
+            if (provider_info.selected)
             {
                 if (provider_info.status == Ft.ProviderStatus.NOT_INITIALIZED)
                 {
@@ -160,6 +250,10 @@ namespace Ft
                                 provider_info.status = Ft.ProviderStatus.DISABLED;
 
                                 this.check_provider_status (provider_info);
+
+                                if (provider_info.selected && !provider.available_set) {
+                                    this.queue_update_selection ();
+                                }
                             }
                             catch (GLib.Error error) {
                                 GLib.warning ("Error while initializing %s: %s",
@@ -189,6 +283,10 @@ namespace Ft
                                               provider.get_type ().name (),
                                               error.message);
                                 provider_info.status = Ft.ProviderStatus.DISABLED;
+
+                                if (provider_info.destroying) {
+                                    provider_info.destroy ();
+                                }
                             }
                         });
                 }
@@ -210,15 +308,17 @@ namespace Ft
                                               provider.get_type ().name (),
                                               error.message);
                                 provider_info.status = Ft.ProviderStatus.DISABLED;
+
+                                if (provider_info.destroying) {
+                                    provider_info.destroy ();
+                                }
                             }
                         });
                 }
             }
             else if (provider_info.status == Ft.ProviderStatus.ENABLED)
             {
-                // Ensure provider is disabled and uninitialized before destroying.
-                // We try to disable provider even if it's unavailable.
-
+                // Disable unselected providers. We try to disable even if unavailable.
                 provider_info.status = Ft.ProviderStatus.DISABLING;
                 provider.enabled = false;
                 provider.disable.begin (
@@ -232,30 +332,29 @@ namespace Ft
                                           error.message);
                         }
 
-                        // We always mark it here as DISABLED, so that it will be deallocated when destroying.
                         provider_info.status = Ft.ProviderStatus.DISABLED;
-
                         this.check_provider_status (provider_info);
                     });
             }
-            else if (provider_info.status == Ft.ProviderStatus.DISABLED && provider_info.destroying)
-            {
-                provider_info.status = Ft.ProviderStatus.UNINITIALIZING;
-                provider.uninitialize.begin (
-                    (obj, res) => {
-                        try {
-                            provider.uninitialize.end (res);
-                        }
-                        catch (GLib.Error error) {
-                            GLib.warning ("Error while uninitializing %s: %s",
-                                          provider.get_type ().name (),
-                                          error.message);
-                        }
+        }
 
-                        // We always mark it here as NOT_INITIALIZED when destroying.
-                        provider_info.status = Ft.ProviderStatus.NOT_INITIALIZED;
-                    });
+        private static ProviderAvailability get_availability (Ft.ProviderInfo provider_info,
+                                                              int64           provider_timeout)
+        {
+            if (provider_info.instance.available_set) {
+                return provider_info.instance.available
+                        ? ProviderAvailability.AVAILABLE
+                        : ProviderAvailability.UNAVAILABLE;
             }
+
+            if (provider_info.status == Ft.ProviderStatus.NOT_INITIALIZED ||
+                provider_info.status == Ft.ProviderStatus.INITIALIZING ||
+                provider_timeout < AVAILABILITY_TIMEOUT)
+            {
+                return ProviderAvailability.UNKNOWN;
+            }
+
+            return ProviderAvailability.UNAVAILABLE;
         }
 
         private static int compare (Ft.ProviderInfo provider_info,
@@ -263,15 +362,24 @@ namespace Ft
                                     Ft.ProviderInfo other_info,
                                     int64           other_timeout)
         {
-            var provider_available = provider_info.instance.available_set
-                    ? provider_info.instance.available
-                    : provider_timeout < AVAILABILITY_TIMEOUT;
-            var other_available = other_info.instance.available_set
-                    ? other_info.instance.available
-                    : other_timeout < AVAILABILITY_TIMEOUT;
+            var provider_availability = get_availability (provider_info, provider_timeout);
+            var other_availability = get_availability (other_info, other_timeout);
 
-            if (provider_available != other_available) {
-                return provider_available ? -1 : 1;
+            if (provider_availability != other_availability)
+            {
+                if (provider_availability == ProviderAvailability.UNKNOWN &&
+                    provider_info.priority > other_info.priority)
+                {
+                    return -1;
+                }
+
+                if (other_availability == ProviderAvailability.UNKNOWN &&
+                    other_info.priority > provider_info.priority)
+                {
+                    return 1;
+                }
+
+                return ProviderAvailability.compare (provider_availability, other_availability);
             }
 
             if (provider_info.priority != other_info.priority) {
@@ -329,14 +437,23 @@ namespace Ft
             this.get_preferred_provider_info (out preferred_provider_info,
                                               out preferred_provider_timeout);
 
-            if (preferred_provider_timeout > 0)
+            if (preferred_provider_info == null) {
+                this.select_none ();
+                return;
+            }
+
+            if (!preferred_provider_info.instance.available_set &&
+                preferred_provider_timeout > 0 &&
+                preferred_provider_timeout < AVAILABILITY_TIMEOUT)
             {
-                this.update_selection_timeout_id = GLib.Timeout.add (
-                        Ft.Timestamp.to_milliseconds_uint (preferred_provider_timeout +
-                                                           AVAILABILITY_TIMEOUT_TOLERANCE),
-                        this.on_update_selection_timeout);
-                GLib.Source.set_name_by_id (this.update_selection_timeout_id,
-                                            "Ft.ProviderSet.on_update_selection_timeout");
+                this.schedule_update_selection (preferred_provider_timeout);
+                return;
+            }
+
+            if (get_availability (preferred_provider_info, preferred_provider_timeout) ==
+                ProviderAvailability.UNAVAILABLE)
+            {
+                this.select_none ();
                 return;
             }
 
@@ -412,6 +529,10 @@ namespace Ft
 
         private void update_selection ()
         {
+            if (this.providers == null) {
+                return;
+            }
+
             if (this.updating_selection) {
                 this.selection_invalid = true;
                 return;
@@ -455,7 +576,25 @@ namespace Ft
             }
         }
 
-        private void schedule_update_selection ()
+        private void schedule_update_selection (int64 timeout)
+        {
+            if (this.update_selection_timeout_id != 0) {
+                return;
+            }
+
+            this.update_selection_timeout_id = GLib.Timeout.add (
+                    Ft.Timestamp.to_milliseconds_uint (timeout + AVAILABILITY_TIMEOUT_TOLERANCE),
+                    () => {
+                        this.update_selection_timeout_id = 0;
+                        this.update_selection ();
+
+                        return GLib.Source.REMOVE;
+                    });
+            GLib.Source.set_name_by_id (this.update_selection_timeout_id,
+                                        "Ft.ProviderSet.schedule_update_selection");
+        }
+
+        private void queue_update_selection ()
         {
             if (this.update_selection_idle_id != 0) {
                 return;
@@ -469,12 +608,16 @@ namespace Ft
                     return GLib.Source.REMOVE;
                 });
             GLib.Source.set_name_by_id (this.update_selection_idle_id,
-                                        "Ft.ProviderSet.update_selection");
+                                        "Ft.ProviderSet.queue_update_selection");
         }
 
         private unowned Ft.ProviderInfo? lookup_info (Ft.Provider instance)
         {
             unowned Ft.ProviderInfo provider_info = null;
+
+            if (this.providers == null) {
+                return null;
+            }
 
             this.providers.@foreach (
                 (_provider_info) => {
@@ -486,21 +629,15 @@ namespace Ft
             return provider_info;
         }
 
-        private bool on_update_selection_timeout ()
-        {
-            this.update_selection_timeout_id = 0;
-            this.update_selection ();
-
-            return GLib.Source.REMOVE;
-        }
-
         private void on_provider_notify_available (GLib.Object    object,
                                                    GLib.ParamSpec pspec)
         {
             var provider = (Ft.Provider) object;
             var provider_info = this.lookup_info (provider);
 
-            assert (provider_info != null);
+            if (provider_info == null) {
+                return;
+            }
 
             if (provider_info.selected && provider.available) {
                 this.check_provider_status (provider_info);
@@ -526,16 +663,9 @@ namespace Ft
         private void destroy_info (Ft.ProviderInfo provider_info)
         {
             provider_info.instance.notify["available"].disconnect (this.on_provider_notify_available);
-            provider_info.instance.notify["enabled"].connect (this.on_provider_notify_enabled);
+            provider_info.instance.notify["enabled"].disconnect (this.on_provider_notify_enabled);
 
-            provider_info.destroying = true;
-
-            if (provider_info.cancellable != null) {
-                provider_info.cancellable.cancel ();
-                provider_info.cancellable = null;
-            }
-
-            this.check_provider_status (provider_info);
+            provider_info.destroy ();
         }
 
         public void add (T           provider,
@@ -544,6 +674,10 @@ namespace Ft
             var instance = provider as Ft.Provider;
 
             assert (instance != null);
+
+            if (this.providers == null) {
+                return;
+            }
 
             var existing_provider_info = this.lookup_info (instance);
 
@@ -559,7 +693,12 @@ namespace Ft
                 }
             }
 
-            this.schedule_update_selection ();
+            if (this.should_enable) {
+                this.update_selection ();
+            }
+            else {
+                this.queue_update_selection ();
+            }
         }
 
         public void remove (T provider)
@@ -570,29 +709,51 @@ namespace Ft
 
             var provider_info = this.lookup_info (instance);
 
-            if (provider_info == null || !this.providers.remove (provider_info)) {
+            if (provider_info == null || provider_info.destroying) {
+                return;
+            }
+
+            var was_selected = provider_info.selected;
+
+            if (!this.providers.remove (provider_info)) {
                 return;
             }
 
             this.destroy_info (provider_info);
 
-            if (provider_info.selected) {
+            if (was_selected) {
                 this.update_selection ();
             }
         }
 
         public void remove_all ()
         {
+            if (this.providers == null) {
+                return;
+            }
+
             if (this.update_selection_timeout_id != 0) {
                 GLib.Source.remove (this.update_selection_timeout_id);
                 this.update_selection_timeout_id = 0;
             }
 
+            if (this.update_selection_idle_id != 0) {
+                GLib.Source.remove (this.update_selection_idle_id);
+                this.update_selection_idle_id = 0;
+            }
+
+            Ft.ProviderInfo[] providers = {};
+
             this.providers.@foreach (
                 (provider_info) => {
-                    this.destroy_info (provider_info);
+                    providers += provider_info;
                 });
+
             this.providers.remove_all ();
+
+            foreach (var provider_info in providers) {
+                this.destroy_info (provider_info);
+            }
         }
 
         private void add_extension (Peas.PluginInfo info,
@@ -662,6 +823,10 @@ namespace Ft
 
             this.update_selection ();
 
+            if (this.providers == null) {
+                return;
+            }
+
             this.providers.@foreach (
                 (provider_info) => {
                     this.check_provider_status (provider_info);
@@ -672,6 +837,10 @@ namespace Ft
         {
             this.should_enable = false;
 
+            if (this.providers == null) {
+                return;
+            }
+
             this.providers.@foreach (
                 (provider_info) => {
                     this.check_provider_status (provider_info);
@@ -680,6 +849,10 @@ namespace Ft
 
         public void @foreach (GLib.Func<T> func)
         {
+            if (this.providers == null) {
+                return;
+            }
+
             this.providers.@foreach (
                 (provider_info) => {
                     func ((T) provider_info.instance);
@@ -688,6 +861,10 @@ namespace Ft
 
         public void foreach_selected (GLib.Func<T> func)
         {
+            if (this.providers == null) {
+                return;
+            }
+
             this.providers.@foreach (
                 (provider_info) => {
                     if (provider_info.selected) {
@@ -698,6 +875,10 @@ namespace Ft
 
         public void foreach_enabled (GLib.Func<T> func)
         {
+            if (this.providers == null) {
+                return;
+            }
+
             this.providers.@foreach (
                 (provider_info) => {
                     if (provider_info.instance.enabled) {
@@ -734,12 +915,7 @@ namespace Ft
                 this.extension_set = null;
             }
 
-            if (this.providers != null)
-            {
-                this.remove_all ();
-
-                this.providers = null;
-            }
+            this.remove_all ();
 
             base.dispose ();
         }

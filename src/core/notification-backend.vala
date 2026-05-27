@@ -46,10 +46,16 @@ namespace Ft
                                              Ft.Notification notification)
         {
             var glib_notification = new GLib.Notification (notification.title);
-            glib_notification.set_body (notification.body != "" ? notification.body : null);
+            glib_notification.set_body (notification.body);
             glib_notification.set_priority (transform_priority (notification.priority));
-            glib_notification.set_category (notification.category);
-            glib_notification.set_icon (notification.icon);
+
+            if (notification.category != null) {
+                glib_notification.set_category (notification.category);
+            }
+
+            if (notification.icon != null) {
+                glib_notification.set_icon (notification.icon);
+            }
 
             if (notification.default_action != null) {
                 glib_notification.set_default_action_and_target_value (
@@ -72,6 +78,7 @@ namespace Ft
 
         public override async void initialize (GLib.Cancellable? cancellable) throws GLib.Error
         {
+            this.available = true;
         }
 
         public override async void uninitialize () throws GLib.Error
