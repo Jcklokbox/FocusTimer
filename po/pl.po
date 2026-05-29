@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-29 09:26+0200\n"
-"PO-Revision-Date: 2026-05-07 18:23+0200\n"
+"PO-Revision-Date: 2026-05-29 10:56+0200\n"
 "Last-Translator: Kamil Prusko <kamilprusko@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -832,13 +832,15 @@ msgstr "Czytaj więcej"
 #. translators: abbreviate it to just "Settings" if it gets too long
 #: src/plugins/kde/preferences-window-extension.vala:26
 msgid "Open Settings"
-msgstr ""
+msgstr "Ustawienia"
 
 #: src/plugins/kde/preferences-window-extension.vala:51
 msgid ""
 "For reliable break reminders, allow this app's notifications during Do Not "
 "Disturb and disable its notification history."
 msgstr ""
+"Zezwól na powiadomienia w trybie „Nie przeszkadzać” i wyłącz ich historię, "
+"aby aplikacja działała niezawodnie."
 
 #: src/plugins/portal/global-shortcuts-provider.vala:298
 msgid "Unused"
