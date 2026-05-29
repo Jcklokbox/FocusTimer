@@ -27,6 +27,7 @@ src/core/logger.vala
 src/core/matrix.vala
 src/core/notification-backend.vala
 src/core/notification-manager.vala
+src/core/notification.vala
 src/core/priority.vala
 src/core/provided-object.vala
 src/core/provider-set.vala
@@ -77,9 +78,12 @@ src/plugins/gnome/screen-saver-provider.vala
 src/plugins/gnome/shell-extension-settings.vala
 src/plugins/gnome/shell-extension.vala
 src/plugins/gnome/window-extension.vala
+src/plugins/kde/kde.vala
+src/plugins/kde/preferences-window-extension.vala
 src/plugins/portal/background-provider.vala
 src/plugins/portal/global-shortcuts-provider.vala
 src/plugins/portal/interfaces.vala
+src/plugins/portal/notification-backend-provider.vala
 src/plugins/portal/portal.vala
 src/plugins/portal/request.vala
 src/plugins/sni/capabilities.vala
@@ -90,6 +94,11 @@ src/plugins/sni/interfaces.vala
 src/plugins/sni/menu-item.vala
 src/plugins/sni/preferences-window-extension.vala
 src/plugins/sni/sni.vala
+src/plugins/wayland/idle-monitor-provider.vala
+src/plugins/wayland/wayland.vala
+src/plugins/xfce/interfaces.vala
+src/plugins/xfce/screen-saver-provider.vala
+src/plugins/xfce/xfce.vala
 src/ui/interfaces.vala
 src/ui/log/log-window.ui
 src/ui/log/log-window.vala
@@ -140,7 +149,6 @@ src/ui/main/window.ui
 src/ui/main/window.vala
 src/ui/overlays/lightbox.ui
 src/ui/overlays/lightbox.vala
-src/ui/overlays/screen-overlay-provider.vala
 src/ui/overlays/screen-overlay.ui
 src/ui/overlays/screen-overlay.vala
 src/ui/preferences/appearance/preferences-panel-appearance.ui
@@ -184,6 +192,8 @@ src/ui/preferences/timer/widgets/log-scale-row.ui
 src/ui/preferences/timer/widgets/log-scale-row.vala
 src/ui/preferences/timer/widgets/log-scale.vala
 src/ui/preferences/widgets/preferences-sidebar.vala
+src/ui/screen-overlay-provider.vala
+src/ui/screen-saver-provider.vala
 src/ui/utils.vala
 src/ui/widgets/checkmark.vala
 src/ui/widgets/gizmo.vala
