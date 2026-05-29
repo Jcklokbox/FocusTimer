@@ -88,6 +88,17 @@
 
   <!-- Releases -->
   <releases>
+    <release version="1.1.2" date="2026-05-29">
+      <description translate="no">
+        <p>Overview of changes in focus-timer 1.1.2:</p>
+        <ul>
+          <li>Deeper integration with notification servers</li>
+          <li>Idle detection on Wayland</li>
+          <li>Improve screensaver detection</li>
+          <li>Fix autostart</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.1.1" date="2026-05-07">
       <description translate="no">
         <p>Overview of changes in focus-timer 1.1.1:</p>

@@ -1,3 +1,11 @@
+2026-05-29  Kamil Prusko  <kamilprusko@gmail.com>
+	Release version 1.1.2:
+
+	* Deeper integration with notification servers
+	* Idle detection on Wayland
+	* Improve screensaver detection
+	* Fix autostart
+
 2026-05-07  Kamil Prusko  <kamilprusko@gmail.com>
 	Release version 1.1.1:
 
