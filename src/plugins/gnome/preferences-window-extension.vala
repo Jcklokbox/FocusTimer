@@ -170,8 +170,8 @@ namespace Gnome
                 desktop_group.add (extension_row);
 
                 var manage_notifications_row = new Adw.SwitchRow ();
-                manage_notifications_row.title = _("Manage Notifications");
-                manage_notifications_row.subtitle = _("Toggle Do Not Disturb mode during Pomodoro.");
+                manage_notifications_row.title = _("Do Not Disturb");
+                manage_notifications_row.subtitle = _("Hide non-critical notifications while using the timer.");
                 desktop_group.add (manage_notifications_row);
 
                 state_stack.bind_property (
