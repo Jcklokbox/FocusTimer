@@ -2583,6 +2583,8 @@ namespace Ft
          * Outward signal that we need a confirmation before advancing to a next time-block.
          * Until then the timer will indicate that it has finished, the session-manager will keep current time-block
          * intact. You should use skip action or `.advance()` to jump to the next time-block.
+         *
+         * XXX: rename to `request_advancement`?
          */
         public signal void confirm_advancement (Ft.TimeBlock current_time_block,
                                                 Ft.TimeBlock next_time_block);

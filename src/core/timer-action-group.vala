@@ -80,9 +80,32 @@ namespace Ft
             this.add_action (extend_by_action);
         }
 
+        /**
+         * Make exception for confirming advancement - treat it as resuming/starting timer.
+         *
+         * Not very elegant, but convenient to have this behaviour centralized.
+         */
+        private bool confirm_advance ()
+        {
+            if (!this.timer.is_finished ()) {
+                return false;
+            }
+
+            unowned var session_manager = Ft.SessionManager.get_default ();
+
+            Ft.Context.set_event_source ("session-manager.advance");
+            session_manager?.advance ();
+
+            return true;
+        }
+
         private void activate_start (GLib.SimpleAction action,
                                      GLib.Variant?     parameter)
         {
+            if (this.confirm_advance ()) {
+                return;
+            }
+
             Ft.Context.set_event_source ("timer.start");
             this.timer.start ();
         }
@@ -122,6 +145,10 @@ namespace Ft
         private void activate_start_stop (GLib.SimpleAction action,
                                           GLib.Variant?     parameter)
         {
+            if (this.confirm_advance ()) {
+                return;
+            }
+
             if (!this.timer.is_started ()) {
                 Ft.Context.set_event_source ("timer.start");
                 this.timer.start ();
@@ -132,9 +159,16 @@ namespace Ft
             }
         }
 
+        /**
+         * This action mimics the primary button in the timer controls
+         */
         private void activate_start_pause_resume (GLib.SimpleAction action,
                                                   GLib.Variant?     parameter)
         {
+            if (this.confirm_advance ()) {
+                return;
+            }
+
             if (!this.timer.is_started ()) {
                 Ft.Context.set_event_source ("timer.start");
                 this.timer.start ();
