@@ -400,7 +400,7 @@ namespace Sni
                 }
 
                 if (primary_name == "advance") {
-                    this.primary_item.label = is_break ? _("Start Pomodoro") : _("Take Break");
+                    this.primary_item.label = is_break ? _("Start Pomodoro") : _("Take a Break");
                 }
             }
 
