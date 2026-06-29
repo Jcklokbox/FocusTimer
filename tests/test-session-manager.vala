@@ -4238,6 +4238,7 @@ namespace Tests
             this.add_test ("restore__multiple_time_blocks", this.test_restore__multiple_time_blocks);
             this.add_test ("restore__multiple_gaps", this.test_restore__multiple_gaps);
             this.add_test ("restore__missing_ongoing_gap", this.test_restore__missing_ongoing_gap);
+            this.add_test ("restore__out_of_range_gaps", this.test_restore__out_of_range_gaps);
             this.add_test ("restore__most_recent_session", this.test_restore__most_recent_session);
             this.add_test ("restore__completed_session", this.test_restore__completed_session);
             this.add_test ("restore__expired_session", this.test_restore__expired_session);
@@ -5608,6 +5609,59 @@ namespace Tests
             );
         }
 
+        public void test_restore__out_of_range_gaps ()
+        {
+            var timestamp = Ft.Timestamp.peek ();
+            var repository = Ft.Database.get_repository ();
+
+            var time_block = new Ft.TimeBlock (Ft.State.POMODORO);
+            time_block.set_time_range (timestamp, timestamp + 25 * Ft.Interval.MINUTE);
+            time_block.set_intended_duration (25 * Ft.Interval.MINUTE);
+            time_block.set_status (Ft.TimeBlockStatus.IN_PROGRESS);
+
+            var session = new Ft.Session ();
+            session.append (time_block);
+
+            Ft.Timestamp.freeze_to (time_block.end_time);
+            this.session_manager.current_time_block = time_block;
+            this.run_save ();
+
+            // Inject a gap entry that starts after the time block's end time,
+            // simulating corrupt/out-of-range data in the database
+            try {
+                var time_block_entry = (Ft.TimeBlockEntry?) repository.find_one_sync (
+                        typeof (Ft.TimeBlockEntry), null);
+                assert_nonnull (time_block_entry);
+
+                var out_of_range_gap = new Ft.GapEntry ();
+                out_of_range_gap.repository = repository;
+                out_of_range_gap.time_block_id = time_block_entry.id;
+                out_of_range_gap.start_time = timestamp + 30 * Ft.Interval.MINUTE;
+                out_of_range_gap.end_time = timestamp + 32 * Ft.Interval.MINUTE;
+                out_of_range_gap.flags = Ft.GapFlags.DEFAULT.to_string ();
+                out_of_range_gap.save_sync ();
+            }
+            catch (GLib.Error error) {
+                assert_no_error (error);
+            }
+
+            // Create a new session manager to test restore
+            var new_timer = new Ft.Timer ();
+            var new_session_manager = new Ft.SessionManager.with_timer (new_timer);
+
+            Ft.Timestamp.freeze_to (time_block.end_time + Ft.Interval.MINUTE);
+            this.run_restore (new_session_manager);
+
+            var restored_session = new_session_manager.current_session;
+            assert_nonnull (restored_session);
+
+            var restored_time_block = restored_session.get_nth_time_block (0);
+            assert_nonnull (restored_time_block);
+
+            // Expect out-of-range gap to be skipped during restore
+            assert_null (restored_time_block.get_last_gap ());
+        }
+
         /**
          * When multiple sessions exist, restore should load the most recent one.
          */
@@ -5732,7 +5786,6 @@ namespace Tests
             var settings = Ft.get_settings ();
             settings.set_boolean ("confirm-starting-pomodoro", true);
 
-
             this.session_manager.ensure_session ();
 
             var session = this.session_manager.current_session;
@@ -5773,6 +5826,7 @@ namespace Tests
             assert_null (restored_gap);
             assert_true (restored_time_block.state == time_block_2.state);
             assert_true (restored_time_block.get_status () == Ft.TimeBlockStatus.IN_PROGRESS);
+            assert_null (restored_time_block.get_last_gap ());
             assert_cmpvariant (
                 new GLib.Variant.int64 (restored_time_block.end_time),
                 new GLib.Variant.int64 (time_block_2.end_time)

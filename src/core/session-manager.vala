@@ -1276,7 +1276,7 @@ namespace Ft
                                                    Ft.SessionEntry session_entry)
                                                    throws GLib.Error
         {
-            // Load time blocks for this session
+            // Fetch time blocks for this session
             var session_id_value = GLib.Value (typeof (int64));
             session_id_value.set_int64 (session_entry.id);
             var time_block_filter = new Gom.Filter.eq (
@@ -1333,7 +1333,7 @@ namespace Ft
                 session.append (time_block);
             }
 
-            // Load all gaps for this session
+            // Fetch all gaps for this session
             if (gap_filters.length > 0)
             {
                 var gap_filter = gap_filters.length == 1
@@ -1359,7 +1359,20 @@ namespace Ft
                     gap.set_time_range (gap_entry.start_time, gap_entry.end_time);
                     gap.entry = gap_entry;
 
-                    time_block.add_gap (gap);
+                    if (gap.start_time < time_block.start_time) {
+                        gap.start_time = time_block.start_time;
+                    }
+
+                    if (Ft.Timestamp.is_defined (gap.end_time) &&
+                        Ft.Timestamp.is_defined (time_block.end_time) &&
+                        gap.end_time > time_block.end_time)
+                    {
+                        gap.end_time = time_block.end_time;
+                    }
+
+                    if (Ft.Timestamp.is_undefined (gap.end_time) || gap.duration > 0) {
+                        time_block.add_gap (gap);
+                    }
                 }
             }
 
@@ -1391,7 +1404,7 @@ namespace Ft
             //      database is ready. Not the best place to do that.
             this.mark_timezone (this.timezone_monitor.timezone, timestamp);
 
-            // Query the most recent session
+            // Fetch the most recent session
             var end_time_value = GLib.Value (typeof (int64));
             end_time_value.set_int64 (timestamp - SESSION_EXPIRY_TIMEOUT);
             var session_filter = new Gom.Filter.gte (
@@ -1422,6 +1435,7 @@ namespace Ft
                 success = false;
             }
 
+            // Reconstruct Session instance
             if (session_entry != null)
             {
                 try {
