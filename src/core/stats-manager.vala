@@ -40,17 +40,6 @@ namespace Ft
             public Segment[] segments;
         }
 
-        [Compact]
-        private class Callback
-        {
-            public GLib.SourceFunc func;
-
-            public Callback (owned GLib.SourceFunc func)
-            {
-                this.func = (owned) func;
-            }
-        }
-
         public unowned Ft.SessionManager session_manager {
             get {
                 return this._session_manager;
@@ -66,7 +55,7 @@ namespace Ft
         private Ft.TimezoneHistory?     timezone_history = null;
         private Ft.AsyncQueue<Item?>    queue = null;
         private bool                    is_processing = false;
-        private Callback[]              flush_callbacks;
+        private Ft.AsyncCallback[]      flush_callbacks;
 
         construct
         {
@@ -611,7 +600,7 @@ namespace Ft
             yield this.queue.wait ();
 
             if (this.is_processing) {
-                this.flush_callbacks += new Callback (this.flush.callback);
+                this.flush_callbacks += new Ft.AsyncCallback (this.flush.callback);
                 yield;
             }
         }

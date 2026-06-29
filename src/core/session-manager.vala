@@ -191,6 +191,10 @@ namespace Ft
         private uint                    reschedule_idle_id = 0;
         private uint                    active_watch_id = 0;
         private uint                    session_changed_idle_id = 0;
+        private bool                    saving = false;
+        private bool                    save_dirty = false;
+        private bool                    save_result = false;
+        private Ft.AsyncCallback[]      save_callbacks;
 
         public SessionManager ()
         {
@@ -212,6 +216,7 @@ namespace Ft
             this.scheduler = new Ft.SimpleScheduler ();
             this.timezone_monitor = new Ft.TimeZoneMonitor ();
             this.timezone_history = new Ft.TimezoneHistory ();
+            this.save_callbacks = {};
 
             this.settings.changed.connect (this.on_settings_changed);
             this.timezone_monitor.changed.connect (this.on_timezone_changed);
@@ -1162,10 +1167,7 @@ namespace Ft
             // TODO: check if instances are disposed properly
         }
 
-        /**
-         * Save session state to database.
-         */
-        public async bool save ()
+        private async bool save_internal ()
         {
             var repository = Ft.Database.get_repository ();
             assert (repository != null);
@@ -1192,7 +1194,7 @@ namespace Ft
                         remaining_sessions--;
 
                         if (remaining_sessions == 0) {
-                            this.save.callback ();
+                            this.save_internal.callback ();
                         }
                     });
             }
@@ -1216,7 +1218,7 @@ namespace Ft
                         remaining_sessions--;
 
                         if (remaining_sessions == 0) {
-                            this.save.callback ();
+                            this.save_internal.callback ();
                         }
                     });
             }
@@ -1228,7 +1230,49 @@ namespace Ft
             return success;
         }
 
-        private async Ft.Session? restore_session (Gom.Repository        repository,
+        /**
+         * Save session state to database.
+         *
+         * Concurrent calls are coalesced: while a save is in progress, all further
+         * callers wait and are resumed together after one additional save completes.
+         */
+        public async bool save ()
+        {
+            if (this.saving)
+            {
+                this.save_dirty = true;
+                this.save_callbacks += new Ft.AsyncCallback (save.callback);
+
+                yield;
+
+                return this.save_result;
+            }
+
+            this.saving = true;
+
+            var result = yield this.save_internal ();
+
+            while (this.save_dirty)
+            {
+                this.save_dirty = false;
+
+                var callbacks = (owned) this.save_callbacks;
+                this.save_callbacks = {};
+
+                result = yield this.save_internal ();
+                this.save_result = result;
+
+                foreach (unowned var callback in callbacks) {
+                    callback.func ();
+                }
+            }
+
+            this.saving = false;
+
+            return result;
+        }
+
+        private async Ft.Session? restore_session (Gom.Repository  repository,
                                                    Ft.SessionEntry session_entry)
                                                    throws GLib.Error
         {

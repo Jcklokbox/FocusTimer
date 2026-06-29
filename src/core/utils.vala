@@ -250,6 +250,24 @@ namespace Ft
 
 
     /**
+     * A simple wrapper around a GLib.SourceFunc delegate.
+     *
+     * Delegates with targets cannot be used as generic type arguments in Vala.
+     * Wrapping the delegate in a compact class works around this limitation.
+     */
+    [Compact]
+    public class AsyncCallback
+    {
+        public GLib.SourceFunc func;
+
+        public AsyncCallback (owned GLib.SourceFunc func)
+        {
+            this.func = (owned) func;
+        }
+    }
+
+
+    /**
      * A convenience wrapper around GLib.Queue that provides an async wait()
      * which resolves in the main loop once the queue becomes empty.
      */

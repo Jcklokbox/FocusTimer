@@ -4225,6 +4225,10 @@ namespace Tests
             this.add_test ("save__timer_start", this.test_save__timer_start);
             this.add_test ("save__timer_pause", this.test_save__timer_pause);
             this.add_test ("save__timer_rewind", this.test_save__timer_rewind);
+            this.add_test ("save__concurrent_calls",
+                           this.test_save__concurrent_calls);
+            this.add_test ("save__concurrent_calls_coalesced",
+                           this.test_save__concurrent_calls_coalesced);
 
             this.add_test ("restore__empty_database", this.test_restore__empty_database);
             this.add_test ("restore__empty_session", this.test_restore__empty_session);
@@ -5012,6 +5016,92 @@ namespace Tests
                     new GLib.Variant.int64 (gap_entry.end_time),
                     new GLib.Variant.int64 (gap.end_time)
                 );
+            }
+            catch (GLib.Error error) {
+                assert_no_error (error);
+            }
+        }
+
+        /**
+         * All concurrent save() calls should complete successfully.
+         */
+        public void test_save__concurrent_calls ()
+        {
+            this.session_manager.timer.start ();
+
+            var n = 3;
+            var completed = 0;
+            var all_succeeded = true;
+
+            for (var i = 0; i < n; i++)
+            {
+                this.session_manager.save.begin (
+                    (obj, res) => {
+                        if (!this.session_manager.save.end (res)) {
+                            all_succeeded = false;
+                        }
+                        completed++;
+                        if (completed == n) {
+                            this.quit_main_loop ();
+                        }
+                    });
+            }
+
+            assert_true (this.run_main_loop ());
+            assert_true (all_succeeded);
+        }
+
+        /**
+         * State changed after the first save's snapshot but before it completes should
+         * be captured by the coalesced save, proving the coalesced save actually ran.
+         *
+         * save_A takes its snapshot synchronously (before yielding to the DB), so
+         * pausing the timer afterwards creates a gap that only the coalesced save sees.
+         * If coalescing were broken and waiters were silently dropped, no GapEntry would
+         * be written and the assertion would fail.
+         */
+        public void test_save__concurrent_calls_coalesced ()
+        {
+            var repository = Ft.Database.get_repository ();
+
+            this.session_manager.timer.start ();
+
+            var completed = 0;
+            var all_succeeded = true;
+
+            // First save: starts in-flight; its snapshot is taken before it yields to the DB.
+            this.session_manager.save.begin ((obj, res) => {
+                if (!this.session_manager.save.end (res)) {
+                    all_succeeded = false;
+                }
+                completed++;
+                if (completed == 2) {
+                    this.quit_main_loop ();
+                }
+            });
+
+            // Modify state after save_A's snapshot: pause creates a gap that only the
+            // coalesced save will capture.
+            Ft.Timestamp.advance (Ft.Interval.MINUTE);
+            this.session_manager.timer.pause ();
+
+            // Second save: no changes, wait for final result.
+            this.session_manager.save.begin ((obj, res) => {
+                if (!this.session_manager.save.end (res)) {
+                    all_succeeded = false;
+                }
+                completed++;
+                if (completed == 2) {
+                    this.quit_main_loop ();
+                }
+            });
+
+            assert_true (this.run_main_loop ());
+            assert_true (all_succeeded);
+
+            try {
+                var results = repository.find_sync (typeof (Ft.GapEntry), null);
+                assert_cmpuint (results.count, GLib.CompareOperator.EQ, 1);
             }
             catch (GLib.Error error) {
                 assert_no_error (error);
