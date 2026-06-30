@@ -1001,6 +1001,7 @@ namespace Ft
             this.event_producer.destroy ();
             this.event_bus.destroy ();
             this.action_manager?.destroy ();
+            this.notification_manager.destroy ();
             this.background_manager.destroy ();
             this.session_manager.enter_session.disconnect (this.on_enter_session);
             this.session_manager.leave_session.disconnect (this.on_leave_session);

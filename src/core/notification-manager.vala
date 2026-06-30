@@ -879,11 +879,6 @@ namespace Ft
                 GLib.Source.remove (this.screen_overlay_open_timeout_id);
                 this.screen_overlay_open_timeout_id = 0U;
             }
-        }
-
-        public override void dispose ()
-        {
-            this.destroy ();
 
             if (this.screen_overlay_active) {
                 this.request_screen_overlay_close ();
@@ -911,6 +906,11 @@ namespace Ft
 
             this.remove_reopen_screen_overlay_idle_watch ();
             this.remove_lock_screen_idle_watch ();
+        }
+
+        public override void dispose ()
+        {
+            this.destroy ();
 
             this._timer = null;
             this._session_manager = null;
