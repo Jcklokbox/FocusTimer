@@ -147,6 +147,7 @@ namespace Ft
         private Ft.SessionDBusService?      session_dbus_service;
         private uint                        session_dbus_service_id;
         private uint                        service_hold_id = 0U;
+        private GLib.VariantDict?           command_line_options = null;
         private bool                        preferences_requested = false;
 
         static construct
@@ -773,9 +774,30 @@ namespace Ft
                         this.service_hold_id = this.background_manager.hold.end (res);
                     });
             }
+            else {
+                this.command_line_options = null;
+            }
 
             while (!ready) {
                 main_context.iteration (true);
+            }
+
+            if (this.command_line_options != null)
+            {
+                foreach (unowned var option in OPTIONS)
+                {
+                    var value = this.command_line_options?.lookup_value (option.long_name, null);
+
+                    if (value != null &&
+                        option.action_name != null &&
+                        option.group == "timer")
+                    {
+                        this.activate_prefixed_action (option.action_name,
+                                                       option.get_action_parameter (value));
+                    }
+                }
+
+                this.command_line_options = null;
             }
 
             this.unmark_busy ();
@@ -866,6 +888,8 @@ namespace Ft
                 return Ft.ExitStatus.SUCCESS;
             }
 
+            this.command_line_options = options;
+
             return Ft.ExitStatus.UNDEFINED;
         }
 
@@ -882,16 +906,26 @@ namespace Ft
                     continue;
                 }
 
-                if (option.action_name != null) {
+                if (option.action_name != null)
+                {
                     this.activate_prefixed_action (option.action_name,
                                                    option.get_action_parameter (value));
-                    exit_status = Ft.ExitStatus.SUCCESS;
+
+                    if (command_line.is_remote) {
+                        exit_status = Ft.ExitStatus.SUCCESS;
+                    }
                 }
                 else if (option.long_name == "status") {
                     this.print_timer_status (command_line);
                     exit_status = Ft.ExitStatus.SUCCESS;
                 }
             }
+
+            if (exit_status != ExitStatus.UNDEFINED) {
+                command_line.set_exit_status ((int) exit_status);
+            }
+
+            command_line.done ();
 
             if (exit_status != ExitStatus.UNDEFINED) {
                 return exit_status;
