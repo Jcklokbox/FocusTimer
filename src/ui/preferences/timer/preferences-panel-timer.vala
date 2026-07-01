@@ -15,6 +15,8 @@ namespace Ft
         [GtkChild]
         private unowned Adw.PreferencesPage page;
         [GtkChild]
+        private unowned Ft.LogScaleRow long_break_duration_row;
+        [GtkChild]
         private unowned Gtk.Adjustment pomodoro_duration_adjustment;
         [GtkChild]
         private unowned Gtk.Adjustment short_break_duration_adjustment;
@@ -32,8 +34,6 @@ namespace Ft
         private unowned Adw.SwitchRow confirm_starting_break_switchrow;
         [GtkChild]
         private unowned Adw.SwitchRow confirm_starting_pomodoro_switchrow;
-        [GtkChild]
-        private unowned Ft.LogScaleRow long_break_row;
 
         private GLib.Settings?  settings;
         private ulong           settings_changed_id = 0;
@@ -45,11 +45,23 @@ namespace Ft
         construct
         {
             this.settings = Ft.get_settings ();
-            this.settings.bind ("pomodoro-duration", this.pomodoro_duration_adjustment, "value", GLib.SettingsBindFlags.DEFAULT);
-            this.settings.bind ("short-break-duration", this.short_break_duration_adjustment, "value", GLib.SettingsBindFlags.DEFAULT);
-            this.settings.bind ("long-break-duration", this.long_break_duration_adjustment, "value", GLib.SettingsBindFlags.DEFAULT);
-            this.settings.bind ("cycles", this.cycles_adjustment, "value", GLib.SettingsBindFlags.DEFAULT);
 
+            this.settings.bind ("pomodoro-duration",
+                                this.pomodoro_duration_adjustment,
+                                "value",
+                                GLib.SettingsBindFlags.GET);  // deferred set
+            this.settings.bind ("short-break-duration",
+                                this.short_break_duration_adjustment,
+                                "value",
+                                GLib.SettingsBindFlags.GET);  // deferred set
+            this.settings.bind ("long-break-duration",
+                                this.long_break_duration_adjustment,
+                                "value",
+                                GLib.SettingsBindFlags.GET);  // deferred set
+            this.settings.bind ("cycles",
+                                this.cycles_adjustment,
+                                "value",
+                                GLib.SettingsBindFlags.DEFAULT);
             this.settings.bind ("pause-on-lockscreen",
                                  this.pause_on_lockscreen_switchrow,
                                  "active",
@@ -62,6 +74,12 @@ namespace Ft
                                  this.confirm_starting_pomodoro_switchrow,
                                  "active",
                                  GLib.SettingsBindFlags.DEFAULT);
+
+            this.pomodoro_duration_adjustment.value_changed.connect (this.update_stats_labels);
+            this.short_break_duration_adjustment.value_changed.connect (this.update_stats_labels);
+            this.long_break_duration_adjustment.value_changed.connect (this.update_stats_labels);
+            this.cycles_adjustment.value_changed.connect (this.update_stats_labels);
+            this.cycles_adjustment.value_changed.connect (this.update_long_break_row_sensitivity);
 
             this.idle_monitor = new Ft.IdleMonitor ();
             this.idle_monitor.bind_property ("enabled",
@@ -83,12 +101,20 @@ namespace Ft
 
         private void update_long_break_row_sensitivity ()
         {
-            this.long_break_row.sensitive = this.cycles_adjustment.value > 1.0;
+            this.long_break_duration_row.sensitive = this.cycles_adjustment.value > 1.0;
         }
 
         private void update_stats_labels ()
         {
-            var session_template = Ft.SessionTemplate.with_defaults ();
+            var session_template = Ft.SessionTemplate ();
+            session_template.pomodoro_duration = Ft.Timestamp.from_seconds_uint (
+                    (uint) Math.round (this.pomodoro_duration_adjustment.value));
+            session_template.short_break_duration = Ft.Timestamp.from_seconds_uint (
+                    (uint) Math.round (this.short_break_duration_adjustment.value));
+            session_template.long_break_duration = Ft.Timestamp.from_seconds_uint (
+                    (uint) Math.round (this.long_break_duration_adjustment.value));
+            session_template.cycles = (uint) Math.round (this.cycles_adjustment.value);
+
             var total_duration = Ft.Timestamp.to_seconds_uint (session_template.calculate_total_duration ());
             var break_percentage = (uint) Math.round (session_template.calculate_break_percentage ());
 
@@ -184,24 +210,16 @@ namespace Ft
             {
                 case "pomodoro-duration":
                     changed_state = Ft.State.POMODORO;
-                    this.update_stats_labels ();
                     break;
 
                 case "short-break-duration":
                     changed_state = settings.get_uint ("cycles") > 1
                         ? Ft.State.SHORT_BREAK
                         : Ft.State.BREAK;
-                    this.update_stats_labels ();
                     break;
 
                 case "long-break-duration":
                     changed_state = Ft.State.LONG_BREAK;
-                    this.update_stats_labels ();
-                    break;
-
-                case "cycles":
-                    this.update_long_break_row_sensitivity ();
-                    this.update_stats_labels ();
                     break;
 
                 default:
@@ -220,6 +238,30 @@ namespace Ft
                     this.hide_apply_changes_toast ();
                 }
             }
+        }
+
+        [GtkCallback]
+        private void on_pomodoro_duration_changed ()
+        {
+            this.settings.set_uint (
+                    "pomodoro-duration",
+                    (uint) Math.round (this.pomodoro_duration_adjustment.value));
+        }
+
+        [GtkCallback]
+        private void on_short_break_duration_changed ()
+        {
+            this.settings.set_uint (
+                    "short-break-duration",
+                    (uint) Math.round (this.short_break_duration_adjustment.value));
+        }
+
+        [GtkCallback]
+        private void on_long_break_duration_changed ()
+        {
+            this.settings.set_uint (
+                    "long-break-duration",
+                    (uint) Math.round (this.long_break_duration_adjustment.value));
         }
 
         public override unowned Adw.PreferencesPage get_preferences_page ()

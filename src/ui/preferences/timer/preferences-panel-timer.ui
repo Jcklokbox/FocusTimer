@@ -16,7 +16,7 @@
               <object class="AdwPreferencesGroup">
                 <property name="title" translatable="yes">Session</property>
                 <child>
-                  <object class="FtLogScaleRow">
+                  <object class="FtLogScaleRow" id="pomodoro_duration_row">
                     <property name="title" translatable="yes">Pomodoro Duration</property>
                     <property name="adjustment">
                       <object class="GtkAdjustment" id="pomodoro_duration_adjustment">
@@ -24,10 +24,11 @@
                         <property name="upper">7200</property>
                       </object>
                     </property>
+                    <signal name="value-changed" handler="on_pomodoro_duration_changed"/>
                   </object>
                 </child>
                 <child>
-                  <object class="FtLogScaleRow">
+                  <object class="FtLogScaleRow" id="short_break_duration_row">
                     <property name="title" translatable="yes">Short Break Duration</property>
                     <property name="adjustment">
                       <object class="GtkAdjustment" id="short_break_duration_adjustment">
@@ -35,10 +36,11 @@
                         <property name="upper">7200</property>
                       </object>
                     </property>
+                    <signal name="value-changed" handler="on_short_break_duration_changed"/>
                   </object>
                 </child>
                 <child>
-                  <object class="FtLogScaleRow" id="long_break_row">
+                  <object class="FtLogScaleRow" id="long_break_duration_row">
                     <property name="title" translatable="yes">Long Break Duration</property>
                     <property name="adjustment">
                       <object class="GtkAdjustment" id="long_break_duration_adjustment">
@@ -46,6 +48,7 @@
                         <property name="upper">7200</property>
                       </object>
                     </property>
+                    <signal name="value-changed" handler="on_long_break_duration_changed"/>
                   </object>
                 </child>
                 <child>

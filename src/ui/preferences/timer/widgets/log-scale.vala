@@ -17,13 +17,18 @@ namespace Ft
                                                         GLib.BindingFlags.SYNC_CREATE |
                                                         GLib.BindingFlags.BIDIRECTIONAL;
 
-        public double value { get; set; }
+        public double value { get; private set; }
 
         public new Gtk.Adjustment adjustment {
             get {
                 return this._adjustment;
             }
             set {
+                if (this._adjustment != null && this.adjustment_value_changed_id != 0) {
+                    this._adjustment.disconnect (this.adjustment_value_changed_id);
+                    this.adjustment_value_changed_id = 0;
+                }
+
                 if (this.value_binding != null) {
                     this.value_binding.unbind ();
                     this.value_binding = null;
@@ -38,12 +43,19 @@ namespace Ft
                                                                          BINDING_FLAGS,
                                                                          this.transform_to,
                                                                          this.transform_from);
+                    // Sync displayed value from the just-applied binding (SYNC_CREATE
+                    // already ran transform_from, so _adjustment.value is rounded).
+                    this.value = this._adjustment.value;
+
+                    this.adjustment_value_changed_id =
+                            this._adjustment.value_changed.connect (this.on_adjustment_value_changed);
                 }
             }
         }
 
         private Gtk.Adjustment?       _adjustment;
         private unowned GLib.Binding? value_binding;
+        private ulong                 adjustment_value_changed_id = 0;
 
         construct
         {
@@ -57,6 +69,21 @@ namespace Ft
                 digits: -1,
                 draw_value: false
             );
+        }
+
+        private void on_adjustment_value_changed ()
+        {
+            if (this._adjustment == null) {
+                return;
+            }
+
+            var new_value = this._adjustment.value;
+
+            if (this.value == new_value) {
+                return;
+            }
+
+            this.value = new_value;
         }
 
         /**
@@ -133,6 +160,11 @@ namespace Ft
 
         public override void dispose ()
         {
+            if (this._adjustment != null && this.adjustment_value_changed_id != 0) {
+                this._adjustment.disconnect (this.adjustment_value_changed_id);
+                this.adjustment_value_changed_id = 0;
+            }
+
             if (this.value_binding != null) {
                 this.value_binding.unbind ();
             }

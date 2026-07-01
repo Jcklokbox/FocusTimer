@@ -18,14 +18,16 @@ namespace Ft
             }
             set {
                 if (this._adjustment != null) {
-                    this._adjustment.disconnect (this.value_changed_id);
-                    this.value_changed_id = 0;
+                    this._adjustment.value_changed.disconnect (this.on_value_changed);
                 }
 
                 this._adjustment = value;
 
+                this.value_changed ();
+                this.update_value_label ();
+
                 if (this._adjustment != null) {
-                    this.value_changed_id = this._adjustment.value_changed.connect (this.on_value_changed);
+                    this._adjustment.value_changed.connect (this.on_value_changed);
                 }
             }
         }
@@ -38,7 +40,7 @@ namespace Ft
         private unowned Ft.LogScale scale;
 
         private Gtk.Adjustment _adjustment;
-        private ulong          value_changed_id = 0;
+        private bool           pending_value_changed = false;
 
         construct
         {
@@ -60,16 +62,40 @@ namespace Ft
         private void on_value_changed ()
         {
             this.update_value_label ();
+
+            if (this.scale.has_css_class ("dragging")) {
+                this.pending_value_changed = true;
+            }
+            else {
+                this.value_changed ();
+            }
+        }
+
+        [GtkCallback]
+        private void on_notify_css_classes ()
+        {
+            var is_dragging = this.scale.has_css_class ("dragging");
+
+            if (this.pending_value_changed && !is_dragging) {
+                this.value_changed ();
+            }
+        }
+
+        /**
+         * Emitted when user stops dragging the slider unlike `notify["value"]` on the
+         * `Gtk.Adjustment`.
+         */
+        public signal void value_changed ()
+        {
+            this.pending_value_changed = false;
         }
 
         public override void dispose ()
         {
             if (this._adjustment != null) {
-                this._adjustment.disconnect (this.value_changed_id);
-                this.value_changed_id = 0;
+                this._adjustment.value_changed.disconnect (this.on_value_changed);
+                this._adjustment = null;
             }
-
-            this._adjustment = null;
 
             base.dispose ();
         }

@@ -37,6 +37,7 @@
           <object class="FtLogScale" id="scale">
             <property name="halign">fill</property>
             <property name="show-fill-level">true</property>
+            <signal name="notify::css-classes" handler="on_notify_css_classes"/>
             <layout>
               <property name="column">0</property>
               <property name="column-span">2</property>
