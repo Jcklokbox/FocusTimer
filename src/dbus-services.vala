@@ -781,9 +781,15 @@ namespace Ft
         }
 
         [DBus (signature = "a{sv}")]
-        public GLib.Variant GetNextTimeBlock () throws GLib.DBusError, GLib.IOError
+        public GLib.Variant get_next_time_block () throws GLib.DBusError, GLib.IOError
         {
-            return this.serialize_time_block (this.session_manager.get_next_time_block ());
+            unowned var next_time_block = this.session_manager.get_next_time_block ();
+
+            if (next_time_block == null) {
+                GLib.warning ("get_next_time_block() returned null");
+            }
+
+            return this.serialize_time_block (next_time_block);
         }
 
         [DBus (signature = "aa{sv}")]

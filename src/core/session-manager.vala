@@ -260,6 +260,8 @@ namespace Ft
 
         private Ft.Session initialize_next_session (int64 timestamp)
         {
+            GLib.debug ("Initializing new session...");
+
             var next_session = new Ft.Session ();
 
             this.reschedule_full (next_session, null, false, timestamp);
@@ -794,7 +796,9 @@ namespace Ft
                 next_time_block = this._current_session.get_next_time_block (next_time_block);
             }
 
-            return next_time_block != null ? next_time_block : this.next_time_block;
+            return next_time_block != null
+                    ? next_time_block
+                    : this.next_time_block;
         }
 
         /**
@@ -2500,7 +2504,7 @@ namespace Ft
         }
 
         /**
-         * Initialize session if there is no current session or if it expired.
+         * Initialize session if missing or expired.
          */
         public void ensure_session (int64 timestamp = Ft.Timestamp.UNDEFINED)
         {
@@ -2511,6 +2515,20 @@ namespace Ft
                 var next_session = this.initialize_next_session (timestamp);
 
                 this.set_current_time_block_full (next_session, null, timestamp);
+            }
+        }
+
+        /**
+         * Ensure there is a time-block scheduled.
+         */
+        public void ensure_next_time_block (int64 timestamp = Ft.Timestamp.UNDEFINED)
+        {
+            Ft.ensure_timestamp (ref timestamp);
+
+            this.ensure_session (timestamp);
+
+            if (this.get_next_time_block () == null) {
+                this.initialize_next_time_block (timestamp);
             }
         }
 
