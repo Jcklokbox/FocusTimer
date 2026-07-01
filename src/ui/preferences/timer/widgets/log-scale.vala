@@ -71,21 +71,6 @@ namespace Ft
             );
         }
 
-        private void on_adjustment_value_changed ()
-        {
-            if (this._adjustment == null) {
-                return;
-            }
-
-            var new_value = this._adjustment.value;
-
-            if (this.value == new_value) {
-                return;
-            }
-
-            this.value = new_value;
-        }
-
         /**
          * Round seconds to 30s, 1m, 5m, 10m.
          *
@@ -106,6 +91,23 @@ namespace Ft
             }
 
             return 600.0 * Math.round (seconds / 600.0);
+        }
+
+        private double get_step_size (double seconds)
+        {
+            if (seconds < 60.0) {
+                return 30.0;
+            }
+
+            if (seconds < 1800.0) {
+                return 60.0;
+            }
+
+            if (seconds < 3600.0) {
+                return 300.0;
+            }
+
+            return 600.0;
         }
 
         private inline double func (double x)
@@ -156,6 +158,45 @@ namespace Ft
             target_value.set_double (base_value);
 
             return true;
+        }
+
+        private void on_adjustment_value_changed ()
+        {
+            if (this._adjustment == null) {
+                return;
+            }
+
+            var new_value = this._adjustment.value;
+
+            if (this.value == new_value) {
+                return;
+            }
+
+            this.value = new_value;
+        }
+
+        public void step_forward ()
+        {
+            if (this._adjustment == null) {
+                return;
+            }
+
+            var new_value = this._adjustment.value;
+            new_value += this.get_step_size (new_value + 1.0);
+
+            this._adjustment.value = new_value.clamp (this._adjustment.lower, this._adjustment.upper);
+        }
+
+        public void step_backward ()
+        {
+            if (this._adjustment == null) {
+                return;
+            }
+
+            var new_value = this._adjustment.value;
+            new_value -= this.get_step_size (new_value - 1.0);
+
+            this._adjustment.value = new_value.clamp (this._adjustment.lower, this._adjustment.upper);
         }
 
         public override void dispose ()

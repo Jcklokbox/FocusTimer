@@ -47,6 +47,15 @@ namespace Ft
             this.bind_property ("title", this.title_label, "label", GLib.BindingFlags.SYNC_CREATE);
             this.bind_property ("adjustment", this.scale, "adjustment", GLib.BindingFlags.SYNC_CREATE);
 
+            var scroll_controller = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
+            scroll_controller.propagation_phase = Gtk.PropagationPhase.CAPTURE;
+            scroll_controller.scroll.connect (this.on_scroll);
+            this.add_controller (scroll_controller);
+
+            var key_controller = new Gtk.EventControllerKey ();
+            key_controller.key_pressed.connect (this.on_key_pressed);
+            this.add_controller (key_controller);
+
             this.update_value_label ();
         }
 
@@ -68,6 +77,46 @@ namespace Ft
             }
             else {
                 this.value_changed ();
+            }
+        }
+
+        private bool on_scroll (double dx,
+                                double dy)
+        {
+            if (this._adjustment == null || dy == 0.0) {
+                return false;
+            }
+
+            if (dy < 0.0) {
+                this.scale.step_forward ();
+            }
+            else {
+                this.scale.step_backward ();
+            }
+
+            return true;
+        }
+
+        private bool on_key_pressed (uint             keyval,
+                                     uint             keycode,
+                                     Gdk.ModifierType state)
+        {
+            if (this._adjustment == null) {
+                return false;
+            }
+
+            switch (keyval)
+            {
+                case Gdk.Key.Page_Up:
+                    this.scale.step_forward ();
+                    return true;
+
+                case Gdk.Key.Page_Down:
+                    this.scale.step_backward ();
+                    return true;
+
+                default:
+                    return false;
             }
         }
 
