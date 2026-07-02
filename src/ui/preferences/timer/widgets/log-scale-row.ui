@@ -35,6 +35,7 @@
         </child>
         <child>
           <object class="FtLogScale" id="scale">
+            <property name="focusable">false</property>
             <property name="halign">fill</property>
             <property name="show-fill-level">true</property>
             <signal name="notify::css-classes" handler="on_notify_css_classes"/>

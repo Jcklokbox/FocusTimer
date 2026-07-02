@@ -130,6 +130,17 @@ namespace Ft
             }
         }
 
+        public override bool focus (Gtk.DirectionType direction)
+        {
+            if (this.is_focus ()) {
+                return false;
+            }
+
+            this.grab_focus ();
+
+            return true;
+        }
+
         /**
          * Emitted when user stops dragging the slider unlike `notify["value"]` on the
          * `Gtk.Adjustment`.
