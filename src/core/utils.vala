@@ -148,26 +148,30 @@ namespace Ft
 
             desktop_name = desktop_name.ascii_down ();
 
-            switch (desktop_name)
-            {
-                case "ubuntu":
-                    desktop_name = "gnome";
-                    break;
-
-                case "xubuntu":
-                    desktop_name = "xfce";
-                    break;
-
-                case "lubuntu":
-                    desktop_name = "lxqt";
-                    break;
-
-                case "budgie-desktop":
-                    desktop_name = "budgie";
-                    break;
-
-                default:
-                    break;
+            if (desktop_name.contains ("gnome")) {
+                desktop_name = "gnome";
+            }
+            else if (desktop_name.contains ("kde") ||
+                     desktop_name.contains ("plasma")) {
+                desktop_name = "kde";
+            }
+            else if (desktop_name.contains ("xfce")) {
+                desktop_name = "xfce";
+            }
+            else if (desktop_name.contains ("budgie")) {
+                desktop_name = "budgie";
+            }
+            else if (desktop_name.has_prefix ("ubuntu")) {
+                desktop_name = "gnome";
+            }
+            else if (desktop_name.has_prefix ("kubuntu")) {
+                desktop_name = "kde";
+            }
+            else if (desktop_name.has_prefix ("xubuntu")) {
+                desktop_name = "xfce";
+            }
+            else if (desktop_name.has_prefix ("lubuntu")) {
+                desktop_name = "lxqt";
             }
 
             _desktop_name = desktop_name;
