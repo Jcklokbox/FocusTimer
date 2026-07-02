@@ -15,6 +15,9 @@ namespace Kde
             return;
         }
 
+        object_module.register_extension_type (typeof (Ft.ApplicationExtension),
+                                               typeof (Kde.ApplicationExtension));
+
         object_module.register_extension_type (typeof (Ft.PreferencesWindowExtension),
                                                typeof (Kde.PreferencesWindowExtension));
     }

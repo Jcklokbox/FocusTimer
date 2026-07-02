@@ -8,11 +8,15 @@ namespace Kde
 {
     public class PreferencesWindowExtension : Ft.PreferencesWindowExtension
     {
+        private GLib.Settings?                  settings = null;
         private Ft.PreferencesPanel?            last_panel = null;
         private unowned Adw.PreferencesGroup?   notification_group = null;
+        private unowned Adw.PreferencesGroup?   desktop_group = null;
 
         construct
         {
+            this.settings = new GLib.Settings ("io.github.focustimerhq.FocusTimer.plugins.kde");
+
             this.notify["window"].connect (this.on_notify_window);
         }
 
@@ -64,6 +68,39 @@ namespace Kde
             this.notification_group = null;
         }
 
+        private void setup_integrations_panel (Ft.PreferencesPanel panel)
+        {
+            var page = panel.get_preferences_page ();
+
+            if (this.settings == null) {
+                this.taredown_integrations_panel (panel);
+                return;
+            }
+
+            if (this.desktop_group == null)
+            {
+                var desktop_group = new Adw.PreferencesGroup ();
+                desktop_group.title = _("Desktop");
+                page.add (desktop_group);
+
+                var manage_notifications_row = new Adw.SwitchRow ();
+                manage_notifications_row.title = _("Do Not Disturb");
+                manage_notifications_row.subtitle = _("Hide non-critical notifications while using the timer.");
+                desktop_group.add (manage_notifications_row);
+
+                this.desktop_group = desktop_group;
+                this.settings.bind ("manage-notifications",
+                                    manage_notifications_row, "active",
+                                    GLib.SettingsBindFlags.DEFAULT);
+            }
+        }
+
+        private void taredown_integrations_panel (Ft.PreferencesPanel panel)
+        {
+            this.desktop_group?.unparent ();
+            this.desktop_group = null;
+        }
+
         /**
          * Modify visible_panel of the PreferencesWindow.
          */
@@ -73,12 +110,7 @@ namespace Kde
 
             if (panel != this.last_panel)
             {
-                switch (this.last_panel?.tag)
-                {
-                    case "notifications":
-                        this.taredown_notifications_panel (this.last_panel);
-                        break;
-                }
+                this.taredown ();
 
                 this.last_panel = panel;
             }
@@ -89,19 +121,31 @@ namespace Kde
                     this.setup_notifications_panel (panel);
                     break;
 
+                case "integrations":
+                    this.setup_integrations_panel (panel);
+                    break;
+
                 default:
-                    this.taredown ();
                     break;
             }
         }
 
         private void taredown ()
         {
-            if (this.last_panel == null) {
-                return;
+            switch (this.last_panel?.tag)
+            {
+                case "notifications":
+                    this.taredown_notifications_panel (this.last_panel);
+                    break;
+
+                case "integrations":
+                    this.taredown_integrations_panel (this.last_panel);
+                    break;
+
+                default:
+                    break;
             }
 
-            this.taredown_notifications_panel (this.last_panel);
             this.last_panel = null;
         }
 
@@ -125,6 +169,8 @@ namespace Kde
             if (this.window != null) {
                 this.window.notify["visible-panel"].disconnect (this.on_notify_visible_panel);
             }
+
+            this.settings = null;
 
             base.dispose ();
         }

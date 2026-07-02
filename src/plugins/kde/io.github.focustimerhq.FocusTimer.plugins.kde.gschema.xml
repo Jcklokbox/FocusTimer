@@ -1,0 +1,8 @@
+<schemalist>
+  <schema id="io.github.focustimerhq.FocusTimer.plugins.kde" path="/io/github/focustimerhq/FocusTimer/plugins/kde/">
+    <key name="manage-notifications" type="b">
+      <default>false</default>
+      <summary>Hide non-critical notifications while using the timer</summary>
+    </key>
+  </schema>
+</schemalist>
