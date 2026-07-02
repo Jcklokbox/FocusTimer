@@ -15,7 +15,6 @@ namespace Gnome
         private bool                    shell_extension_enabled = false;
         private uint                    shell_watcher_id = 0;
         private uint                    background_hold_id = 0U;
-        private GLib.Cancellable?       cancellable = null;
 
         construct
         {
@@ -81,7 +80,7 @@ namespace Gnome
                         "/org/gnome/Shell",
                         GLib.DBusProxyFlags.DO_NOT_AUTO_START |
                         GLib.DBusProxyFlags.DO_NOT_CONNECT_SIGNALS,
-                        this.cancellable);
+                        null);
             }
             catch (GLib.Error error) {
                 GLib.warning ("Error while initializing shell proxy: %s", error.message);
@@ -112,11 +111,6 @@ namespace Gnome
             if (this.shell_watcher_id != 0) {
                 GLib.Bus.unwatch_name (this.shell_watcher_id);
                 this.shell_watcher_id = 0;
-            }
-
-            if (this.cancellable != null) {
-                this.cancellable.cancel ();
-                this.cancellable = null;
             }
 
             if (this.background_hold_id != 0U) {
