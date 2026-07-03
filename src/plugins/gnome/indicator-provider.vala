@@ -41,6 +41,8 @@ namespace Gnome
             this.shell_extension = new Gnome.ShellExtension ();
             this.shell_extension.notify["enabled"].connect (this.on_notify_extension_enabled);
 
+            yield this.shell_extension.wait ();
+
             this.update_available ();
         }
 

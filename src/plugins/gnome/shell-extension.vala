@@ -70,11 +70,13 @@ namespace Gnome
         private uint                            shell_watcher_id = 0;
         private uint                            shell_integration_watcher_id = 0;
         private GLib.Cancellable?               cancellable = null;
+        private Ft.AsyncCallback[]              wait_callbacks;
 
         construct
         {
             this.extension_info = Gnome.ExtensionInfo (EXTENSION_UUID);
             this.cancellable = new GLib.Cancellable ();
+            this.wait_callbacks = {};
 
             if (!Ft.is_devel ())
             {
@@ -133,7 +135,17 @@ namespace Gnome
                 this.shell_extensions_proxy.extension_state_changed.connect (
                         this.on_extension_state_changed);
 
-                this.query_extension_state.begin ();
+                this.query_extension_state.begin (
+                    (obj, res) => {
+                        this.query_extension_state.end (res);
+
+                        var callbacks = (owned) this.wait_callbacks;
+                        this.wait_callbacks = {};
+
+                        foreach (unowned var callback in callbacks) {
+                            callback.func ();
+                        }
+                    });
             }
             catch (GLib.Error error) {
                 GLib.warning ("Error while initializing extensions proxy: %s", error.message);
@@ -159,6 +171,13 @@ namespace Gnome
             this.shell_extensions_proxy = null;
             this.available = false;
             this.enabled = false;
+
+            var callbacks = (owned) this.wait_callbacks;
+            this.wait_callbacks = {};
+
+            foreach (unowned var callback in callbacks) {
+                callback.func ();
+            }
         }
 
         private void on_shell_integration_name_appeared (GLib.DBusConnection connection,
@@ -223,6 +242,24 @@ namespace Gnome
             }
 
             this.update_available ();
+        }
+
+        /**
+         * Wait until initialized
+         */
+        public async void wait ()
+        {
+            if (this.shell_watcher_id == 0) {
+                return;  // can't determine availability
+            }
+
+            if (this.extension_info.state != Gnome.ExtensionState.UNKNOWN) {
+                return;  // already initialized
+            }
+
+            this.wait_callbacks += new Ft.AsyncCallback (wait.callback);
+
+            yield;
         }
 
         public bool is_installed ()

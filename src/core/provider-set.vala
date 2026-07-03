@@ -11,7 +11,7 @@ namespace Ft
     /**
      * Time between the start of provider initialization to resolution of availability.
      */
-    private const int64 AVAILABILITY_TIMEOUT = Ft.Interval.MILLISECOND * 100;
+    private const int64 AVAILABILITY_TIMEOUT = Ft.Interval.MILLISECOND * 200;
     private const int64 AVAILABILITY_TIMEOUT_TOLERANCE = Ft.Interval.MILLISECOND * 20;
 
 
@@ -100,6 +100,9 @@ namespace Ft
             assert (this.instance == null);
         }
 
+        /**
+         * Return time since initialization.
+         */
         public int64 get_availability_timeout (ref int64 monotonic_time)
         {
             if (this.instance.available_set) {
