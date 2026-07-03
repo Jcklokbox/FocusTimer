@@ -6,7 +6,7 @@
 
 namespace Ft
 {
-    private class VariableItem : GLib.Object
+    private sealed class VariableItem : GLib.Object
     {
         public string display_name {
             get {
@@ -43,7 +43,7 @@ namespace Ft
     }
 
 
-    private class FormatItem : GLib.Object
+    private sealed class FormatItem : GLib.Object
     {
         public string display_name {
             get {
@@ -165,9 +165,9 @@ namespace Ft
         }
 
         [GtkCallback]
-        private string get_variable_display_name (GLib.Object? item)
+        private static string get_variable_display_name (Gtk.ListItem? item)
         {
-            var variable_item = (VariableItem?) item;
+            unowned var variable_item = (VariableItem?) item.item;
 
             return variable_item?.display_name;
         }
