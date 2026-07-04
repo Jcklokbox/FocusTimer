@@ -33,6 +33,7 @@ namespace Ft
             public string?         action_name;
             public GLib.Variant?   action_parameter;
             public bool            is_exclusive;
+            public int             order;
 
             public bool            bool_value;
             public int             int_value;
@@ -44,7 +45,8 @@ namespace Ft
                            string?        arg_description,
                            string?        action_name = null,
                            GLib.Variant?  action_parameter = null,
-                           bool           is_exclusive = true)
+                           bool           is_exclusive = true,
+                           int            order = 0)
             {
                 var parts = long_name.split (".", 2);
 
@@ -64,6 +66,7 @@ namespace Ft
                 this.action_name = action_name;
                 this.action_parameter = action_parameter;
                 this.is_exclusive = is_exclusive;
+                this.order = order;
             }
 
             public void* get_arg_data ()
@@ -155,10 +158,10 @@ namespace Ft
             OPTIONS = {
                 new Option ("timer.start-stop", '\0', N_("Start or Stop"),
                             GLib.OptionArg.NONE, null,
-                            "timer.start-stop"),
+                            "timer.start-stop", null),
                 new Option ("timer.start-pause-resume", '\0', N_("Start, Pause or Resume"),
                             GLib.OptionArg.NONE, null,
-                            "timer.start-pause-resume"),
+                            "timer.start-pause-resume", null),
                 new Option ("timer.start-pomodoro", '\0', N_("Start Pomodoro"),
                             GLib.OptionArg.NONE, null,
                             "session-manager.state", new GLib.Variant.string ("pomodoro")),
@@ -173,39 +176,42 @@ namespace Ft
                             "session-manager.state", new GLib.Variant.string ("long-break")),
                 new Option ("timer.start", '\0', N_("Start"),
                             GLib.OptionArg.NONE, null,
-                            "timer.start"),
+                            "timer.start", null),
                 new Option ("timer.stop", '\0', N_("Stop"),
                             GLib.OptionArg.NONE, null,
-                            "timer.reset"),
+                            "timer.reset", null),
                 new Option ("timer.pause", '\0', N_("Pause"),
                             GLib.OptionArg.NONE, null,
-                            "timer.pause"),
+                            "timer.pause", null),
                 new Option ("timer.resume", '\0', N_("Resume"),
                             GLib.OptionArg.NONE, null,
-                            "timer.resume"),
+                            "timer.resume", null),
                 new Option ("timer.skip", '\0', N_("Skip"),
                             GLib.OptionArg.NONE, null,
-                            "session-manager.advance"),
+                            "session-manager.advance", null),
                 new Option ("timer.rewind", '\0', N_("Rewind"),
                             GLib.OptionArg.INT, N_("SECONDS"),
-                            "timer.rewind-by"),
+                            "timer.rewind-by", null),
                 new Option ("timer.extend", '\0', N_("Extend current pomodoro or break"),
                             GLib.OptionArg.INT, N_("SECONDS"),
-                            "timer.extend-by"),
+                            "timer.extend-by", null),
                 new Option ("timer.reset", '\0', N_("Reset"),
                             GLib.OptionArg.NONE, null,
-                            "session-manager.reset"),
+                            "session-manager.reset", null,
+                            false, -1),
                 new Option ("timer.status", 's', N_("Print timer status"),
                             GLib.OptionArg.NONE, null,
-                            null, null, false),
+                            null, null,
+                            false, 1),
                 new Option ("preferences", '\0', N_("Show preferences"),
                             GLib.OptionArg.NONE, null,
-                            null, null, false),
+                            null, null,
+                            false, 1),
                 new Option ("quit", 'q', N_("Quit application"),
                             GLib.OptionArg.NONE, null,
-                            "app.quit"),
+                            "app.quit", null),
                 new Option ("version", 'v', N_("Print version information and exit"),
-                            GLib.OptionArg.NONE, null)
+                            GLib.OptionArg.NONE, null),
             };
         }
 
@@ -232,6 +238,26 @@ namespace Ft
             result += GLib.OptionEntry ();  // null entry
 
             return result;
+        }
+
+        private static GLib.SList<unowned Option> get_options ()
+        {
+            var options = new GLib.SList<unowned Option> ();
+
+            foreach (unowned var option in OPTIONS) {
+                options.append (option);
+            }
+
+            options.sort (
+                (a, b) => {
+                    if (a.order != b.order) {
+                        return a.order < b.order ? -1 : 1;
+                    }
+
+                    return 0;
+                });
+
+            return options;
         }
 
         construct
@@ -784,7 +810,7 @@ namespace Ft
 
             if (this.command_line_options != null)
             {
-                foreach (unowned var option in OPTIONS)
+                foreach (unowned var option in get_options ())
                 {
                     var value = this.command_line_options?.lookup_value (option.long_name, null);
 
@@ -898,7 +924,7 @@ namespace Ft
             var options = command_line.get_options_dict ();
             var exit_status = ExitStatus.UNDEFINED;
 
-            foreach (unowned var option in OPTIONS)
+            foreach (unowned var option in get_options ())
             {
                 var value = options.lookup_value (option.long_name, null);
 
