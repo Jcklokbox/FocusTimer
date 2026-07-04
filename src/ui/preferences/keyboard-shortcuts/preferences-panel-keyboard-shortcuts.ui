@@ -59,14 +59,12 @@
                   <object class="FtAcceleratorRow" id="start_stop_timer_row">
                     <property name="title" translatable="yes">Start or Stop</property>
                     <property name="description" translatable="yes">Enter new shortcut for starting or stopping the timer</property>
-                    <property name="activatable">false</property>
                   </object>
                 </child>
                 <child>
                   <object class="FtAcceleratorRow" id="start_pause_resume_timer_row">
                     <property name="title" translatable="yes">Start, Pause or Resume</property>
                     <property name="description" translatable="yes">Enter new shortcut to start/pause/resume the timer</property>
-                    <property name="activatable">false</property>
                   </object>
                 </child>
                 <child>
@@ -76,42 +74,36 @@
                       <object class="FtAcceleratorRow" id="start_timer_row">
                         <property name="title" translatable="yes">Start</property>
                         <property name="description" translatable="yes">Enter new shortcut for starting the timer</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                     <child>
                       <object class="FtAcceleratorRow" id="stop_timer_row">
                         <property name="title" translatable="yes">Stop</property>
                         <property name="description" translatable="yes">Enter new shortcut for stopping the timer</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                     <child>
                       <object class="FtAcceleratorRow" id="pause_timer_row">
                         <property name="title" translatable="yes">Pause</property>
                         <property name="description" translatable="yes">Enter new shortcut for pausing the timer</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                     <child>
                       <object class="FtAcceleratorRow" id="resume_timer_row">
                         <property name="title" translatable="yes">Resume</property>
                         <property name="description" translatable="yes">Enter new shortcut for resuming the timer</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                     <child>
                       <object class="FtAcceleratorRow" id="skip_timer_row">
                         <property name="title" translatable="yes">Skip</property>
                         <property name="description" translatable="yes">Enter new shortcut for skipping</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                     <child>
                       <object class="FtAcceleratorRow" id="rewind_timer_row">
                         <property name="title" translatable="yes">Rewind One Minute</property>
                         <property name="description" translatable="yes">Enter new shortcut for rewinding</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                   </object>
@@ -125,7 +117,6 @@
                       <object class="FtAcceleratorRow" id="toggle_window_row">
                         <property name="title" translatable="yes">Bring to Focus</property>
                         <property name="description" translatable="yes">Enter new shortcut for bringing window to focus</property>
-                        <property name="activatable">false</property>
                       </object>
                     </child>
                   </object>

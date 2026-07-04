@@ -5,7 +5,7 @@
   <template class="FtAcceleratorRow" parent="AdwActionRow">
     <property name="use-markup">false</property>
     <property name="selectable">false</property>
-    <property name="activatable">true</property>
+    <property name="activatable">false</property>
     <child>
       <object class="GtkLabel" id="accelerator_label">
         <property name="xalign">1.0</property>
@@ -17,6 +17,5 @@
         <property name="visible" bind-source="FtAcceleratorRow" bind-property="activatable" bind-flags="sync-create"/>
       </object>
     </child>
-    <signal name="activated" handler="on_activated"/>
   </template>
 </interface>

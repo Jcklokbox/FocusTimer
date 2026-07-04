@@ -55,7 +55,6 @@ libft_ui_sources = files(
   'ui/preferences/automation/action/variable-popover.vala',
   'ui/preferences/automation/preferences-panel-automation.vala',
   'ui/preferences/integrations/preferences-panel-integrations.vala',
-  'ui/preferences/keyboard-shortcuts/accelerator-chooser-window.vala',
   'ui/preferences/keyboard-shortcuts/accelerator-row.vala',
   'ui/preferences/keyboard-shortcuts/accelerator.vala',
   'ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.vala',

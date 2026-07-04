@@ -55,31 +55,5 @@ namespace Ft
                 this.accelerator_label.remove_css_class ("dim-label");
             }
         }
-
-        private Ft.AcceleratorChooserWindow create_accelerator_chooser ()
-        {
-            var chooser = new Ft.AcceleratorChooserWindow (this.description, this.accelerator);
-            chooser.transient_for = (Gtk.Window) this.get_root ();
-
-            return chooser;
-        }
-
-        private void on_chooser_response (Ft.AcceleratorChooserWindow chooser,
-                                          int                         response_id)
-        {
-            if (response_id != Gtk.ResponseType.APPLY) {
-                return;
-            }
-
-            this.accelerator = chooser.accelerator;
-        }
-
-        [GtkCallback]
-        public void on_activated ()
-        {
-            var chooser = this.create_accelerator_chooser ();
-            chooser.response.connect (this.on_chooser_response);
-            chooser.present ();
-        }
     }
 }
