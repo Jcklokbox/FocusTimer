@@ -40,14 +40,14 @@ namespace Ft
             this.update_accelerators ();
         }
 
-        private void open_global_shortcuts_dialog ()
+        private void open_edit_dialog ()
         {
             get_window_identifier.begin (
                 this.get_root () as Gtk.Window,
                 (obj, res) => {
                     var window_identifier = get_window_identifier.end (res);
 
-                    this.keyboard_manager.open_global_shortcuts_dialog (window_identifier);
+                    this.keyboard_manager.open_edit_dialog (window_identifier);
                 });
         }
 
@@ -119,7 +119,7 @@ namespace Ft
         [GtkCallback]
         private void on_edit_button_clicked (Gtk.Button button)
         {
-            this.open_global_shortcuts_dialog ();
+            this.open_edit_dialog ();
         }
 
         public override unowned Adw.PreferencesPage get_preferences_page ()

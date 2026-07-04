@@ -111,9 +111,13 @@ namespace Ft
                 }
             }
 
+            var keyval = index > keyval_position
+                    ? Gdk.keyval_from_name (accelerator_string.slice (keyval_position, index))
+                    : 0;
+
             return Ft.Accelerator () {
                 keycode   = 0,
-                keyval    = Gdk.keyval_from_name (accelerator_string.slice (keyval_position, index)),
+                keyval    = keyval,
                 modifiers = modifiers
             };
         }
@@ -235,7 +239,7 @@ namespace Ft
          */
         private string[] get_labels ()
         {
-            var labels = new string[0];
+            string[] labels = {};
 
             if (Gdk.ModifierType.SHIFT_MASK in this.modifiers) {
                 labels += "Shift";
@@ -259,10 +263,6 @@ namespace Ft
 
             if (Gdk.ModifierType.HYPER_MASK in this.modifiers) {
                 labels += "Hyper";
-            }
-
-            if (Gdk.ModifierType.META_MASK in this.modifiers) {
-                labels += "Meta";
             }
 
             var chr = (unichar) Gdk.keyval_to_unicode (this.keyval);
@@ -317,7 +317,12 @@ namespace Ft
                         break;
 
                     default:
-                        labels += Gdk.keyval_name (this.keyval).replace ("_", " ");
+                        var keyval_name = Gdk.keyval_name (this.keyval);
+
+                        if (keyval_name != null) {
+                            labels += keyval_name.replace ("_", " ");
+                        }
+
                         break;
                 }
             }

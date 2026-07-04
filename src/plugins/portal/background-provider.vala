@@ -138,35 +138,36 @@ namespace Portal
         {
             string handle_token;
 
+            if (this.proxy == null) {
+                return;
+            }
+
             try {
                 handle_token = yield Portal.create_request (
                     this.connection,
                     (response, results) => {
-                        if (results != null)
-                        {
-                            var background_variant = results.lookup ("background");
-                            var autostart_variant = results.lookup ("autostart");
-                            var background_allowed = background_variant != null
-                                    ? background_variant.get_boolean ()
-                                    : this._background_allowed;
-                            var autostart_allowed = autostart_variant != null
-                                    ? autostart_variant.get_boolean ()
-                                    : this._autostart_allowed;
+                        var background_variant = results.lookup_value ("background", null);
+                        var autostart_variant = results.lookup_value ("autostart", null);
+                        var background_allowed = background_variant != null
+                                ? background_variant.get_boolean ()
+                                : this._background_allowed;
+                        var autostart_allowed = autostart_variant != null
+                                ? autostart_variant.get_boolean ()
+                                : this._autostart_allowed;
 
-                            if (autostart_allowed != autostart) {
-                                GLib.warning ("Failed to set `autostart = %s`",
-                                              autostart.to_string ());
-                            }
+                        if (autostart_allowed != autostart) {
+                            GLib.warning ("Failed to set `autostart = %s`",
+                                          autostart.to_string ());
+                        }
 
-                            if (this._background_allowed != background_allowed) {
-                                this._background_allowed = background_allowed;
-                                this.notify_property ("background-allowed");
-                            }
+                        if (this._background_allowed != background_allowed) {
+                            this._background_allowed = background_allowed;
+                            this.notify_property ("background-allowed");
+                        }
 
-                            if (this._autostart_allowed != autostart_allowed) {
-                                this._autostart_allowed = autostart_allowed;
-                                this.notify_property ("autostart-allowed");
-                            }
+                        if (this._autostart_allowed != autostart_allowed) {
+                            this._autostart_allowed = autostart_allowed;
+                            this.notify_property ("autostart-allowed");
                         }
 
                         this.request_background.callback ();
@@ -177,15 +178,24 @@ namespace Portal
                 return;
             }
 
-            var options = new GLib.HashTable<string, GLib.Variant> (GLib.str_hash, GLib.str_equal);
-            options.insert ("handle_token", new GLib.Variant.string (handle_token));
-            options.insert ("autostart", new GLib.Variant.boolean (autostart));
-            options.insert ("commandline", new GLib.Variant.strv (COMMANDLINE));
+            if (this.proxy == null) {
+                Portal.destroy_request (handle_token);
+                return;
+            }
+
+            var options = new GLib.VariantDict ();
+            options.insert_value ("handle_token", new GLib.Variant.string (handle_token));
+            options.insert_value ("autostart", new GLib.Variant.boolean (autostart));
+            options.insert_value ("commandline", new GLib.Variant.strv (COMMANDLINE));
 
             this.proxy.request_background.begin (
                 parent_window,
-                options,
+                options.end (),
                 (obj, res) => {
+                    if (this.proxy == null) {
+                        return;
+                    }
+
                     try {
                         this.proxy.request_background.end (res);
                     }

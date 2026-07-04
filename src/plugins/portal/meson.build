@@ -14,7 +14,11 @@ libft_plugin_portal = static_library(
     'global-shortcuts-provider.vala',
     'notification-backend-provider.vala',
   ) + portal_plugin_resources,
-  dependencies: [libft_core_dep, gio_dep, peas_dep],
+  dependencies: [
+    libft_ui_dep,
+    gio_dep,
+    peas_dep,
+  ],
   include_directories: config_h_dir,
 )
 

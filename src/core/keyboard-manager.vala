@@ -19,7 +19,7 @@ namespace Ft
 
         public abstract string lookup_accelerator (string name);
 
-        public abstract void open_global_shortcuts_dialog (string window_identifier);
+        public abstract async void open_edit_dialog (string window_identifier) throws GLib.Error;
 
         public signal void shortcut_activated (string name);
 
@@ -96,7 +96,7 @@ namespace Ft
                 });
         }
 
-        private void on_provider_notify_available (GLib.Object object,
+        private void on_provider_notify_available (GLib.Object    object,
                                                    GLib.ParamSpec pspec)
         {
             var provider = (Ft.GlobalShortcutsProvider) object;
@@ -179,11 +179,24 @@ namespace Ft
         /**
          * Opens a system dialog for editing shortcuts.
          */
-        public void open_global_shortcuts_dialog (string window_identifier = "")
+        public void open_edit_dialog (string window_identifier = "")
         {
-            if (this.provider != null) {
-                this.provider.open_global_shortcuts_dialog (window_identifier);
+            var provider = this.provider;
+
+            if (provider == null) {
+                return;
             }
+
+            provider.open_edit_dialog.begin (
+                window_identifier,
+                (obj, res) => {
+                    try {
+                        provider.open_edit_dialog.end (res);
+                    }
+                    catch (GLib.Error error) {
+                        GLib.warning ("Error opening shortcuts dialog: %s", error.message);
+                    }
+                });
         }
 
         public void inhibit ()

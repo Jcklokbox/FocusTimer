@@ -177,33 +177,33 @@ namespace Portal
                 return;
             }
 
-            var notification_properties = new GLib.HashTable<string, GLib.Variant> (GLib.str_hash, GLib.str_equal);
-            notification_properties.insert ("title", new GLib.Variant.string (notification.title));
-            notification_properties.insert ("body", new GLib.Variant.string (notification.body));
-            notification_properties.insert ("priority", new GLib.Variant.string (notification.priority.to_string ()));  // TODO: define serialize_property
+            var notification_properties = new GLib.VariantDict ();
+            notification_properties.insert_value ("title", new GLib.Variant.string (notification.title));
+            notification_properties.insert_value ("body", new GLib.Variant.string (notification.body));
+            notification_properties.insert_value ("priority", new GLib.Variant.string (notification.priority.to_string ()));  // TODO: define serialize_property
 
             if (notification.icon != null) {
                 // TODO
             }
 
             if (notification.is_transient) {
-                notification_properties.insert ("display-hint", new GLib.Variant.strv ({
+                notification_properties.insert_value ("display-hint", new GLib.Variant.strv ({
                     "transient",
                 }));
             }
 
             if (notification.suppress_sound) {
-                notification_properties.insert ("sound", new GLib.Variant.string ("silent"));
+                notification_properties.insert_value ("sound", new GLib.Variant.string ("silent"));
             }
 
             if (notification.default_action != null) {
-                notification_properties.insert (
+                notification_properties.insert_value (
                         "default-action",
                         new GLib.Variant.string (notification.default_action));
             }
 
             if (notification.default_target_value != null) {
-                notification_properties.insert (
+                notification_properties.insert_value (
                         "default-action-target",
                         notification.default_target_value);
             }
@@ -223,7 +223,7 @@ namespace Portal
                 });
 
             if (buttons.length > 0) {
-                notification_properties.insert (
+                notification_properties.insert_value (
                         "buttons",
                         new GLib.Variant.array (GLib.VariantType.VARDICT, buttons));
             }
@@ -231,7 +231,7 @@ namespace Portal
             try {
                 yield this.proxy.add_notification (
                         id,
-                        notification_properties,
+                        notification_properties.end (),
                         this.cancellable);
             }
             catch (GLib.Error error) {

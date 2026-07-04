@@ -1,16 +1,17 @@
 /*
- * Copyright (c) 2025 focus-timer contributors
+ * Copyright (c) 2025-2026 focus-timer contributors
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 namespace Portal
 {
-    [DBus (name = "((s{sv}))")]
     public struct Shortcut
     {
-        public string                               id;
-        public GLib.HashTable<string, GLib.Variant> properties;
+        public string id;
+        public string description;
+        public string preferred_trigger;
+        public string trigger_description;
     }
 
 
@@ -19,52 +20,59 @@ namespace Portal
     {
         public abstract void close () throws GLib.DBusError, GLib.IOError;
 
-        public signal void response (uint32                               response,
-                                     GLib.HashTable<string, GLib.Variant> results);
+        public signal void response (uint32                                    response,
+                                     [DBus (signature = "a{sv}")] GLib.Variant results);
     }
 
 
     [DBus (name = "org.freedesktop.portal.Background")]
     public interface Background : GLib.Object
     {
+        [DBus (name = "version")]
         public abstract uint32 version { get; }
 
-        public abstract async GLib.ObjectPath request_background (string                               parent_window,
-                                                                  GLib.HashTable<string, GLib.Variant> options) throws GLib.DBusError, GLib.IOError;
+        public abstract async GLib.ObjectPath request_background (
+                string                                    parent_window,
+                [DBus (signature = "a{sv}")] GLib.Variant options) throws GLib.DBusError, GLib.IOError;
     }
 
 
     [DBus (name = "org.freedesktop.portal.GlobalShortcuts")]
     public interface GlobalShortcuts : GLib.Object
     {
+        [DBus (name = "version")]
         public abstract uint32 version { get; }
 
-        public abstract async GLib.ObjectPath create_session (GLib.HashTable<string, GLib.Variant> options) throws GLib.DBusError, GLib.IOError;
+        public abstract async GLib.ObjectPath create_session (
+                [DBus (signature = "a{sv}")] GLib.Variant options) throws GLib.DBusError, GLib.IOError;
 
-        public abstract async GLib.ObjectPath bind_shortcuts (GLib.ObjectPath                      session_handle,
-                                                              Shortcut[]                           shortcuts,
-                                                              string                               parent_window,
-                                                              GLib.HashTable<string, GLib.Variant> options) throws GLib.DBusError, GLib.IOError;
+        public abstract async GLib.ObjectPath bind_shortcuts (
+                GLib.ObjectPath                               session_handle,
+                [DBus (signature = "a(sa{sv})")] GLib.Variant shortcuts,
+                string                                        parent_window,
+                [DBus (signature = "a{sv}")] GLib.Variant     options) throws GLib.DBusError, GLib.IOError;
 
-        public abstract async GLib.ObjectPath list_shortcuts (GLib.ObjectPath                      session_handle,
-                                                              GLib.HashTable<string, GLib.Variant> options) throws GLib.DBusError, GLib.IOError;
+        public abstract async GLib.ObjectPath list_shortcuts (
+                GLib.ObjectPath                           session_handle,
+                [DBus (signature = "a{sv}")] GLib.Variant options) throws GLib.DBusError, GLib.IOError;
 
-        public abstract async void configure_shortcuts (GLib.ObjectPath                      session_handle,
-                                                        string                               parent_window,
-                                                        GLib.HashTable<string, GLib.Variant> options) throws GLib.DBusError, GLib.IOError;
+        public abstract async void configure_shortcuts (
+                GLib.ObjectPath                           session_handle,
+                string                                    parent_window,
+                [DBus (signature = "a{sv}")] GLib.Variant options) throws GLib.DBusError, GLib.IOError;
 
-        public signal void activated (GLib.ObjectPath                      session_handle,
-                                      string                               shortcut_id,
-                                      uint64                               timestamp,
-                                      GLib.HashTable<string, GLib.Variant> options);
+        public signal void activated (GLib.ObjectPath                           session_handle,
+                                      string                                    shortcut_id,
+                                      uint64                                    timestamp,
+                                      [DBus (signature = "a{sv}")] GLib.Variant options);
 
-        public signal void deactivated (GLib.ObjectPath                      session_handle,
-                                        string                               shortcut_id,
-                                        uint64                               timestamp,
-                                        GLib.HashTable<string, GLib.Variant> options);
+        public signal void deactivated (GLib.ObjectPath                           session_handle,
+                                        string                                    shortcut_id,
+                                        uint64                                    timestamp,
+                                        [DBus (signature = "a{sv}")] GLib.Variant options);
 
         public signal void shortcuts_changed (GLib.ObjectPath session_handle,
-                                              Shortcut[]      shortcuts);
+                                              [DBus (signature = "a(sa{sv})")] GLib.Variant shortcuts);
     }
 
 
@@ -74,13 +82,17 @@ namespace Portal
     [DBus (name = "org.freedesktop.portal.Notification")]
     public interface Notification : GLib.Object
     {
-        public abstract GLib.HashTable<string, GLib.Variant> supported_options { owned get; }
-
+        [DBus (name = "version")]
         public abstract uint32 version { get; }
 
-        public abstract async void add_notification (string                               id,
-                                                     GLib.HashTable<string, GLib.Variant> notification,
-                                                     GLib.Cancellable?                    cancellable) throws GLib.DBusError, GLib.IOError;
+        [DBus (signature = "a{sv}")]
+        public abstract GLib.Variant supported_options { owned get; }
+
+        public abstract async void add_notification (
+                string                                    id,
+                [DBus (signature = "a{sv}")] GLib.Variant notification,
+                GLib.Cancellable?                         cancellable) throws GLib.DBusError, GLib.IOError;
+
         public abstract async void remove_notification (string id) throws GLib.DBusError, GLib.IOError;
 
         public signal void action_invoked (string id, string action, GLib.Variant[] parameter);
@@ -121,5 +133,12 @@ namespace Portal
         }
 
         return false;
+    }
+
+
+    internal bool has_dbus_method (GLib.DBusProxy proxy,
+                                   string         name)
+    {
+        return proxy.g_interface_info?.lookup_method (name) != null;
     }
 }

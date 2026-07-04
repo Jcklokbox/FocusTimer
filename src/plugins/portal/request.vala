@@ -13,8 +13,8 @@ namespace Portal
     private GLib.HashTable<string, Portal.Request> requests = null;
 
 
-    public delegate void RequestCallback (uint32                               response,
-                                          GLib.HashTable<string, GLib.Variant> results);
+    public delegate void RequestCallback (uint32       response,
+                                          GLib.Variant results);
 
 
     public async string create_request (GLib.DBusConnection    connection,
