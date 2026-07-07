@@ -27,7 +27,7 @@ namespace Ft
         /**
          * Idle time after which session should no longer be continued, and new session should be created.
          */
-        public const int64 SESSION_EXPIRY_TIMEOUT = Ft.Interval.HOUR;
+        public const int64 SESSION_EXPIRY_TIMEOUT = 2 * Ft.Interval.HOUR;
 
         /**
          * Time limit when waiting for activity or confirmation.
