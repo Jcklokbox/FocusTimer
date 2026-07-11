@@ -777,9 +777,6 @@ namespace Ft
                         this.service_hold_id = this.background_manager.hold.end (res);
                     });
             }
-            else {
-                this.command_line_options = null;
-            }
 
             while (!restored) {
                 main_context.iteration (true);
@@ -894,10 +891,11 @@ namespace Ft
         /**
          * GLib only fills `options` for entries with empty `arg_data`, and empty `arg_data` aren't
          * supported for option groups. Therefore, we fill `options` manually before it's passed
-         * to the remote instance.
+         * to the primary instance.
          */
         public override int handle_local_options (GLib.VariantDict options)
         {
+            var options_count = 0U;
             var exclusive_options_count = 0U;
             var version_requested = false;
 
@@ -915,6 +913,7 @@ namespace Ft
                     }
 
                     options.insert_value (option.long_name, option.get_value ());
+                    options_count++;
                 }
             }
 
@@ -930,11 +929,19 @@ namespace Ft
                 return Ft.ExitStatus.SUCCESS;
             }
 
-            this.command_line_options = options;
+            // `command_line()` doesn't handle options when running as service. Handle options
+            // manually when the application starts.
+            if (GLib.ApplicationFlags.IS_SERVICE in this.flags) {
+                this.command_line_options = options_count > 0 ? options : null;
+            }
 
             return Ft.ExitStatus.UNDEFINED;
         }
 
+        /**
+         * Run command-line options on the primary instance, or handle local options when starting
+         * the app.
+         */
         public override int command_line (GLib.ApplicationCommandLine command_line)
         {
             var options = command_line.get_options_dict ();
