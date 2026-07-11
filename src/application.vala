@@ -757,7 +757,7 @@ namespace Ft
                 Ft.Timestamp.UNDEFINED,
                 (obj, res) => {
                     this.session_manager.restore.end (res);
-                    this.session_manager.ensure_next_time_block ();
+                    this.session_manager.ensure_session ();
 
                     this.session_manager.enter_session.connect (this.on_enter_session);
                     this.session_manager.leave_session.connect (this.on_leave_session);

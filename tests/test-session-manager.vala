@@ -5833,6 +5833,12 @@ namespace Tests
             );
             assert_true (this.timer.is_finished ());
             assert_cmpuint (confirm_advancement_call_count, GLib.CompareOperator.EQ, 1U);
+
+            var restored_next_time_block = new_session_manager.get_next_time_block ();
+            assert_nonnull (restored_next_time_block);
+            assert_true (restored_next_time_block.state == Ft.State.POMODORO);
+            assert_true (restored_next_time_block.duration ==
+                         settings.get_uint ("pomodoro-duration") * Ft.Interval.SECOND);
         }
     }
 }

@@ -2510,25 +2510,12 @@ namespace Ft
         {
             Ft.ensure_timestamp (ref timestamp);
 
-            if (this._current_session == null || this._current_session.is_expired (timestamp))
+            if (this._current_session == null ||
+                this._current_session.is_expired (timestamp))
             {
                 var next_session = this.initialize_next_session (timestamp);
 
                 this.set_current_time_block_full (next_session, null, timestamp);
-            }
-        }
-
-        /**
-         * Ensure there is a time-block scheduled.
-         */
-        public void ensure_next_time_block (int64 timestamp = Ft.Timestamp.UNDEFINED)
-        {
-            Ft.ensure_timestamp (ref timestamp);
-
-            this.ensure_session (timestamp);
-
-            if (this.get_next_time_block () == null) {
-                this.initialize_next_time_block (timestamp);
             }
         }
 
