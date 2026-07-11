@@ -124,6 +124,19 @@ namespace Ft
 
         private static Option[] OPTIONS;
 
+        [CCode (notify = false)]
+        public bool ready {
+            get {
+                return this._ready;
+            }
+            private set {
+                if (this._ready != value) {
+                    this._ready = value;
+                    this.notify_property ("ready");
+                }
+            }
+        }
+
         public Ft.Timer?               timer;
         public Ft.SessionManager?      session_manager;
 
@@ -152,6 +165,7 @@ namespace Ft
         private uint                        service_hold_id = 0U;
         private GLib.VariantDict?           command_line_options = null;
         private bool                        preferences_requested = false;
+        private bool                        _ready = false;
 
         static construct
         {
@@ -699,7 +713,7 @@ namespace Ft
             var dbus_connection = this.get_dbus_connection ();
             var dbus_object_path = this.get_dbus_object_path ();
             var main_context = GLib.MainContext.@default ();
-            var ready = false;
+            var restored = false;
 
             this.hold ();
             this.mark_busy ();
@@ -751,9 +765,25 @@ namespace Ft
 
                     this.on_enter_session (this.session_manager.current_session);
 
-                    ready = true;
+                    restored = true;
                     main_context.wakeup ();
                 });
+
+            if (GLib.ApplicationFlags.IS_SERVICE in this.flags)
+            {
+                this.background_manager.hold.begin (
+                    "",
+                    (obj, res) => {
+                        this.service_hold_id = this.background_manager.hold.end (res);
+                    });
+            }
+            else {
+                this.command_line_options = null;
+            }
+
+            while (!restored) {
+                main_context.iteration (true);
+            }
 
             if (this.timer_dbus_service == null)
             {
@@ -792,22 +822,6 @@ namespace Ft
                 }
             }
 
-            if (GLib.ApplicationFlags.IS_SERVICE in this.flags)
-            {
-                this.background_manager.hold.begin (
-                    "",
-                    (obj, res) => {
-                        this.service_hold_id = this.background_manager.hold.end (res);
-                    });
-            }
-            else {
-                this.command_line_options = null;
-            }
-
-            while (!ready) {
-                main_context.iteration (true);
-            }
-
             if (this.command_line_options != null)
             {
                 foreach (unowned var option in get_options ())
@@ -825,6 +839,8 @@ namespace Ft
 
                 this.command_line_options = null;
             }
+
+            this.ready = true;
 
             this.unmark_busy ();
             this.release ();

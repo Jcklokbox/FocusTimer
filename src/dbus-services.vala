@@ -23,9 +23,14 @@ namespace Ft
             owned get { return this.serialized_settings; }
         }
 
+        public bool ready {
+            get { return this._ready; }
+        }
+
         private weak GLib.DBusConnection?   connection;
         private string                      object_path;
         private Ft.Application?             application;
+        private bool                        _ready = false;
         private GLib.Settings?              _settings;
         private GLib.Variant?               serialized_settings = null;
 
@@ -38,9 +43,11 @@ namespace Ft
             this.object_path = object_path;
             this.application = application;
             this._settings = settings;
+            this._ready = application.ready;
             this.serialized_settings = this.serialize_settings (settings);
 
             settings.changed.connect (this.on_settings_changed);
+            application.notify["ready"].connect (this.on_notify_ready);
         }
 
         private GLib.Variant serialize_settings (GLib.Settings settings)
@@ -75,6 +82,7 @@ namespace Ft
             var changed_properties = new GLib.VariantBuilder (GLib.VariantType.VARDICT);
             var invalidated_properties = new GLib.VariantBuilder (new GLib.VariantType ("as"));
             var serialized_settings = this.serialize_settings (this._settings);
+            var ready = this.application.ready;
             var changed = false;
 
             if (this.serialized_settings == null ||
@@ -82,6 +90,13 @@ namespace Ft
             {
                 this.serialized_settings = serialized_settings;
                 changed_properties.add ("{sv}", "Settings", serialized_settings);
+                changed = true;
+            }
+
+            if (this._ready != ready)
+            {
+                this._ready = ready;
+                changed_properties.add ("{sv}", "Ready", new GLib.Variant.boolean (ready));
                 changed = true;
             }
 
@@ -109,6 +124,12 @@ namespace Ft
 
         private void on_settings_changed (GLib.Settings settings,
                                           string        key)
+        {
+            this.update_properties ();
+        }
+
+        private void on_notify_ready (GLib.Object    object,
+                                      GLib.ParamSpec pspec)
         {
             this.update_properties ();
         }
@@ -244,6 +265,7 @@ namespace Ft
             this.timer.finished.connect (this.on_timer_finished);
             this.session_manager.notify["current-state"].connect (this.on_session_manager_notify_current_state);
 
+            this.update_properties ();  // TODO: do not emit changed signal
         }
 
         private void update_properties ()
@@ -522,7 +544,7 @@ namespace Ft
 
         public SessionDBusService (GLib.DBusConnection connection,
                                    string              object_path,
-                                   Ft.SessionManager session_manager)
+                                   Ft.SessionManager   session_manager)
         {
             this.connection      = connection;
             this.object_path     = object_path;
@@ -541,6 +563,8 @@ namespace Ft
             if (session_manager.current_session != null) {
                 this.on_enter_session (session_manager.current_session);
             }
+
+            this.update_properties ();  // TODO: do not emit changed signal
         }
 
         private void update_properties ()

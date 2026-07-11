@@ -27,6 +27,15 @@
     <property type="a{sv}" name="Settings" access="read"/>
 
     <!--
+        Ready:
+        Application has finished startup phase
+
+        True, when the Timer and Session services are exported and the session
+        has been restored.
+    -->
+    <property type="a{sv}" name="Ready" access="read"/>
+
+    <!--
         ShowWindow:
         @view: The view to display in the window
 
