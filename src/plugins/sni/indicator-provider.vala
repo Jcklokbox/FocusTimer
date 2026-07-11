@@ -164,6 +164,7 @@ namespace Sni
             "22x22/status/indicator-pomodoro-100-symbolic.svg",
             "22x22/status/indicator-pomodoro-paused-symbolic.svg",
             "22x22/status/indicator-stopped-symbolic.svg",
+            "32x32/status/indicator-passive-symbolic.svg",
             "scalable/actions/ornament-check-symbolic.svg",
             "scalable/actions/ornament-dot-checked-symbolic.svg",
             "scalable/actions/ornament-dot-unchecked-symbolic.svg",
@@ -676,7 +677,9 @@ namespace Sni
             switch (this.session_manager.current_state)
             {
                 case Ft.State.STOPPED:
-                    icon_name = "indicator-stopped-symbolic";
+                    icon_name = this.have_passive_status
+                            ? "indicator-passive-symbolic"
+                            : "indicator-stopped-symbolic";
                     break;
 
                 case Ft.State.POMODORO:
