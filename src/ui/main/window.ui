@@ -79,6 +79,7 @@
                               <object class="FtTimerView" id="timer_view">
                                 <child>
                                   <object class="GtkGestureClick">
+                                    <property name="button">0</property>
                                     <signal name="pressed" handler="on_gesture_click_pressed"/>
                                   </object>
                                 </child>
@@ -116,6 +117,7 @@
                   <object class="FtCompactTimerView">
                     <child>
                       <object class="GtkGestureClick">
+                        <property name="button">0</property>
                         <signal name="pressed" handler="on_gesture_click_pressed"/>
                       </object>
                     </child>

@@ -137,6 +137,7 @@ namespace Ft
         private Ft.WindowView           _view = Ft.WindowView.DEFAULT;
         private Ft.SessionManager?      session_manager = null;
         private Ft.Timer?               timer = null;
+        private Ft.TimerActionGroup?    timer_action_group = null;
         private Ft.BackgroundManager?   background_manager = null;
         private Peas.ExtensionSet?      extensions = null;
         private static uint             background_hold_id = 0U;
@@ -151,8 +152,9 @@ namespace Ft
                 this.update_timer_indicator ();
             });
 
+            this.timer_action_group = new Ft.TimerActionGroup ();
             this.insert_action_group ("session-manager", new Ft.SessionManagerActionGroup ());
-            this.insert_action_group ("timer", new Ft.TimerActionGroup ());
+            this.insert_action_group ("timer", this.timer_action_group);
 
             if (settings.get_boolean ("prefer-compact-size")) {
                 this.size = Ft.WindowSize.COMPACT;
@@ -349,6 +351,11 @@ namespace Ft
                 toggle_compact_size_action.activate (null);
                 gesture.set_state (Gtk.EventSequenceState.CLAIMED);
             }
+
+            if (gesture.get_current_button () == Gdk.BUTTON_MIDDLE && n_press == 1) {
+                this.timer_action_group?.activate_action ("start-pause-resume", null);
+                gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+            }
         }
 
         [GtkCallback]
@@ -456,6 +463,7 @@ namespace Ft
         {
             this.extensions = null;
             this.background_manager = null;
+            this.timer_action_group = null;
 
             base.dispose ();
         }
