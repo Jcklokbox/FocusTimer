@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-20 11:22+0200\n"
-"PO-Revision-Date: 2026-05-29 10:56+0200\n"
+"PO-Revision-Date: 2026-07-20 11:48+0200\n"
 "Last-Translator: Kamil Prusko <kamilprusko@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -839,12 +839,12 @@ msgstr "Brak Wsparcia"
 #: src/plugins/gnome/preferences-window-extension.vala:173
 #: src/plugins/kde/preferences-window-extension.vala:87
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "Nie Przeszkadzać"
 
 #: src/plugins/gnome/preferences-window-extension.vala:174
 #: src/plugins/kde/preferences-window-extension.vala:88
 msgid "Hide non-critical notifications while using the timer."
-msgstr ""
+msgstr "Ukryj niekrytyczne powiadomienia podczas korzystania z minutnika."
 
 #: src/plugins/gnome/window-extension.vala:32
 msgid "GNOME Shell extension available"
