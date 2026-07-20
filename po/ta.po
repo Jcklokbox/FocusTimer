@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 10:23+0200\n"
+"POT-Creation-Date: 2026-07-20 11:22+0200\n"
 "PO-Revision-Date: 2025-10-30 22:00+0530\n"
 "Last-Translator: Killersparrow1 <github.com/Killersparrow1>\n"
 "Language-Team: Tamil\n"
@@ -32,7 +32,7 @@ msgid "Work with regular breaks"
 msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
+#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:11
 msgid "pomodoro;timer;productivity;time tracker;time management;"
 msgstr ""
 
@@ -64,7 +64,7 @@ msgid "Screen overlay during breaks"
 msgstr "இடைவேளையின் போது திரை மேலடுக்கு"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:106
 msgid "System tray icon"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgid "Kamil Prusko"
 msgstr "Kamil Prusko"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:69
-#: src/plugins/sni/indicator-provider.vala:304 src/ui/main/window.ui:76
+#: src/plugins/sni/indicator-provider.vala:305 src/ui/main/window.ui:76
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
 #: src/ui/preferences/preferences-window.vala:30
 msgid "Timer"
@@ -106,8 +106,8 @@ msgid "Monthly stats"
 msgstr "மாதாந்திர புள்ளிவிவரங்கள்"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:81
-#: src/plugins/sni/indicator-provider.vala:300
-#: src/plugins/sni/indicator-provider.vala:306
+#: src/plugins/sni/indicator-provider.vala:301
+#: src/plugins/sni/indicator-provider.vala:307
 #: src/ui/preferences/preferences-window.ui:6
 msgid "Preferences"
 msgstr "விருப்பத்தேர்வுகள்"
@@ -118,199 +118,219 @@ msgid "Screen overlay"
 msgstr "திரை மேலடுக்கு"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
-msgid "Overview of changes in focus-timer 1.1.1:"
+msgid "Overview of changes in focus-timer 1.1.2:"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
+msgid "Deeper integration with notification servers"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:96
-msgid "Smoother sound transitions"
+msgid "Idle detection on Wayland"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:97
-msgid "Fix break overlay scaling on HiDPI displays"
+msgid "Improve screensaver detection"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:98
-msgid "Fix missing sounds after switching soundcards"
+msgid "Fix autostart"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
-msgid "Overview of changes in focus-timer 1.1.0:"
-msgstr ""
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:106
-msgid "Support for GNOME Shell extension"
+msgid "Overview of changes in focus-timer 1.1.1:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:107
-msgid "Option to autostart on login"
+msgid "Smoother sound transitions"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:108
-msgid "Reviewed sound files"
+msgid "Fix break overlay scaling on HiDPI displays"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:109
-msgid "Fix build with vala 0.56.19"
+msgid "Fix missing sounds after switching soundcards"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:115
-msgid "Overview of changes in focus-timer 1.0:"
+msgid "Overview of changes in focus-timer 1.1.0:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:117
-msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgid "Support for GNOME Shell extension"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:118
-msgid "Automatic daily backup"
+msgid "Option to autostart on login"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:119
-msgid "Removed libcanberra backend for playing notification sounds"
+msgid "Reviewed sound files"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:120
+msgid "Fix build with vala 0.56.19"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:126
+msgid "Overview of changes in focus-timer 1.0:"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:128
+msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:129
+msgid "Automatic daily backup"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:130
+msgid "Removed libcanberra backend for playing notification sounds"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:131
 msgid "Updated Lithuanian translation (thanks @psukys)"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:121
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:132
 msgid "Updated Russian translation (thanks @ViktorOn)"
 msgstr ""
 
-#: src/application.vala:155 src/application.vala:609
+#: src/application.vala:173 src/application.vala:650
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
 #, fuzzy
 msgid "Start or Stop"
 msgstr "தொடங்கு அல்லது நிறுத்து"
 
-#: src/application.vala:158 src/application.vala:612
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
+#: src/application.vala:176 src/application.vala:653
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:66
 #, fuzzy
 msgid "Start, Pause or Resume"
 msgstr "தொடங்கு, இடைநிறுத்து அல்லது மீண்டும் தொடங்கு"
 
-#: src/application.vala:161 src/core/notification-manager.vala:426
+#: src/application.vala:179 src/core/notification-manager.vala:426
 #: src/core/notification-manager.vala:519
-#: src/plugins/sni/indicator-provider.vala:403
+#: src/plugins/sni/indicator-provider.vala:404
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:69
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:308
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:324
 msgid "Start Pomodoro"
 msgstr "பொமோடோரோ தொடங்கு"
 
-#: src/application.vala:164
+#: src/application.vala:182
 msgid "Start break"
 msgstr ""
 
-#: src/application.vala:167
+#: src/application.vala:185
 msgid "Start short break"
 msgstr ""
 
-#: src/application.vala:170
+#: src/application.vala:188
 msgid "Start long break"
 msgstr ""
 
 #. Actions
-#: src/application.vala:173 src/application.vala:614 src/core/event.vala:268
-#: src/plugins/sni/indicator-provider.vala:250
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:77
+#: src/application.vala:191 src/application.vala:655 src/core/event.vala:268
+#: src/plugins/sni/indicator-provider.vala:251
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:75
 msgid "Start"
 msgstr "தொடங்கு"
 
-#: src/application.vala:176 src/application.vala:616 src/core/event.vala:276
-#: src/plugins/sni/indicator-provider.vala:262
+#: src/application.vala:194 src/application.vala:657 src/core/event.vala:276
+#: src/plugins/sni/indicator-provider.vala:263
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:139
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:84
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:81
 msgid "Stop"
 msgstr "நிறுத்து"
 
-#: src/application.vala:179 src/application.vala:618 src/core/event.vala:284
-#: src/plugins/sni/indicator-provider.vala:253
+#: src/application.vala:197 src/application.vala:659 src/core/event.vala:284
+#: src/plugins/sni/indicator-provider.vala:254
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:83
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:91
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:87
 msgid "Pause"
 msgstr "இடைநிறுத்து"
 
-#: src/application.vala:182 src/application.vala:620 src/core/event.vala:292
-#: src/plugins/sni/indicator-provider.vala:256
+#: src/application.vala:200 src/application.vala:661 src/core/event.vala:292
+#: src/plugins/sni/indicator-provider.vala:257
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:97
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:98
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:93
 msgid "Resume"
 msgstr "மீண்டும் தொடங்கு"
 
-#: src/application.vala:185 src/application.vala:622 src/core/event.vala:300
-#: src/plugins/sni/indicator-provider.vala:265
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
+#: src/application.vala:203 src/application.vala:663 src/core/event.vala:300
+#: src/plugins/sni/indicator-provider.vala:266
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
 msgid "Skip"
 msgstr "தவிர்"
 
-#: src/application.vala:188 src/application.vala:624 src/core/event.vala:308
+#: src/application.vala:206 src/application.vala:665 src/core/event.vala:308
 #, fuzzy
 msgid "Rewind"
 msgstr "பின்னோக்கிச் செல்"
 
-#: src/application.vala:189 src/application.vala:192
+#: src/application.vala:207 src/application.vala:210
 msgid "SECONDS"
 msgstr ""
 
-#: src/application.vala:191
+#: src/application.vala:209
 #, fuzzy
 msgid "Extend current pomodoro or break"
 msgstr "தற்போதைய பொமோடோரோ அல்லது இடைவேளையை நீட்டி"
 
-#: src/application.vala:194 src/core/event.vala:316
-#: src/plugins/sni/indicator-provider.vala:268
+#: src/application.vala:212 src/core/event.vala:316
+#: src/plugins/sni/indicator-provider.vala:269
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:39
 #, fuzzy
 msgid "Reset"
 msgstr "மீட்டமை"
 
-#: src/application.vala:197
+#: src/application.vala:216
 msgid "Print timer status"
 msgstr ""
 
-#: src/application.vala:200
+#: src/application.vala:220
 #, fuzzy
 msgid "Show preferences"
 msgstr "விருப்பத்தேர்வுகளைக் காட்டு"
 
-#: src/application.vala:203
+#: src/application.vala:224
 #, fuzzy
 msgid "Quit application"
 msgstr "செயலியை விட்டு வெளியேறு"
 
-#: src/application.vala:206
+#: src/application.vala:227
 #, fuzzy
 msgid "Print version information and exit"
 msgstr "பதிப்புத் தகவலை அச்சிட்டு வெளியேறு"
 
-#: src/application.vala:240
+#: src/application.vala:281
 msgid "Timer Options:"
 msgstr ""
 
-#: src/application.vala:241
+#: src/application.vala:282
 msgid "Show options for controlling the timer"
 msgstr ""
 
-#: src/application.vala:248
+#: src/application.vala:289
 #, c-format
 msgid "Bugs may be reported at: %s"
 msgstr ""
 
-#: src/application.vala:626
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:126
+#: src/application.vala:667
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:118
 #, fuzzy
 msgid "Bring to Focus"
 msgstr "முன்னிலைக்குக் கொண்டுவா"
 
 #. translators: time remaining eg. "3 minutes 50 seconds remaining"
-#: src/application.vala:817 src/core/notification-manager.vala:138
+#: src/application.vala:878 src/core/notification-manager.vala:138
 #: src/plugins/sni/indicator-provider.vala:25
 #, fuzzy, c-format
 msgid "%s remaining"
 msgstr "இன்னும் %s உள்ளது"
 
-#: src/application.vala:860
+#: src/application.vala:923
 msgid "Invalid use. Pass one flag for controlling the timer at a time."
 msgstr ""
 
@@ -360,7 +380,7 @@ msgid "Program \"%s\" not found"
 msgstr "நிரல் \"%s\" காணப்படவில்லை"
 
 #: src/core/event.vala:180
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:74
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:72
 msgid "Actions"
 msgstr "செயல்கள்"
 
@@ -498,13 +518,13 @@ msgid "Triggered when session is about to be reset due to inactivity."
 msgstr "செயல்பாடின்மை காரணமாக அமர்வு மீளமைக்கப்படும்போது தூண்டப்படும்."
 
 #: src/core/notification-manager.vala:347 src/core/state.vala:78
-#: src/plugins/sni/indicator-provider.vala:271
+#: src/plugins/sni/indicator-provider.vala:272
 #: src/ui/main/stats/stats-day-page.ui:98
 #: src/ui/main/stats/stats-day-page.vala:87
 #: src/ui/main/stats/stats-month-page.ui:35
 #: src/ui/main/stats/stats-month-page.vala:43
 #: src/ui/main/stats/stats-week-page.ui:39
-#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:186
+#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:188
 #: src/ui/preferences/automation/action/condition-widget.ui:53
 msgid "Pomodoro"
 msgstr "பொமோடோரோ"
@@ -530,7 +550,9 @@ msgstr "பொமோடோரோ விரைவில் முடிவடை�
 #: src/core/notification-manager.vala:419
 #: src/core/notification-manager.vala:524
 #: src/core/notification-manager.vala:529
-#: src/core/notification-manager.vala:534 src/ui/overlays/screen-overlay.ui:5
+#: src/core/notification-manager.vala:534
+#: src/plugins/sni/indicator-provider.vala:404
+#: src/ui/overlays/screen-overlay.ui:5
 #, fuzzy
 msgid "Take a Break"
 msgstr "ஓர் இடைவெளி எடு"
@@ -605,17 +627,17 @@ msgstr "கோப்பு வகை ஆதரிக்கப்படவில�
 msgid "Stopped"
 msgstr "நிறுத்தப்பட்டது"
 
-#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:274
+#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:275
 #: src/ui/preferences/automation/action/condition-widget.ui:54
 #, fuzzy
 msgid "Break"
 msgstr "இடைவெளி"
 
-#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:272
+#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:273
 msgid "Short Break"
 msgstr "சிறு இடைவெளி"
 
-#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:273
+#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:274
 msgid "Long Break"
 msgstr "நீண்ட இடைவெளி"
 
@@ -843,7 +865,7 @@ msgid "Display As"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:81
-#: src/plugins/sni/indicator-provider.vala:297
+#: src/plugins/sni/indicator-provider.vala:298
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:28
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:32
 #, fuzzy
@@ -859,6 +881,7 @@ msgid "Dismiss Gesture"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:125
+#: src/plugins/kde/preferences-window-extension.vala:83
 msgid "Desktop"
 msgstr "டெஸ்க்டாப்"
 
@@ -880,11 +903,13 @@ msgid "Outdated"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:173
-msgid "Manage Notifications"
+#: src/plugins/kde/preferences-window-extension.vala:87
+msgid "Do Not Disturb"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:174
-msgid "Toggle Do Not Disturb mode during Pomodoro."
+#: src/plugins/kde/preferences-window-extension.vala:88
+msgid "Hide non-critical notifications while using the timer."
 msgstr ""
 
 #: src/plugins/gnome/window-extension.vala:32
@@ -898,17 +923,17 @@ msgid "Learn More"
 msgstr "மேலும் அறிய"
 
 #. translators: abbreviate it to just "Settings" if it gets too long
-#: src/plugins/kde/preferences-window-extension.vala:26
+#: src/plugins/kde/preferences-window-extension.vala:30
 msgid "Open Settings"
 msgstr ""
 
-#: src/plugins/kde/preferences-window-extension.vala:51
+#: src/plugins/kde/preferences-window-extension.vala:55
 msgid ""
 "For reliable break reminders, allow this app's notifications during Do Not "
 "Disturb and disable its notification history."
 msgstr ""
 
-#: src/plugins/portal/global-shortcuts-provider.vala:298
+#: src/plugins/portal/global-shortcuts-provider.vala:372
 #, fuzzy
 msgid "Unused"
 msgstr "பயன்படுத்தப்படாதது"
@@ -925,18 +950,14 @@ msgstr "முடிந்தது!"
 msgid "%u of %u"
 msgstr ""
 
-#: src/plugins/sni/indicator-provider.vala:301
-#: src/plugins/sni/indicator-provider.vala:305 src/ui/main/window.ui:92
+#: src/plugins/sni/indicator-provider.vala:302
+#: src/plugins/sni/indicator-provider.vala:306 src/ui/main/window.ui:93
 msgid "Stats"
 msgstr "புள்ளிவிவரங்கள்"
 
-#: src/plugins/sni/indicator-provider.vala:310 src/ui/main/window.vala:284
+#: src/plugins/sni/indicator-provider.vala:311 src/ui/main/window.vala:286
 msgid "Quit"
 msgstr "வெளியேறு"
-
-#: src/plugins/sni/indicator-provider.vala:403
-msgid "Take Break"
-msgstr ""
 
 #: src/plugins/sni/preferences-window-extension.vala:43
 msgid "System Tray Icon"
@@ -1161,12 +1182,12 @@ msgstr "_வெளியேறு"
 msgid "Primary Menu"
 msgstr "முன்மை மெனு"
 
-#: src/ui/main/window.vala:279
+#: src/ui/main/window.vala:281
 #, fuzzy
 msgid "Keep timer running?"
 msgstr "நேரங்காட்டி ஓடிக்கொண்டிருக்க வேண்டுமா?"
 
-#: src/ui/main/window.vala:280
+#: src/ui/main/window.vala:282
 #, fuzzy
 msgid ""
 "You can keep it running in the background — notifications and keyboard "
@@ -1175,7 +1196,7 @@ msgstr ""
 "இதை நீங்கள் பின்னணியில் ஓட விடலாம் — அறிவிப்புகள் மற்றும் விசைப்பலகை குறுக்குவழிகள் "
 "தொடர்ந்து வேலை செய்யும்."
 
-#: src/ui/main/window.vala:287
+#: src/ui/main/window.vala:289
 #, fuzzy
 msgid "Run in background"
 msgstr "பின்னணியில் இயக்கு"
@@ -1185,7 +1206,7 @@ msgid "It's time to take a break"
 msgstr "இடைவெளி எடுக்க வேண்டிய நேரம்"
 
 #: src/ui/preferences/appearance/preferences-panel-appearance.ui:17
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:123
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:115
 #, fuzzy
 msgid "Main Window"
 msgstr "முதன்மைச் சாளரம்"
@@ -1218,7 +1239,6 @@ msgid "Edit Custom Action"
 msgstr "தனிப்பயன் செயலைத் திருத்து"
 
 #: src/ui/preferences/automation/action/action-edit-window.ui:39
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:21
 msgid "_Cancel"
 msgstr "_ரத்துசெய்"
 
@@ -1494,30 +1514,10 @@ msgid ""
 "and keyboard shortcuts."
 msgstr ""
 
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:14
-#, fuzzy
-msgid "Set Shortcut"
-msgstr "குறுக்குவழியை அமை"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:28
-#, fuzzy
-msgid "_Set"
-msgstr "அமை (_S)"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:63
 #: src/ui/preferences/keyboard-shortcuts/accelerator-row.vala:50
 #, fuzzy
 msgid "Disabled"
 msgstr "முடக்கப்பட்டது"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:77
-#, fuzzy
-msgid ""
-"Press <b>Esc</b> to cancel or <b>Backspace</b> to disable the keyboard "
-"shortcut"
-msgstr ""
-"ரத்து செய்ய <b>Esc</b>-ஐ அழுத்தவும் அல்லது குறுக்குவழியை முடக்க <b>Backspace</b>-ஐ "
-"அழுத்தவும்"
 
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:21
 #, fuzzy
@@ -1543,47 +1543,47 @@ msgstr "திருத்து (_E)"
 msgid "Enter new shortcut for starting or stopping the timer"
 msgstr "நேரங்காட்டியைத் தொடங்க அல்லது நிறுத்த புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:68
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
 #, fuzzy
 msgid "Enter new shortcut to start/pause/resume the timer"
 msgstr "நேரங்காட்டியைத் தொடங்க/இடைநிறுத்த/தொடர புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:76
 #, fuzzy
 msgid "Enter new shortcut for starting the timer"
 msgstr "நேரங்காட்டியைத் தொடங்க புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:82
 #, fuzzy
 msgid "Enter new shortcut for stopping the timer"
 msgstr "நேரங்காட்டியை நிறுத்த புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:88
 #, fuzzy
 msgid "Enter new shortcut for pausing the timer"
 msgstr "நேரங்காட்டியை இடைநிறுத்த புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:94
 #, fuzzy
 msgid "Enter new shortcut for resuming the timer"
 msgstr "நேரங்காட்டியை மீண்டும் தொடர புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:100
 #, fuzzy
 msgid "Enter new shortcut for skipping"
 msgstr "தவிர்ப்பதற்கு புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:112
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
 #, fuzzy
 msgid "Rewind One Minute"
 msgstr "ஒரு நிமிடம் பின்னோக்கிச் செல்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:113
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
 #, fuzzy
 msgid "Enter new shortcut for rewinding"
 msgstr "பின்னோக்கிச் செல்ல புதிய குறுக்குவழியை உள்ளிடவும்"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:127
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:119
 #, fuzzy
 msgid "Enter new shortcut for bringing window to focus"
 msgstr "சாளரத்தை முன்னிலைக்குக் கொண்டுவர புதிய குறுக்குவழியை உள்ளிடவும்"
@@ -1726,63 +1726,63 @@ msgstr "தனிப்பயன் ஒலியைத் தேர்ந்த�
 msgid "Pomodoro Duration"
 msgstr "பொமோடோரோ நேரம்"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:31
+#: src/ui/preferences/timer/preferences-panel-timer.ui:32
 #, fuzzy
 msgid "Short Break Duration"
 msgstr "சிறு இடைவெளி நேரம்"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:42
+#: src/ui/preferences/timer/preferences-panel-timer.ui:44
 #, fuzzy
 msgid "Long Break Duration"
 msgstr "நீண்ட இடைவெளி நேரம்"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:53
+#: src/ui/preferences/timer/preferences-panel-timer.ui:56
 #, fuzzy
 msgid "Number of Cycles"
 msgstr "சுழற்சிகளின் எண்ணிக்கை"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:93
+#: src/ui/preferences/timer/preferences-panel-timer.ui:96
 #, fuzzy
 msgid "Behavior"
 msgstr "நடத்தை"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:96
+#: src/ui/preferences/timer/preferences-panel-timer.ui:99
 #, fuzzy
 msgid "Pause By Locking The Screen"
 msgstr "திரையைப் பூட்டும்போது இடைநிறுத்து"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:101
+#: src/ui/preferences/timer/preferences-panel-timer.ui:104
 #, fuzzy
 msgid "Confirm Starting a Break"
 msgstr "இடைவெளி தொடங்குவதை உறுதிப்படுத்து"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:106
+#: src/ui/preferences/timer/preferences-panel-timer.ui:109
 #, fuzzy
 msgid "Confirm Starting a Pomodoro"
 msgstr "பொமோடோரோ தொடங்கு"
 
 #. translators: time formatted as text: "5 minutes 30 seconds"
-#: src/ui/preferences/timer/preferences-panel-timer.vala:96
+#: src/ui/preferences/timer/preferences-panel-timer.vala:122
 #, fuzzy, c-format
 msgid "A single session will take <b>%s</b>."
 msgstr "ஒரு அமர்வு <b>%s</b> எடுக்கும்."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:97
+#: src/ui/preferences/timer/preferences-panel-timer.vala:123
 #, fuzzy, c-format
 msgid "<b>%u%%</b> of the time will be allocated for breaks."
 msgstr "நேரத்தில் <b>%u%%</b> இடைவெளிகளுக்காக ஒதுக்கப்படும்."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:144
+#: src/ui/preferences/timer/preferences-panel-timer.vala:170
 #, fuzzy
 msgid "Apply changes to ongoing Pomodoro?"
 msgstr "நடந்து கொண்டிருக்கும் பொமோடோரோவில் மாற்றங்களைப் பயன்படுத்தவா?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:145
+#: src/ui/preferences/timer/preferences-panel-timer.vala:171
 #, fuzzy
 msgid "Apply changes to ongoing break?"
 msgstr "நடந்து கொண்டிருக்கும் இடைவெளியில் மாற்றங்களைப் பயன்படுத்தவா?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:147
+#: src/ui/preferences/timer/preferences-panel-timer.vala:173
 #, fuzzy
 msgid "Apply"
 msgstr "பயன்படுத்து"
@@ -1792,6 +1792,22 @@ msgstr "பயன்படுத்து"
 msgctxt "accessibility"
 msgid "Sidebar"
 msgstr "பக்கவாட்டுப் பட்டை"
+
+#, fuzzy
+#~ msgid "Set Shortcut"
+#~ msgstr "குறுக்குவழியை அமை"
+
+#, fuzzy
+#~ msgid "_Set"
+#~ msgstr "அமை (_S)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Press <b>Esc</b> to cancel or <b>Backspace</b> to disable the keyboard "
+#~ "shortcut"
+#~ msgstr ""
+#~ "ரத்து செய்ய <b>Esc</b>-ஐ அழுத்தவும் அல்லது குறுக்குவழியை முடக்க <b>Backspace</b>-"
+#~ "ஐ அழுத்தவும்"
 
 #, fuzzy
 #~ msgid "Time management utility"

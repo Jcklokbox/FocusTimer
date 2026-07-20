@@ -78,6 +78,8 @@ src/plugins/gnome/screen-saver-provider.vala
 src/plugins/gnome/shell-extension-settings.vala
 src/plugins/gnome/shell-extension.vala
 src/plugins/gnome/window-extension.vala
+src/plugins/kde/application-extension.vala
+src/plugins/kde/interfaces.vala
 src/plugins/kde/kde.vala
 src/plugins/kde/preferences-window-extension.vala
 src/plugins/portal/background-provider.vala
@@ -169,8 +171,6 @@ src/ui/preferences/automation/preferences-panel-automation.ui
 src/ui/preferences/automation/preferences-panel-automation.vala
 src/ui/preferences/integrations/preferences-panel-integrations.ui
 src/ui/preferences/integrations/preferences-panel-integrations.vala
-src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui
-src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.vala
 src/ui/preferences/keyboard-shortcuts/accelerator-row.ui
 src/ui/preferences/keyboard-shortcuts/accelerator-row.vala
 src/ui/preferences/keyboard-shortcuts/accelerator.vala

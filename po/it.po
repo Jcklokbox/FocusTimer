@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: focus-timer 1.0-alpha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 10:23+0200\n"
+"POT-Creation-Date: 2026-07-20 11:22+0200\n"
 "PO-Revision-Date: 2023-03-25 12:11+0100\n"
 "Last-Translator: Giuseppe Pignataro (Fastbyte01) <rogepix@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -32,7 +32,7 @@ msgid "Work with regular breaks"
 msgstr ""
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:12
+#: data/io.github.focustimerhq.FocusTimer.desktop.in.in:11
 msgid "pomodoro;timer;productivity;time tracker;time management;"
 msgstr ""
 
@@ -65,7 +65,7 @@ msgid "Screen overlay during breaks"
 msgstr "Overlay a schermo durante le pause"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:20
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:106
 msgid "System tray icon"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgid "Kamil Prusko"
 msgstr "Kamil Prusko"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:69
-#: src/plugins/sni/indicator-provider.vala:304 src/ui/main/window.ui:76
+#: src/plugins/sni/indicator-provider.vala:305 src/ui/main/window.ui:76
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:57
 #: src/ui/preferences/preferences-window.vala:30
 msgid "Timer"
@@ -107,8 +107,8 @@ msgid "Monthly stats"
 msgstr "Statistiche mensili"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:81
-#: src/plugins/sni/indicator-provider.vala:300
-#: src/plugins/sni/indicator-provider.vala:306
+#: src/plugins/sni/indicator-provider.vala:301
+#: src/plugins/sni/indicator-provider.vala:307
 #: src/ui/preferences/preferences-window.ui:6
 msgid "Preferences"
 msgstr "Preferenze"
@@ -119,195 +119,215 @@ msgid "Screen overlay"
 msgstr "Overlay a schermo"
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:93
-msgid "Overview of changes in focus-timer 1.1.1:"
+msgid "Overview of changes in focus-timer 1.1.2:"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:95
+msgid "Deeper integration with notification servers"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:96
-msgid "Smoother sound transitions"
+msgid "Idle detection on Wayland"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:97
-msgid "Fix break overlay scaling on HiDPI displays"
+msgid "Improve screensaver detection"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:98
-msgid "Fix missing sounds after switching soundcards"
+msgid "Fix autostart"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:104
-msgid "Overview of changes in focus-timer 1.1.0:"
-msgstr ""
-
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:106
-msgid "Support for GNOME Shell extension"
+msgid "Overview of changes in focus-timer 1.1.1:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:107
-msgid "Option to autostart on login"
+msgid "Smoother sound transitions"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:108
-msgid "Reviewed sound files"
+msgid "Fix break overlay scaling on HiDPI displays"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:109
-msgid "Fix build with vala 0.56.19"
+msgid "Fix missing sounds after switching soundcards"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:115
-msgid "Overview of changes in focus-timer 1.0:"
+msgid "Overview of changes in focus-timer 1.1.0:"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:117
-msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgid "Support for GNOME Shell extension"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:118
-msgid "Automatic daily backup"
+msgid "Option to autostart on login"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:119
-msgid "Removed libcanberra backend for playing notification sounds"
+msgid "Reviewed sound files"
 msgstr ""
 
 #: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:120
+msgid "Fix build with vala 0.56.19"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:126
+msgid "Overview of changes in focus-timer 1.0:"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:128
+msgid "Fix break overlay scaling on HiDPI displays (thanks @scholzri)"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:129
+msgid "Automatic daily backup"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:130
+msgid "Removed libcanberra backend for playing notification sounds"
+msgstr ""
+
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:131
 msgid "Updated Lithuanian translation (thanks @psukys)"
 msgstr ""
 
-#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:121
+#: data/io.github.focustimerhq.FocusTimer.metainfo.xml.in:132
 msgid "Updated Russian translation (thanks @ViktorOn)"
 msgstr ""
 
-#: src/application.vala:155 src/application.vala:609
+#: src/application.vala:173 src/application.vala:650
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:60
 #, fuzzy
 msgid "Start or Stop"
 msgstr "Avvia o ferma"
 
-#: src/application.vala:158 src/application.vala:612
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
+#: src/application.vala:176 src/application.vala:653
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:66
 #, fuzzy
 msgid "Start, Pause or Resume"
 msgstr "Avvia, metti in pausa o riprendi"
 
-#: src/application.vala:161 src/core/notification-manager.vala:426
+#: src/application.vala:179 src/core/notification-manager.vala:426
 #: src/core/notification-manager.vala:519
-#: src/plugins/sni/indicator-provider.vala:403
+#: src/plugins/sni/indicator-provider.vala:404
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:69
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:308
 #: src/ui/main/timer/widgets/timer-control-buttons.vala:324
 msgid "Start Pomodoro"
 msgstr "Avvia Pomodoro"
 
-#: src/application.vala:164
+#: src/application.vala:182
 msgid "Start break"
 msgstr ""
 
-#: src/application.vala:167
+#: src/application.vala:185
 msgid "Start short break"
 msgstr ""
 
-#: src/application.vala:170
+#: src/application.vala:188
 msgid "Start long break"
 msgstr ""
 
 #. Actions
-#: src/application.vala:173 src/application.vala:614 src/core/event.vala:268
-#: src/plugins/sni/indicator-provider.vala:250
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:77
+#: src/application.vala:191 src/application.vala:655 src/core/event.vala:268
+#: src/plugins/sni/indicator-provider.vala:251
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:75
 msgid "Start"
 msgstr "Avvia"
 
-#: src/application.vala:176 src/application.vala:616 src/core/event.vala:276
-#: src/plugins/sni/indicator-provider.vala:262
+#: src/application.vala:194 src/application.vala:657 src/core/event.vala:276
+#: src/plugins/sni/indicator-provider.vala:263
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:139
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:84
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:81
 msgid "Stop"
 msgstr "Stop"
 
-#: src/application.vala:179 src/application.vala:618 src/core/event.vala:284
-#: src/plugins/sni/indicator-provider.vala:253
+#: src/application.vala:197 src/application.vala:659 src/core/event.vala:284
+#: src/plugins/sni/indicator-provider.vala:254
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:83
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:91
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:87
 msgid "Pause"
 msgstr "Pausa"
 
-#: src/application.vala:182 src/application.vala:620 src/core/event.vala:292
-#: src/plugins/sni/indicator-provider.vala:256
+#: src/application.vala:200 src/application.vala:661 src/core/event.vala:292
+#: src/plugins/sni/indicator-provider.vala:257
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:97
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:98
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:93
 msgid "Resume"
 msgstr "Riprendi"
 
-#: src/application.vala:185 src/application.vala:622 src/core/event.vala:300
-#: src/plugins/sni/indicator-provider.vala:265
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
+#: src/application.vala:203 src/application.vala:663 src/core/event.vala:300
+#: src/plugins/sni/indicator-provider.vala:266
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
 msgid "Skip"
 msgstr "Salta"
 
-#: src/application.vala:188 src/application.vala:624 src/core/event.vala:308
+#: src/application.vala:206 src/application.vala:665 src/core/event.vala:308
 #, fuzzy
 msgid "Rewind"
 msgstr "Riavvolgi"
 
-#: src/application.vala:189 src/application.vala:192
+#: src/application.vala:207 src/application.vala:210
 msgid "SECONDS"
 msgstr ""
 
-#: src/application.vala:191
+#: src/application.vala:209
 msgid "Extend current pomodoro or break"
 msgstr "Estendi l'attuale pomodoro o pausa"
 
-#: src/application.vala:194 src/core/event.vala:316
-#: src/plugins/sni/indicator-provider.vala:268
+#: src/application.vala:212 src/core/event.vala:316
+#: src/plugins/sni/indicator-provider.vala:269
 #: src/ui/main/timer/widgets/timer-control-buttons.ui:39
 #, fuzzy
 msgid "Reset"
 msgstr "Ripristina"
 
-#: src/application.vala:197
+#: src/application.vala:216
 msgid "Print timer status"
 msgstr ""
 
-#: src/application.vala:200
+#: src/application.vala:220
 msgid "Show preferences"
 msgstr "Mostra preferenze"
 
-#: src/application.vala:203
+#: src/application.vala:224
 msgid "Quit application"
 msgstr "Chiudi applicazione"
 
-#: src/application.vala:206
+#: src/application.vala:227
 msgid "Print version information and exit"
 msgstr "Stampa informazioni di versione e esce"
 
-#: src/application.vala:240
+#: src/application.vala:281
 msgid "Timer Options:"
 msgstr ""
 
-#: src/application.vala:241
+#: src/application.vala:282
 msgid "Show options for controlling the timer"
 msgstr ""
 
-#: src/application.vala:248
+#: src/application.vala:289
 #, c-format
 msgid "Bugs may be reported at: %s"
 msgstr ""
 
-#: src/application.vala:626
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:126
+#: src/application.vala:667
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:118
 #, fuzzy
 msgid "Bring to Focus"
 msgstr "Porta in primo piano"
 
 #. translators: time remaining eg. "3 minutes 50 seconds remaining"
-#: src/application.vala:817 src/core/notification-manager.vala:138
+#: src/application.vala:878 src/core/notification-manager.vala:138
 #: src/plugins/sni/indicator-provider.vala:25
 #, fuzzy, c-format
 msgid "%s remaining"
 msgstr "%s rimanenti"
 
-#: src/application.vala:860
+#: src/application.vala:923
 msgid "Invalid use. Pass one flag for controlling the timer at a time."
 msgstr ""
 
@@ -357,7 +377,7 @@ msgid "Program \"%s\" not found"
 msgstr "Programma \"%s\" non trovato"
 
 #: src/core/event.vala:180
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:74
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:72
 msgid "Actions"
 msgstr "Azioni"
 
@@ -503,13 +523,13 @@ msgstr ""
 "Attivato quando la sessione sta per essere ripristinata per inattività."
 
 #: src/core/notification-manager.vala:347 src/core/state.vala:78
-#: src/plugins/sni/indicator-provider.vala:271
+#: src/plugins/sni/indicator-provider.vala:272
 #: src/ui/main/stats/stats-day-page.ui:98
 #: src/ui/main/stats/stats-day-page.vala:87
 #: src/ui/main/stats/stats-month-page.ui:35
 #: src/ui/main/stats/stats-month-page.vala:43
 #: src/ui/main/stats/stats-week-page.ui:39
-#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:186
+#: src/ui/main/stats/stats-week-page.vala:41 src/ui/main/window.vala:188
 #: src/ui/preferences/automation/action/condition-widget.ui:53
 msgid "Pomodoro"
 msgstr "Pomodoro"
@@ -535,7 +555,9 @@ msgstr "Il Pomodoro sta per finire"
 #: src/core/notification-manager.vala:419
 #: src/core/notification-manager.vala:524
 #: src/core/notification-manager.vala:529
-#: src/core/notification-manager.vala:534 src/ui/overlays/screen-overlay.ui:5
+#: src/core/notification-manager.vala:534
+#: src/plugins/sni/indicator-provider.vala:404
+#: src/ui/overlays/screen-overlay.ui:5
 #, fuzzy
 msgid "Take a Break"
 msgstr "Fai una pausa"
@@ -610,16 +632,16 @@ msgstr "Tipo di file non supportato"
 msgid "Stopped"
 msgstr "Fermato"
 
-#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:274
+#: src/core/state.vala:81 src/plugins/sni/indicator-provider.vala:275
 #: src/ui/preferences/automation/action/condition-widget.ui:54
 msgid "Break"
 msgstr "Pausa"
 
-#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:272
+#: src/core/state.vala:84 src/plugins/sni/indicator-provider.vala:273
 msgid "Short Break"
 msgstr "Pausa breve"
 
-#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:273
+#: src/core/state.vala:87 src/plugins/sni/indicator-provider.vala:274
 msgid "Long Break"
 msgstr "Pausa lunga"
 
@@ -856,7 +878,7 @@ msgid "Display As"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:81
-#: src/plugins/sni/indicator-provider.vala:297
+#: src/plugins/sni/indicator-provider.vala:298
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:28
 #: src/ui/preferences/notifications/preferences-panel-notifications.ui:32
 #, fuzzy
@@ -872,6 +894,7 @@ msgid "Dismiss Gesture"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:125
+#: src/plugins/kde/preferences-window-extension.vala:83
 msgid "Desktop"
 msgstr "Desktop"
 
@@ -893,11 +916,13 @@ msgid "Outdated"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:173
-msgid "Manage Notifications"
+#: src/plugins/kde/preferences-window-extension.vala:87
+msgid "Do Not Disturb"
 msgstr ""
 
 #: src/plugins/gnome/preferences-window-extension.vala:174
-msgid "Toggle Do Not Disturb mode during Pomodoro."
+#: src/plugins/kde/preferences-window-extension.vala:88
+msgid "Hide non-critical notifications while using the timer."
 msgstr ""
 
 #: src/plugins/gnome/window-extension.vala:32
@@ -911,17 +936,17 @@ msgid "Learn More"
 msgstr "Scopri di più"
 
 #. translators: abbreviate it to just "Settings" if it gets too long
-#: src/plugins/kde/preferences-window-extension.vala:26
+#: src/plugins/kde/preferences-window-extension.vala:30
 msgid "Open Settings"
 msgstr ""
 
-#: src/plugins/kde/preferences-window-extension.vala:51
+#: src/plugins/kde/preferences-window-extension.vala:55
 msgid ""
 "For reliable break reminders, allow this app's notifications during Do Not "
 "Disturb and disable its notification history."
 msgstr ""
 
-#: src/plugins/portal/global-shortcuts-provider.vala:298
+#: src/plugins/portal/global-shortcuts-provider.vala:372
 #, fuzzy
 msgid "Unused"
 msgstr "Inutilizzato"
@@ -938,18 +963,14 @@ msgstr "Terminato!"
 msgid "%u of %u"
 msgstr ""
 
-#: src/plugins/sni/indicator-provider.vala:301
-#: src/plugins/sni/indicator-provider.vala:305 src/ui/main/window.ui:92
+#: src/plugins/sni/indicator-provider.vala:302
+#: src/plugins/sni/indicator-provider.vala:306 src/ui/main/window.ui:93
 msgid "Stats"
 msgstr "Statistiche"
 
-#: src/plugins/sni/indicator-provider.vala:310 src/ui/main/window.vala:284
+#: src/plugins/sni/indicator-provider.vala:311 src/ui/main/window.vala:286
 msgid "Quit"
 msgstr "Esci"
-
-#: src/plugins/sni/indicator-provider.vala:403
-msgid "Take Break"
-msgstr ""
 
 #: src/plugins/sni/preferences-window-extension.vala:43
 msgid "System Tray Icon"
@@ -1172,12 +1193,12 @@ msgstr "_Esci"
 msgid "Primary Menu"
 msgstr "Menu principale"
 
-#: src/ui/main/window.vala:279
+#: src/ui/main/window.vala:281
 #, fuzzy
 msgid "Keep timer running?"
 msgstr "Mantenere il timer in esecuzione?"
 
-#: src/ui/main/window.vala:280
+#: src/ui/main/window.vala:282
 #, fuzzy
 msgid ""
 "You can keep it running in the background — notifications and keyboard "
@@ -1186,7 +1207,7 @@ msgstr ""
 "Puoi mantenerlo in esecuzione in background — le notifiche e le scorciatoie "
 "da tastiera continueranno a funzionare."
 
-#: src/ui/main/window.vala:287
+#: src/ui/main/window.vala:289
 #, fuzzy
 msgid "Run in background"
 msgstr "Esegui in background"
@@ -1196,7 +1217,7 @@ msgid "It's time to take a break"
 msgstr "È tempo di fare una pausa"
 
 #: src/ui/preferences/appearance/preferences-panel-appearance.ui:17
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:123
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:115
 #, fuzzy
 msgid "Main Window"
 msgstr "Finestra principale"
@@ -1229,7 +1250,6 @@ msgid "Edit Custom Action"
 msgstr "Modifica azione personalizzata"
 
 #: src/ui/preferences/automation/action/action-edit-window.ui:39
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:21
 msgid "_Cancel"
 msgstr "_Annulla"
 
@@ -1514,30 +1534,10 @@ msgid ""
 "and keyboard shortcuts."
 msgstr ""
 
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:14
-#, fuzzy
-msgid "Set Shortcut"
-msgstr "Imposta scorciatoia"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:28
-#, fuzzy
-msgid "_Set"
-msgstr "_Imposta"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:63
 #: src/ui/preferences/keyboard-shortcuts/accelerator-row.vala:50
 #, fuzzy
 msgid "Disabled"
 msgstr "Disabilitato"
-
-#: src/ui/preferences/keyboard-shortcuts/accelerator-chooser-window.ui:77
-#, fuzzy
-msgid ""
-"Press <b>Esc</b> to cancel or <b>Backspace</b> to disable the keyboard "
-"shortcut"
-msgstr ""
-"Premi <b>Esc</b> per annullare o <b>Backspace</b> per disabilitare la "
-"scorciatoia da tastiera"
 
 #: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:21
 #, fuzzy
@@ -1565,49 +1565,49 @@ msgstr "_Modifica"
 msgid "Enter new shortcut for starting or stopping the timer"
 msgstr "Inserisci una nuova scorciatoia per avviare o fermare il timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:68
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:67
 #, fuzzy
 msgid "Enter new shortcut to start/pause/resume the timer"
 msgstr ""
 "Inserisci una nuova scorciatoia per avviare/mettere in pausa/riprendere il "
 "timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:78
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:76
 #, fuzzy
 msgid "Enter new shortcut for starting the timer"
 msgstr "Inserisci una nuova scorciatoia per avviare il timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:85
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:82
 #, fuzzy
 msgid "Enter new shortcut for stopping the timer"
 msgstr "Inserisci una nuova scorciatoia per fermare il timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:92
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:88
 #, fuzzy
 msgid "Enter new shortcut for pausing the timer"
 msgstr "Inserisci una nuova scorciatoia per mettere in pausa il timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:99
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:94
 #, fuzzy
 msgid "Enter new shortcut for resuming the timer"
 msgstr "Inserisci una nuova scorciatoia per riprendere il timer"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:100
 #, fuzzy
 msgid "Enter new shortcut for skipping"
 msgstr "Inserisci una nuova scorciatoia per saltare"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:112
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:105
 #, fuzzy
 msgid "Rewind One Minute"
 msgstr "Riavvolgi di un minuto"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:113
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:106
 #, fuzzy
 msgid "Enter new shortcut for rewinding"
 msgstr "Inserisci una nuova scorciatoia per riavvolgere"
 
-#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:127
+#: src/ui/preferences/keyboard-shortcuts/preferences-panel-keyboard-shortcuts.ui:119
 #, fuzzy
 msgid "Enter new shortcut for bringing window to focus"
 msgstr "Inserisci una nuova scorciatoia per portare la finestra in primo piano"
@@ -1751,63 +1751,63 @@ msgstr "Seleziona suono personalizzato"
 msgid "Pomodoro Duration"
 msgstr "Durata Pomodoro"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:31
+#: src/ui/preferences/timer/preferences-panel-timer.ui:32
 #, fuzzy
 msgid "Short Break Duration"
 msgstr "Durata pausa breve"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:42
+#: src/ui/preferences/timer/preferences-panel-timer.ui:44
 #, fuzzy
 msgid "Long Break Duration"
 msgstr "Durata pausa lunga"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:53
+#: src/ui/preferences/timer/preferences-panel-timer.ui:56
 #, fuzzy
 msgid "Number of Cycles"
 msgstr "Numero di cicli"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:93
+#: src/ui/preferences/timer/preferences-panel-timer.ui:96
 #, fuzzy
 msgid "Behavior"
 msgstr "Comportamento"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:96
+#: src/ui/preferences/timer/preferences-panel-timer.ui:99
 #, fuzzy
 msgid "Pause By Locking The Screen"
 msgstr "Pausa al blocco dello schermo"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:101
+#: src/ui/preferences/timer/preferences-panel-timer.ui:104
 #, fuzzy
 msgid "Confirm Starting a Break"
 msgstr "Conferma inizio pausa"
 
-#: src/ui/preferences/timer/preferences-panel-timer.ui:106
+#: src/ui/preferences/timer/preferences-panel-timer.ui:109
 #, fuzzy
 msgid "Confirm Starting a Pomodoro"
 msgstr "Conferma inizio Pomodoro"
 
 #. translators: time formatted as text: "5 minutes 30 seconds"
-#: src/ui/preferences/timer/preferences-panel-timer.vala:96
+#: src/ui/preferences/timer/preferences-panel-timer.vala:122
 #, fuzzy, c-format
 msgid "A single session will take <b>%s</b>."
 msgstr "Una singola sessione richiederà <b>%s</b>."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:97
+#: src/ui/preferences/timer/preferences-panel-timer.vala:123
 #, fuzzy, c-format
 msgid "<b>%u%%</b> of the time will be allocated for breaks."
 msgstr "Il <b>%u%%</b> del tempo sarà allocato per le pause."
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:144
+#: src/ui/preferences/timer/preferences-panel-timer.vala:170
 #, fuzzy
 msgid "Apply changes to ongoing Pomodoro?"
 msgstr "Applica le modifiche al Pomodoro in corso?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:145
+#: src/ui/preferences/timer/preferences-panel-timer.vala:171
 #, fuzzy
 msgid "Apply changes to ongoing break?"
 msgstr "Applica le modifiche alla pausa in corso?"
 
-#: src/ui/preferences/timer/preferences-panel-timer.vala:147
+#: src/ui/preferences/timer/preferences-panel-timer.vala:173
 #, fuzzy
 msgid "Apply"
 msgstr "Applica"
@@ -1817,6 +1817,22 @@ msgstr "Applica"
 msgctxt "accessibility"
 msgid "Sidebar"
 msgstr "Barra laterale"
+
+#, fuzzy
+#~ msgid "Set Shortcut"
+#~ msgstr "Imposta scorciatoia"
+
+#, fuzzy
+#~ msgid "_Set"
+#~ msgstr "_Imposta"
+
+#, fuzzy
+#~ msgid ""
+#~ "Press <b>Esc</b> to cancel or <b>Backspace</b> to disable the keyboard "
+#~ "shortcut"
+#~ msgstr ""
+#~ "Premi <b>Esc</b> per annullare o <b>Backspace</b> per disabilitare la "
+#~ "scorciatoia da tastiera"
 
 #, fuzzy
 #~ msgid "Time management utility"
