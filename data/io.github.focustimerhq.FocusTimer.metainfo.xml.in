@@ -69,19 +69,19 @@
       <caption>Timer</caption>
     </screenshot>
     <screenshot>
-      <image>https://gnomepomodoro.org/release/1.1/stats-daily.png</image>
+      <image scale="2">https://gnomepomodoro.org/release/1.1/stats-daily@2.png</image>
       <caption>Daily stats</caption>
     </screenshot>
     <screenshot>
-      <image>https://gnomepomodoro.org/release/1.1/stats-monthly.png</image>
+      <image scale="2">https://gnomepomodoro.org/release/1.1/stats-monthly@2.png</image>
       <caption>Monthly stats</caption>
     </screenshot>
     <screenshot>
-      <image>https://gnomepomodoro.org/release/1.1/preferences.png</image>
+      <image scale="2">https://gnomepomodoro.org/release/1.1/preferences@2.png</image>
       <caption>Preferences</caption>
     </screenshot>
     <screenshot>
-      <image>https://gnomepomodoro.org/release/1.1/screen-overlay.png</image>
+      <image scale="2">https://gnomepomodoro.org/release/1.1/screen-overlay@2.png</image>
       <caption>Screen overlay</caption>
     </screenshot>
   </screenshots>
