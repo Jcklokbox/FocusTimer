@@ -42,7 +42,6 @@
   <update_contact>kamilprusko@gmail.com</update_contact>
 
   <!-- Branding -->
-  <developer_name translate="no">Kamil Prusko</developer_name>
   <developer id="io.github.focustimerhq">
     <name translate="no">Kamil Prusko</name>
   </developer>
