@@ -187,18 +187,41 @@ namespace Ft
             {
                 this.timeout_inhibit_count--;
 
-                if (this.timeout_inhibit_count == 0 && this._timer.is_running ()) {
+                if (this.timeout_inhibit_count == 0 && this.can_timeout ()) {
                     this.start_timeout ();
                 }
             }
         }
 
-        private void start_timeout ()
+        private bool can_timeout ()
         {
             if (this.timeout_inhibit_count > 0) {
-                return;
+                return false;
             }
 
+            if (!this.get_mapped ()) {
+                return false;
+            }
+
+            if (!this._timer.is_running ()) {
+                return false;
+            }
+
+            switch (this._shape)
+            {
+                case Ft.TimerProgressShape.BAR:
+                    return this.get_width () > 0;
+
+                case Ft.TimerProgressShape.RING:
+                    return this.radius > 0.0f;
+
+                default:
+                    assert_not_reached ();
+            }
+        }
+
+        private void start_timeout ()
+        {
             var timeout_interval = this.calculate_timeout_interval ();
 
             if (timeout_interval < MIN_TIMEOUT_INTERVAL) {
@@ -282,7 +305,7 @@ namespace Ft
                 this.animate_value (value_from, value_to);
             }
 
-            if (current_state.is_running ()) {
+            if (this.can_timeout ()) {
                 this.start_timeout ();
             }
             else {
@@ -885,6 +908,7 @@ namespace Ft
                                             int height,
                                             int baseline)
         {
+            var size = int.min (width, height);
             float line_width;
 
             if (!this._line_width_set)
@@ -896,13 +920,7 @@ namespace Ft
                         break;
 
                     case Ft.TimerProgressShape.RING:
-                        var size = int.min (width, height);
                         line_width = this.calculate_line_width (size);
-
-                        this.radius = ((float) size - line_width) / 2.0f;
-                        this.line_cap_radius = line_width / 2.0f;
-                        this.line_cap_angle = Math.atan2f (2.0f * this.line_cap_radius,
-                                                           this.radius);
                         break;
 
                     default:
@@ -913,6 +931,12 @@ namespace Ft
                 line_width = this._line_width;
             }
 
+            if (this._shape == Ft.TimerProgressShape.RING) {
+                this.radius = ((float) size - line_width) / 2.0f;
+                this.line_cap_radius = line_width / 2.0f;
+                this.line_cap_angle = Math.atan2f (2.0f * this.line_cap_radius, this.radius);
+            }
+
             if (this._line_width != line_width) {
                 this._line_width = line_width;
                 this.notify_property ("line-width");
@@ -920,6 +944,10 @@ namespace Ft
 
             this.through.allocate (width, height, baseline, null);
             this.highlight.allocate (width, height, baseline, null);
+
+            if (this.can_timeout ()) {
+                this.start_timeout ();
+            }
         }
 
         public override void snapshot (Gtk.Snapshot snapshot)
@@ -935,7 +963,7 @@ namespace Ft
             this._timer.state_changed.connect (this.on_timer_state_changed);
             this.timeout_inhibit_count = 0;
 
-            if (this._timer.is_running ()) {
+            if (this.can_timeout ()) {
                 this.start_timeout ();
             }
         }

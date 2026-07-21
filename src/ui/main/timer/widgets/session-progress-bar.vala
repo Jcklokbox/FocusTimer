@@ -371,9 +371,25 @@ namespace Ft
                         : 0;
             }
 
+            private bool can_timeout ()
+            {
+                if (!this.get_mapped ()) {
+                    return false;
+                }
+
+                if (!this._timer.is_running ()) {
+                    return false;
+                }
+
+                if (this.get_width () <= 0) {
+                    return false;
+                }
+
+                return (this._span_end - this._span_start) > 0.0f;
+            }
+
             private void start_timeout ()
                                         requires (this._cycle != null)
-                                        requires (this.get_mapped ())
             {
                 var timeout_interval = this.calculate_timeout_interval ();
 
@@ -433,13 +449,6 @@ namespace Ft
                 }
             }
 
-            internal bool has_timeout ()
-            {
-                return this.tick_id != 0 ||
-                       this.timeout_id != 0 ||
-                       this.tick_callback_id != 0;
-            }
-
             internal void update_timeout ()
             {
                 this.stop_timeout ();
@@ -453,7 +462,7 @@ namespace Ft
                     return;
                 }
 
-                if (this._timer.is_running ()) {
+                if (this.can_timeout ()) {
                     this.start_timeout ();
                 }
             }
@@ -521,6 +530,17 @@ namespace Ft
             {
                 this.through.allocate (width, height, baseline, null);
                 this.highlight.allocate (width, height, baseline, null);
+
+                if (this.can_timeout () && this._cycle != null)
+                {
+                    var current_time_block = this._timer.user_data as Ft.TimeBlock;
+
+                    if (current_time_block != null &&
+                        this._cycle.contains (current_time_block))
+                    {
+                        this.start_timeout ();
+                    }
+                }
             }
 
             public override void snapshot (Gtk.Snapshot snapshot)
@@ -1283,8 +1303,8 @@ namespace Ft
         }
 
         /**
-         * Timer state may change after rescheduling / updating segments,
-         * so only prod current segment if there's no timeout.
+         * Timer state may change after rescheduling / updating segments.
+         * Keep the current segment's timeout in sync.
          */
         private void on_timer_state_changed (Ft.TimerState current_state,
                                              Ft.TimerState previous_state)
@@ -1299,8 +1319,7 @@ namespace Ft
             while (segment != null)
             {
                 if (segment.cycle != null &&
-                    segment.cycle.contains (current_time_block) &&
-                    !segment.has_timeout ())
+                    segment.cycle.contains (current_time_block))
                 {
                     segment.update_timeout ();
                     break;
