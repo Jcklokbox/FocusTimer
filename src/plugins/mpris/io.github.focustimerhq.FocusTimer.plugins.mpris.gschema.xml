@@ -1,0 +1,8 @@
+<schemalist>
+  <schema id="io.github.focustimerhq.FocusTimer.plugins.mpris" path="/io/github/focustimerhq/FocusTimer/plugins/mpris/">
+    <key name="control-media-playback" type="b">
+      <default>false</default>
+      <summary>Pause playback during break</summary>
+    </key>
+  </schema>
+</schemalist>

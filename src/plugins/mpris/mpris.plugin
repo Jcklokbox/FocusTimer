@@ -1,0 +1,5 @@
+[Plugin]
+Name=Media Playback
+Module=mpris
+Builtin=true
+Embedded=mpris_peas_register_types
