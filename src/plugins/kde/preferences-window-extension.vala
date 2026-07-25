@@ -70,8 +70,6 @@ namespace Kde
 
         private void setup_integrations_panel (Ft.PreferencesPanel panel)
         {
-            var page = panel.get_preferences_page ();
-
             if (this.settings == null) {
                 this.taredown_integrations_panel (panel);
                 return;
@@ -81,7 +79,7 @@ namespace Kde
             {
                 var desktop_group = new Adw.PreferencesGroup ();
                 desktop_group.title = _("Desktop");
-                page.add (desktop_group);
+                panel.add_group ("desktop", desktop_group);
 
                 var manage_notifications_row = new Adw.SwitchRow ();
                 manage_notifications_row.title = _("Do Not Disturb");

@@ -9,10 +9,18 @@ namespace Ft
     [GtkTemplate (ui = "/io/github/focustimerhq/FocusTimer/ui/preferences/integrations/preferences-panel-integrations.ui")]
     public class PreferencesPanelIntegrations : Ft.PreferencesPanel
     {
+        private const string[] GROUP_ORDER = {
+            "autostart",
+            "desktop",
+            "media-playback",
+        };
+
         [GtkChild]
         private unowned Adw.PreferencesPage page;
         [GtkChild]
         private unowned Adw.SwitchRow autostart_switchrow;
+        [GtkChild]
+        private unowned Adw.PreferencesGroup autostart_group;
         [GtkChild]
         private unowned Gtk.Label autostart_label;
 
@@ -33,11 +41,18 @@ namespace Ft
                     this.autostart_label,
                     "visible",
                     GLib.BindingFlags.SYNC_CREATE);
+
+            this.autostart_group.set_data<string> ("name", "autostart");
         }
 
         public override unowned Adw.PreferencesPage get_preferences_page ()
         {
             return this.page;
+        }
+
+        protected override unowned string[]? get_group_order ()
+        {
+            return GROUP_ORDER;
         }
 
         public override void dispose ()

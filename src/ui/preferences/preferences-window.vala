@@ -88,7 +88,119 @@ namespace Ft
 
     public abstract class PreferencesPanel : Adw.NavigationPage
     {
+        private unowned Adw.PreferencesGroup? find_named_group (Gtk.Widget widget,
+                                                                string     name)
+        {
+            if (widget is Adw.PreferencesGroup)
+            {
+                if (widget.get_data<string> ("name") == name) {
+                    return (Adw.PreferencesGroup) widget;
+                }
+
+                return null;
+            }
+
+            for (unowned var child = widget.get_first_child ();
+                 child != null;
+                 child = child.get_next_sibling ())
+            {
+                unowned var group = this.find_named_group (child, name);
+
+                if (group != null) {
+                    return group;
+                }
+            }
+
+            return null;
+        }
+
+        private void apply_group_order ()
+        {
+            unowned string[]? order = this.get_group_order ();
+
+            if (order == null || order.length == 0) {
+                return;
+            }
+
+            unowned Adw.PreferencesGroup? first_group = null;
+
+            foreach (var name in order)
+            {
+                first_group = this.get_group (name);
+
+                if (first_group != null) {
+                    break;
+                }
+            }
+
+            if (first_group == null) {
+                return;
+            }
+
+            unowned var parent = first_group.get_parent ();
+
+            if (parent == null) {
+                return;
+            }
+
+            // Keep preferences groups after non-group siblings (e.g. description).
+            Gtk.Widget? previous = null;
+
+            for (unowned var child = parent.get_first_child ();
+                 child != null;
+                 child = child.get_next_sibling ())
+            {
+                if (child is Adw.PreferencesGroup) {
+                    break;
+                }
+
+                previous = child;
+            }
+
+            foreach (unowned string name in order)
+            {
+                unowned var group = this.get_group (name);
+
+                if (group == null) {
+                    continue;
+                }
+
+                group.insert_after (parent, previous);
+                previous = group;
+            }
+        }
+
         public abstract unowned Adw.PreferencesPage get_preferences_page ();
+
+        public unowned Adw.PreferencesGroup? get_group (string name)
+        {
+            unowned var page = this.get_preferences_page ();
+
+            return this.find_named_group (page, name);
+        }
+
+        protected virtual unowned string[]? get_group_order ()
+        {
+            return null;
+        }
+
+        public void add_group (string               name,
+                               Adw.PreferencesGroup group)
+        {
+            unowned var page = this.get_preferences_page ();
+
+            group.set_data<string> ("name", name);
+            page?.add (group);
+
+            this.apply_group_order ();
+        }
+
+        public void remove_group (Adw.PreferencesGroup group)
+        {
+            unowned var page = this.get_preferences_page ();
+
+            page?.remove (group);
+        }
     }
 
 

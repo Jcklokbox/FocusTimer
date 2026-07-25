@@ -21,8 +21,6 @@ namespace Mpris
 
         private void setup_integrations_panel (Ft.PreferencesPanel panel)
         {
-            var page = panel.get_preferences_page ();
-
             if (this.settings == null) {
                 this.taredown_integrations_panel (panel);
                 return;
@@ -32,7 +30,7 @@ namespace Mpris
             {
                 var media_playback_group = new Adw.PreferencesGroup ();
                 media_playback_group.title = _("Media Playback");
-                page.add (media_playback_group);
+                panel.add_group ("media-playback", media_playback_group);
 
                 var manage_notifications_row = new Adw.SwitchRow ();
                 manage_notifications_row.title = _("Auto-Pause Media");

@@ -112,8 +112,6 @@ namespace Gnome
 
         private void setup_integrations_panel (Ft.PreferencesPanel panel)
         {
-            var page = panel.get_preferences_page ();
-
             if (this.shell_extension == null || !this.shell_extension.available) {
                 this.taredown_integrations_panel (panel);
                 return;
@@ -123,7 +121,7 @@ namespace Gnome
             {
                 var desktop_group = new Adw.PreferencesGroup ();
                 desktop_group.title = _("Desktop");
-                page.add (desktop_group);
+                panel.add_group ("desktop", desktop_group);
 
                 var install_button = new Gtk.Button.with_label (_("Install"));
                 install_button.add_css_class ("suggested-action");
