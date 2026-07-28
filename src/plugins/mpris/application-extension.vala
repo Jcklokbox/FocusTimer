@@ -158,7 +158,7 @@ namespace Mpris
                 });
         }
 
-        private void pause_selected ()
+        private void pause ()
         {
             this.players.@foreach (
                 (dbus_name, player) => {
@@ -176,7 +176,7 @@ namespace Mpris
                 });
         }
 
-        private void resume_selected ()
+        private void resume ()
         {
             this.players.@foreach (
                 (dbus_name, player) => {
@@ -223,17 +223,24 @@ namespace Mpris
                                                Mpris.PlaybackStatus status,
                                                Mpris.PlaybackStatus previous_status)
         {
+            var current_time_block = this.timer.user_data as Ft.TimeBlock;
+            var is_waiting_for_activity = current_time_block != null && !this.timer.is_started ();
+
+            // Handle `Ft.AdvancementMode.WAIT_FOR_ACTIVITY`.
+            // When we're about to start Pomodoro, assume the PLAYING state is attributed to
+            // the Pomodoro, even if advancement hasn't been confirmed yet.
+            var effective_state = is_waiting_for_activity && status == Mpris.PlaybackStatus.PLAYING
+                    ? current_time_block.state
+                    : this.effective_state;
+
             if (!player.ignore_status_change) {
-                player.status_changed_state = this.effective_state;
+                player.status_changed_state = effective_state;
+                player.ignore_status_change = false;
             }
 
-            if (previous_status == Mpris.PlaybackStatus.UNKNOWN &&
-                this.effective_state == Ft.State.POMODORO)
-            {
-                player.status_changed_state = this.effective_state;
+            if (previous_status == Mpris.PlaybackStatus.UNKNOWN) {
+                player.status_changed_state = effective_state;
             }
-
-            player.ignore_status_change = false;
 
             this.update_background_sound_inhibitor ();
         }
@@ -284,19 +291,19 @@ namespace Mpris
                 if (effective_state == Ft.State.POMODORO)
                 {
                     if (is_paused != previous_is_paused && is_paused) {
-                        this.pause_selected ();
+                        this.pause ();
                     }
 
                     if (!is_paused && (
                         previous_effective_state == Ft.State.BREAK ||
                         previous_is_paused != is_paused))
                     {
-                        this.resume_selected ();
+                        this.resume ();
                     }
                 }
                 else if (previous_effective_state == Ft.State.POMODORO)
                 {
-                    this.pause_selected ();
+                    this.pause ();
                 }
             }
         }
