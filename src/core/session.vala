@@ -89,7 +89,9 @@ namespace Ft
                     return this.short_break_duration;
 
                 case Ft.State.LONG_BREAK:
-                    return this.long_break_duration;
+                    return this.cycles != 1
+                            ? this.long_break_duration
+                            : this.short_break_duration;
 
                 case Ft.State.STOPPED:
                     return 0;

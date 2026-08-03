@@ -2234,7 +2234,7 @@ namespace Tests
             var suspend_start = now = Ft.Timestamp.advance (Ft.Interval.MINUTE);
             timer.suspending (suspend_start);
 
-            var suspend_end = Ft.Timestamp.advance (Ft.SessionManager.SESSION_EXPIRY_TIMEOUT);
+            var suspend_end = Ft.Timestamp.advance (session_manager.calculate_expiry_timeout ());
             timer.suspended (suspend_start, suspend_end);
 
             // Expect to a next session to be initialized.
@@ -2615,7 +2615,8 @@ namespace Tests
             assert_null (session_manager.current_time_block);
             assert_false (timer.is_started ());
 
-            now = Ft.Timestamp.advance (Ft.SessionManager.SESSION_EXPIRY_TIMEOUT);
+            now = Ft.Timestamp.advance (session_manager.current_session.expiry_time);
+            Ft.Timestamp.freeze_to (now);
 
             var expired_session = session_manager.current_session;
             expired_session.changed.connect (() => { state_changed_emitted++; });
@@ -3502,7 +3503,7 @@ namespace Tests
             assert_cmpfloat_with_epsilon (cycle.calculate_progress (completion_time), 1.0, EPSILON);
             assert_cmpvariant (
                 new GLib.Variant.int64 (session.expiry_time),
-                new GLib.Variant.int64 (completion_time + Ft.SessionManager.SESSION_EXPIRY_TIMEOUT)
+                new GLib.Variant.int64 (completion_time + session_manager.calculate_expiry_timeout ())
             );
             assert_cmpstrv (signals, {
                 "resolve-state",
@@ -3887,7 +3888,7 @@ namespace Tests
             );
             assert_cmpvariant (
                 new GLib.Variant.int64 (session_manager.current_session.expiry_time),
-                new GLib.Variant.int64 (now + Ft.SessionManager.SESSION_EXPIRY_TIMEOUT)
+                new GLib.Variant.int64 (now + session_manager.calculate_expiry_timeout ())
             );
 
             time_block.foreach_gap ((gap) => {

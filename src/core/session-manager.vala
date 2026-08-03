@@ -25,11 +25,6 @@ namespace Ft
     public class SessionManager : GLib.Object
     {
         /**
-         * Idle time after which session should no longer be continued, and new session should be created.
-         */
-        public const int64 SESSION_EXPIRY_TIMEOUT = 2 * Ft.Interval.HOUR;
-
-        /**
          * Time limit when waiting for activity or confirmation.
          */
         private const int64 OVERDUE_TIMEOUT = Ft.Interval.HOUR;
@@ -1054,7 +1049,7 @@ namespace Ft
 
             // Ensure expiry time is defined.
             if (Ft.Timestamp.is_undefined (session_entry.expiry_time)) {
-                session_entry.expiry_time = this.get_current_time () + SESSION_EXPIRY_TIMEOUT;
+                session_entry.expiry_time = this.get_current_time () + this.calculate_expiry_timeout ();
                 session_entry_needs_update = true;
             }
 
@@ -1410,7 +1405,7 @@ namespace Ft
 
             // Fetch the most recent session
             var end_time_value = GLib.Value (typeof (int64));
-            end_time_value.set_int64 (timestamp - SESSION_EXPIRY_TIMEOUT);
+            end_time_value.set_int64 (timestamp - 2 * Ft.Interval.HOUR);
             var session_filter = new Gom.Filter.gte (
                     typeof (Ft.SessionEntry),
                     "end-time",
@@ -1810,12 +1805,31 @@ namespace Ft
         }
 
         /**
+         * Calculate expiry timeout relative to session length.
+         *
+         * We keep the timeout aggressively small.
+         */
+        public int64 calculate_expiry_timeout ()
+        {
+            var session_template = this._scheduler.session_template;
+            var pomodoro_duration = session_template.pomodoro_duration;
+            var long_break_duration = session_template.has_uniform_breaks ()
+                    ? session_template.short_break_duration
+                    : session_template.long_break_duration;
+
+            return int64.max (OVERDUE_TIMEOUT,
+                              int64.max (pomodoro_duration, 2 * long_break_duration));
+        }
+
+        /**
          * Update session `expiry-time`.
          *
          * The given timeout is relative to last action in the session.
          */
-        private void bump_expiry_time (int64 timeout)
+        private void bump_expiry_time ()
         {
+            var timeout = this.calculate_expiry_timeout ();
+
             if (this.expiry_timeout_id != 0)
             {
                 GLib.Source.remove (this.expiry_timeout_id);
@@ -2219,7 +2233,7 @@ namespace Ft
             // HACK: Use `resolving_timer_state` to preserve original timestamp
             //       in `on_current_session_notify_expiry_time()`.
             this.resolving_timer_state++;
-            this.bump_expiry_time (SESSION_EXPIRY_TIMEOUT);
+            this.bump_expiry_time ();
             this.update_auto_pause ();
             this.reschedule_if_queued ();
             this.thaw_current_session_changed ();
@@ -2303,7 +2317,7 @@ namespace Ft
             if (this._current_session != null)
             {
                 GLib.SignalHandler.block (this._current_session, this.current_session_notify_expiry_time_id);
-                this._current_session.expiry_time = start_time + SESSION_EXPIRY_TIMEOUT;
+                this._current_session.expiry_time = start_time + this.calculate_expiry_timeout ();
                 GLib.SignalHandler.unblock (this._current_session, this.current_session_notify_expiry_time_id);
             }
 
@@ -2325,7 +2339,7 @@ namespace Ft
                 this.expire_current_session (end_time);
             }
             else {
-                this.bump_expiry_time (SESSION_EXPIRY_TIMEOUT);
+                this.bump_expiry_time ();
             }
 
             if (this._current_gap != null &&

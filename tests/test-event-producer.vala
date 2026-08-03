@@ -669,6 +669,7 @@ namespace Tests
 
             var event_names = new string[0];
             var session_expired_emitted = 0;
+            var session_expiry_time = this.session_manager.current_session.expiry_time;
 
             this.producer.flush ();
             this.producer.event.connect (
@@ -682,7 +683,7 @@ namespace Tests
                 session_expired_emitted++;
             });
 
-            Ft.Timestamp.advance (Ft.SessionManager.SESSION_EXPIRY_TIMEOUT + Ft.Interval.MINUTE);
+            Ft.Timestamp.freeze_to (session_expiry_time + Ft.Interval.MINUTE);
             this.session_manager.check_current_session_expired ();
 
             assert_cmpuint (session_expired_emitted, GLib.CompareOperator.EQ, 1);
