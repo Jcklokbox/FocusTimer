@@ -75,6 +75,14 @@ namespace Mpris
             }
         }
 
+        private inline void foreach_player (GLib.Func<unowned Mpris.PlayerWrapper> func)
+        {
+            this.players.@foreach (
+                (bus_name, player) => {
+                    func (player);
+                });
+        }
+
         private void update_background_sound_inhibitor ()
         {
             if (this.sound_manager == null) {
@@ -83,8 +91,8 @@ namespace Mpris
 
             var playing_count = 0U;
 
-            this.players.@foreach (
-                (dbus_name, player) => {
+            this.foreach_player (
+                (player) => {
                     if (player.status == Mpris.PlaybackStatus.PLAYING) {
                         playing_count++;
                     }
@@ -110,9 +118,9 @@ namespace Mpris
         {
             this.timer.state_changed.disconnect (this.on_timer_state_changed);
 
-            this.players.@foreach (
-                (bus_name, player) => {
-                    player.ignore_status_change = false;
+            this.foreach_player (
+                (player) => {
+                    player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
                     player.auto_paused = false;
                 });
         }
@@ -145,54 +153,46 @@ namespace Mpris
             this.update_background_sound_inhibitor ();
         }
 
-        private void pause_all ()
+        private void pause_playback (Ft.State assigned_state)
         {
-            this.players.@foreach (
-                (dbus_name, player) => {
-                    if (player.status != Mpris.PlaybackStatus.PLAYING) {
+            this.foreach_player (
+                (player) => {
+                    if (player.status != Mpris.PlaybackStatus.PLAYING ||
+                        player.status_changed_state != assigned_state)
+                    {
                         return;
                     }
 
-                    player.ignore_status_change = true;
-                    player.pause.begin ();
+                    player.ignore_status = Mpris.PlaybackStatus.PAUSED;
+                    player.pause.begin (
+                        (obj, res) => {
+                            if (player.pause.end (res)) {
+                                player.auto_paused = true;
+                            }
+                        });
                 });
         }
 
-        private void pause ()
+        private void resume_playback (Ft.State assigned_state)
         {
-            this.players.@foreach (
-                (dbus_name, player) => {
-                    if (player.status != Mpris.PlaybackStatus.PLAYING) {
+            this.foreach_player (
+                (player) => {
+                    if (player.status != Mpris.PlaybackStatus.PAUSED ||
+                        player.status_changed_state != assigned_state ||
+                        !player.auto_paused)
+                    {
                         return;
                     }
 
-                    if (player.status_changed_state != Ft.State.POMODORO) {
-                        return;
-                    }
+                    player.ignore_status = Mpris.PlaybackStatus.PLAYING;
+                    player.resume.begin (
+                        (obj, res) => {
+                            if (player.resume.end (res)) {
+                                player.auto_paused = false;
+                            }
+                        });
 
-                    player.ignore_status_change = true;
-                    player.auto_paused = true;
-                    player.pause.begin ();
-                });
-        }
-
-        private void resume ()
-        {
-            this.players.@foreach (
-                (dbus_name, player) => {
-                    if (player.status != Mpris.PlaybackStatus.PAUSED) {
-                        return;
-                    }
-
-                    if (!player.auto_paused) {
-                        return;
-                    }
-
-                    player.ignore_status_change = true;
-                    player.auto_paused = false;
-                    player.resume.begin ();
-
-                    // Anticipate that player state will soon change to PLAYING.
+                    // Anticipate that the player state will soon change to PLAYING.
                     // It's a workaround for buggy fade-in/out animation.
                     if (!this.background_sound_inhibited) {
                         this.background_sound_inhibited = true;
@@ -223,23 +223,24 @@ namespace Mpris
                                                Mpris.PlaybackStatus status,
                                                Mpris.PlaybackStatus previous_status)
         {
-            var current_time_block = this.timer.user_data as Ft.TimeBlock;
-            var is_waiting_for_activity = current_time_block != null && !this.timer.is_started ();
+            if (this.timer.user_data != null)
+            {
+                var current_time_block = this.timer.user_data as Ft.TimeBlock;
+                var is_waiting_for_activity = current_time_block != null && !this.timer.is_started ();
 
-            // Handle `Ft.AdvancementMode.WAIT_FOR_ACTIVITY`.
-            // When we're about to start Pomodoro, assume the PLAYING state is attributed to
-            // the Pomodoro, even if advancement hasn't been confirmed yet.
-            var effective_state = is_waiting_for_activity && status == Mpris.PlaybackStatus.PLAYING
-                    ? current_time_block.state
-                    : this.effective_state;
+                // When we're about to start Pomodoro, assume the PLAYING state is attributed to
+                // the Pomodoro, even if advancement hasn't been confirmed yet.
+                var effective_state = is_waiting_for_activity && status == Mpris.PlaybackStatus.PLAYING
+                        ? current_time_block.state
+                        : this.effective_state;
 
-            if (!player.ignore_status_change) {
-                player.status_changed_state = effective_state;
-                player.ignore_status_change = false;
-            }
+                if (status != player.ignore_status ||
+                    previous_status == Mpris.PlaybackStatus.UNKNOWN)
+                {
+                    player.status_changed_state = effective_state;
+                }
 
-            if (previous_status == Mpris.PlaybackStatus.UNKNOWN) {
-                player.status_changed_state = effective_state;
+                player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
             }
 
             this.update_background_sound_inhibitor ();
@@ -268,42 +269,45 @@ namespace Mpris
                 effective_state = Ft.State.BREAK;
             }
 
-            if (effective_state != previous_effective_state || is_paused != previous_is_paused)
+            this.effective_state = effective_state;
+
+            if (effective_state == Ft.State.STOPPED &&
+                previous_effective_state != Ft.State.POMODORO)
             {
-                if (previous_effective_state == Ft.State.STOPPED)
-                {
-                    this.players.@foreach (
-                        (dbus_name, player) => {
-                            if (player.status == Mpris.PlaybackStatus.PLAYING) {
-                                player.status_changed_state = effective_state;
-                            }
-                        });
-                }
+                return;
+            }
+
+            if (previous_effective_state == Ft.State.STOPPED)
+            {
+                this.foreach_player (
+                    (player) => {
+                        player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
+                        player.auto_paused = false;
+
+                        if (player.status == Mpris.PlaybackStatus.PLAYING) {
+                            player.status_changed_state = effective_state;
+                        }
+                    });
+            }
+
+            if (effective_state != previous_effective_state)
+            {
+                this.pause_playback (previous_effective_state);
 
                 if (effective_state == Ft.State.POMODORO &&
-                    previous_effective_state == Ft.State.BREAK)
+                    previous_effective_state == Ft.State.BREAK &&
+                    !is_paused)
                 {
-                    this.pause_all ();
+                    this.resume_playback (effective_state);
                 }
-
-                this.effective_state = effective_state;
-
-                if (effective_state == Ft.State.POMODORO)
-                {
-                    if (is_paused != previous_is_paused && is_paused) {
-                        this.pause ();
-                    }
-
-                    if (!is_paused && (
-                        previous_effective_state == Ft.State.BREAK ||
-                        previous_is_paused != is_paused))
-                    {
-                        this.resume ();
-                    }
+            }
+            else if (is_paused != previous_is_paused)
+            {
+                if (is_paused) {
+                    this.pause_playback (effective_state);
                 }
-                else if (previous_effective_state == Ft.State.POMODORO)
-                {
-                    this.pause ();
+                else {
+                    this.resume_playback (effective_state);
                 }
             }
         }

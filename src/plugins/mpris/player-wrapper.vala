@@ -10,6 +10,8 @@ namespace Mpris
     {
         private const int64 REWIND_INTERVAL = 10 * Ft.Interval.SECOND;
 
+        private const uint DEBOUNCE_TIMEOUT = 100;
+
         public Mpris.PlaybackStatus status {
             get {
                 return this._status;
@@ -20,9 +22,11 @@ namespace Mpris
         private Mpris.Player?           player_proxy = null;
         private int64                   paused_timestamp = Ft.Timestamp.UNDEFINED;
         private string                  dbus_name;
+        private uint                    status_changed_id = 0;
+        private uint                    emitted_status = Mpris.PlaybackStatus.UNKNOWN;
 
         internal Ft.State               status_changed_state = Ft.State.STOPPED;
-        internal bool                   ignore_status_change = false;
+        internal Mpris.PlaybackStatus   ignore_status = Mpris.PlaybackStatus.UNKNOWN;
         internal bool                   auto_paused = false;
 
         public PlayerWrapper (string           dbus_name,
@@ -71,7 +75,33 @@ namespace Mpris
 
                 this._status = status;
                 this.notify_property ("status");
-                this.status_changed (status, previous_status);
+
+                if (this.status_changed_id != 0) {
+                    GLib.Source.remove (this.status_changed_id);
+                    this.status_changed_id = 0;
+                }
+
+                if (status == Mpris.PlaybackStatus.PAUSED &&
+                    previous_status == Mpris.PlaybackStatus.PLAYING &&
+                    this.ignore_status != Mpris.PlaybackStatus.PAUSED)
+                {
+                    // Debounce `signal-changed` signal. The player may pause and resume playback
+                    // when seeking.
+                    this.status_changed_id = GLib.Timeout.add (
+                        DEBOUNCE_TIMEOUT,
+                        () => {
+                            this.status_changed_id = 0;
+
+                            if (this._status != this.emitted_status) {
+                                this.status_changed (this._status, this.emitted_status);
+                            }
+
+                            return GLib.Source.REMOVE;
+                        });
+                }
+                else if (status != this.emitted_status) {
+                    this.status_changed (status, this.emitted_status);
+                }
             }
         }
 
@@ -81,10 +111,10 @@ namespace Mpris
             this.update_properties ();
         }
 
-        public async void pause ()
+        public async bool pause ()
         {
             if (!this.player_proxy.can_pause) {
-                return;
+                return false;
             }
 
             try {
@@ -94,17 +124,20 @@ namespace Mpris
             }
             catch (GLib.Error error) {
                 GLib.warning ("Failed to pause player %s: %s", this.dbus_name, error.message);
+                return false;
             }
+
+            return true;
         }
 
-        public async void resume ()
+        public async bool resume ()
         {
             if (!this.player_proxy.can_play) {
-                return;
+                return false;
             }
 
             if (Ft.Timestamp.is_undefined (this.paused_timestamp)) {
-                return;
+                return false;
             }
 
             var timestmap = GLib.get_monotonic_time ();
@@ -124,15 +157,27 @@ namespace Mpris
                 yield this.player_proxy.play ();
             }
             catch (GLib.Error error) {
-                GLib.warning ("Failed to rewind player %s: %s", this.dbus_name, error.message);
+                GLib.warning ("Failed to resume player %s: %s", this.dbus_name, error.message);
+                return false;
             }
+
+            return true;
         }
 
+        [Signal (run = "first")]
         public signal void status_changed (Mpris.PlaybackStatus status,
-                                           Mpris.PlaybackStatus previous_status);
+                                           Mpris.PlaybackStatus previous_status)
+        {
+            this.emitted_status = status;
+        }
 
         public override void dispose ()
         {
+            if (this.status_changed_id != 0) {
+                GLib.Source.remove (this.status_changed_id);
+                this.status_changed_id = 0;
+            }
+
             if (this.player_proxy != null)
             {
                 var player_proxy = (GLib.DBusProxy) this.player_proxy;
