@@ -18,6 +18,14 @@ namespace Mpris
             }
         }
 
+        public bool can_pause {
+            get {
+                return this.player_proxy != null
+                        ? this.player_proxy.can_pause
+                        : false;
+            }
+        }
+
         private Mpris.PlaybackStatus    _status = Mpris.PlaybackStatus.UNKNOWN;
         private Mpris.Player?           player_proxy = null;
         private int64                   paused_timestamp = Ft.Timestamp.UNDEFINED;

@@ -153,6 +153,28 @@ namespace Mpris
             this.update_background_sound_inhibitor ();
         }
 
+        /**
+         * Do not auto-resume playback if there's other media playing.
+         *
+         * TODO: detect videocall
+         */
+        private bool can_resume_playback ()
+        {
+            var can_resume = true;
+
+            this.foreach_player (
+                (player) => {
+                    if (player.status == Mpris.PlaybackStatus.PLAYING &&
+                        player.ignore_status != Mpris.PlaybackStatus.PAUSED &&
+                        !player.can_pause)
+                    {
+                        can_resume = false;
+                    }
+                });
+
+            return can_resume;
+        }
+
         private void pause_playback (Ft.State assigned_state)
         {
             this.foreach_player (
@@ -175,6 +197,9 @@ namespace Mpris
 
         private void resume_playback (Ft.State assigned_state)
         {
+            var can_resume = this.can_resume_playback ();
+            var resuming = false;
+
             this.foreach_player (
                 (player) => {
                     if (player.status != Mpris.PlaybackStatus.PAUSED ||
@@ -184,21 +209,28 @@ namespace Mpris
                         return;
                     }
 
-                    player.ignore_status = Mpris.PlaybackStatus.PLAYING;
-                    player.resume.begin (
-                        (obj, res) => {
-                            if (player.resume.end (res)) {
-                                player.auto_paused = false;
-                            }
-                        });
-
-                    // Anticipate that the player state will soon change to PLAYING.
-                    // It's a workaround for buggy fade-in/out animation.
-                    if (!this.background_sound_inhibited) {
-                        this.background_sound_inhibited = true;
-                        this.sound_manager.inhibit_background_sound ();
+                    if (can_resume)
+                    {
+                        player.ignore_status = Mpris.PlaybackStatus.PLAYING;
+                        player.resume.begin (
+                            (obj, res) => {
+                                if (player.resume.end (res)) {
+                                    player.auto_paused = false;
+                                }
+                            });
+                        resuming = true;
+                    }
+                    else {
+                        player.auto_paused = false;
                     }
                 });
+
+            // Anticipate that the player state will soon change to PLAYING.
+            // It's a workaround for buggy fade-in/out animation.
+            if (resuming && !this.background_sound_inhibited) {
+                this.background_sound_inhibited = true;
+                this.sound_manager.inhibit_background_sound ();
+            }
         }
 
         private void on_name_owner_changed (GLib.DBusConnection connection,
@@ -238,6 +270,7 @@ namespace Mpris
                     previous_status == Mpris.PlaybackStatus.UNKNOWN)
                 {
                     player.status_changed_state = effective_state;
+                    player.auto_paused = false;
                 }
 
                 player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
