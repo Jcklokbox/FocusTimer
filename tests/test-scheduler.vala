@@ -125,7 +125,7 @@ namespace Tests
             time_block_1.set_intended_duration (25 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_1)),
-                new GLib.Variant.int64 (now + 20 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
             );
 
             var time_block_2 = new Ft.TimeBlock (Ft.State.POMODORO);
@@ -133,7 +133,7 @@ namespace Tests
             time_block_2.set_intended_duration (25 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_2)),
-                new GLib.Variant.int64 (now + 20 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
             );
 
             var time_block_3 = new Ft.TimeBlock (Ft.State.POMODORO);
@@ -141,23 +141,23 @@ namespace Tests
             time_block_3.set_intended_duration (25 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_3)),
-                new GLib.Variant.int64 (now + 20 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
             );
 
             var time_block_4 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
-            time_block_4.set_time_range (now, now + 10 * Ft.Interval.MINUTE);
+            time_block_4.set_time_range (now, now + 5 * Ft.Interval.MINUTE);
             time_block_4.set_intended_duration (5 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_4)),
-                new GLib.Variant.int64 (now + 4 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + 3 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
             );
 
             var time_block_5 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
-            time_block_5.set_time_range (now, now + 5 * Ft.Interval.SECOND);
-            time_block_5.set_intended_duration (5 * Ft.Interval.SECOND);
+            time_block_5.set_time_range (now, now + 30 * Ft.Interval.SECOND);
+            time_block_5.set_intended_duration (30 * Ft.Interval.SECOND);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_5)),
-                new GLib.Variant.int64 (now + 4 * Ft.Interval.SECOND)
+                new GLib.Variant.int64 (now + 22 * Ft.Interval.SECOND + Ft.Interval.SECOND / 2)
             );
         }
 
@@ -165,13 +165,14 @@ namespace Tests
         {
             var now = Ft.Timestamp.peek ();
             var scheduler = new Ft.SimpleScheduler.with_template (this.session_template);
+            var completion_threshold = 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND;
 
             var time_block = new Ft.TimeBlock (Ft.State.POMODORO);
             time_block.set_time_range (now, now + 25 * Ft.Interval.MINUTE);
             time_block.set_intended_duration (25 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block)),
-                new GLib.Variant.int64 (now + 20 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + completion_threshold)
             );
 
             var gap = new Ft.Gap ();
@@ -179,19 +180,19 @@ namespace Tests
             time_block.add_gap (gap);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block)),
-                new GLib.Variant.int64 (now + 20 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + completion_threshold)
             );
 
             gap.set_time_range (now + 5 * Ft.Interval.MINUTE, now + 15 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block)),
-                new GLib.Variant.int64 (now + 30 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + completion_threshold + gap.duration)
             );
 
             time_block.set_time_range (now, now + 35 * Ft.Interval.MINUTE);
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block)),
-                new GLib.Variant.int64 (now + 30 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + completion_threshold + gap.duration)
             );
         }
 
@@ -299,7 +300,7 @@ namespace Tests
 
             var time_block = new Ft.TimeBlock (Ft.State.POMODORO);
             time_block.set_intended_duration (15 * Ft.Interval.MINUTE);
-            time_block.set_completion_time (now + 20 * Ft.Interval.MINUTE);
+            time_block.set_completion_time (now + 12 * Ft.Interval.MINUTE);
 
             time_block.set_time_range (now, now + 11 * Ft.Interval.MINUTE);
             score = scheduler.calculate_time_block_score (time_block, time_block.end_time);
@@ -545,7 +546,7 @@ namespace Tests
         }
 
         /**
-         * Time-block should complete at least 80% of intended duration, and not be shorter than 1 minute.
+         * Time-block should complete at least 75% of intended duration, and not be shorter than 1 minute.
          */
         public void test_is_time_block_completed__pomodoro ()
         {
@@ -554,10 +555,12 @@ namespace Tests
             var time_block = session.get_nth_time_block (0);
             time_block.set_status (Ft.TimeBlockStatus.IN_PROGRESS);
 
-            var timestamp_1 = time_block.start_time + 20 * Ft.Interval.MINUTE - Ft.Interval.SECOND;
+            var completion_threshold = 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND;
+
+            var timestamp_1 = time_block.start_time + completion_threshold - Ft.Interval.SECOND;
             assert_false (scheduler.is_time_block_completed (time_block, timestamp_1));
 
-            var timestamp_2 = time_block.start_time + 20 * Ft.Interval.MINUTE;
+            var timestamp_2 = time_block.start_time + completion_threshold;
             assert_true (scheduler.is_time_block_completed (time_block, timestamp_2));
         }
 
@@ -568,10 +571,12 @@ namespace Tests
             var time_block = session.get_nth_time_block (1);
             time_block.set_status (Ft.TimeBlockStatus.IN_PROGRESS);
 
-            var timestamp_1 = time_block.start_time + 4 * Ft.Interval.MINUTE - Ft.Interval.SECOND;
+            var completion_threshold = 3 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND;
+
+            var timestamp_1 = time_block.start_time + completion_threshold - Ft.Interval.SECOND;
             assert_false (scheduler.is_time_block_completed (time_block, timestamp_1));
 
-            var timestamp_2 = time_block.start_time + 4 * Ft.Interval.MINUTE;
+            var timestamp_2 = time_block.start_time + completion_threshold;
             assert_true (scheduler.is_time_block_completed (time_block, timestamp_2));
         }
 
@@ -1893,10 +1898,11 @@ namespace Tests
             scheduler.ensure_session_meta (session);
 
             var meta = time_block.get_meta ();
-            // Completion time should be: start + 20 minutes (80% of 25) + 10 minutes (gap duration)
+            var completion_threshold = 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND;
+
             assert_cmpvariant (
                 new GLib.Variant.int64 (meta.completion_time),
-                new GLib.Variant.int64 (now + 30 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (now + completion_threshold + gap.duration)
             );
             assert_cmpuint (session.count_visible_cycles (), GLib.CompareOperator.EQ, 1U);
         }

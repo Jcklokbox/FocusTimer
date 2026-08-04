@@ -101,9 +101,10 @@ namespace Ft
         /**
          * A progress threshold that qualifies time-block to be marked as completed.
          *
-         * When set to 0.5 it would count two cycles per completed Ft. Reasonable values are > 0.667.
+         * When set to 0.5 it would count two cycles per completed pomodoro.
+         * Reasonable values are > 0.667.
          */
-        protected const double COMPLETION_THRESHOLD = 0.8;
+        protected const double COMPLETION_THRESHOLD = 0.75;
 
         /**
          * Max number of time-blocks scheduled in case scheduler enters into an infinite loop.
@@ -404,13 +405,58 @@ namespace Ft
         private double MAX_SCORE = 2.0;
 
         /* Minimum intended-duration to consider scores above 1.0  */
-        private int64 SCORE_INTENDED_DURATION_THRESHOLD = 20 * Ft.Interval.MINUTE;
+        private int64 EXTRA_SCORE_THRESHOLD = 20 * Ft.Interval.MINUTE;
 
         public SimpleScheduler.with_template (Ft.SessionTemplate session_template)
         {
             GLib.Object (
                 session_template: session_template
             );
+        }
+
+        /**
+         * Calculate elapsed time at given timestamp, accounting only for completed gaps.
+         *
+         * Unlike `TimeBlock.calculate_elapsed()`, the timestamp is not clamped to `end_time`
+         * and ongoing gaps are ignored. This mirrors how `calculate_time_block_completion_time()`
+         * treats gaps, so it can reconstruct the progress at `completion_time` even after
+         * the time-block has ended early or while it's paused.
+         */
+        private int64 calculate_time_block_elapsed_at (Ft.TimeBlock time_block,
+                                                       int64        timestamp)
+        {
+            if (Ft.Timestamp.is_undefined (time_block.start_time) ||
+                Ft.Timestamp.is_undefined (timestamp) ||
+                timestamp <= time_block.start_time)
+            {
+                return 0;
+            }
+
+            var range_start = time_block.start_time;
+            var elapsed = timestamp - range_start;
+
+            time_block.foreach_gap (
+                (gap) => {
+                    if (Ft.Timestamp.is_undefined (gap.end_time)) {
+                        return;
+                    }
+
+                    var gap_start_time = gap.start_time.clamp (range_start, timestamp);
+                    var gap_end_time = gap.end_time;
+
+                    if (gap_end_time > gap_start_time) {
+                        gap_end_time = gap_end_time.clamp (range_start, timestamp);
+                    }
+                    else {
+                        return;
+                    }
+
+                    elapsed -= gap_end_time - gap_start_time;
+                    range_start = gap_end_time;
+                }
+            );
+
+            return elapsed;
         }
 
         private double calculate_time_block_score_internal (Ft.TimeBlock time_block,
@@ -435,6 +481,14 @@ namespace Ft
 
             var elapsed = time_block.calculate_elapsed (timestamp);
             var last_gap = time_block.get_last_gap ();
+            var completion_time = time_block.get_completion_time ();
+            var completion_threshold = Ft.Timestamp.is_defined (completion_time)
+                    ? this.calculate_time_block_elapsed_at (time_block, completion_time)
+                    : 0;
+
+            if (completion_threshold <= 0) {
+                completion_threshold = (int64) Math.floor (intended_duration * COMPLETION_THRESHOLD);
+            }
 
             if (include_uncompleted_gaps &&
                 last_gap != null &&
@@ -445,17 +499,16 @@ namespace Ft
                 elapsed += int64.min (timestamp, time_block.end_time) - last_gap.start_time;
             }
 
-            if (elapsed >= SCORE_INTENDED_DURATION_THRESHOLD) {
+            if (elapsed >= EXTRA_SCORE_THRESHOLD) {
                 intended_duration = int64.max (intended_duration,
-                                               SCORE_INTENDED_DURATION_THRESHOLD);
+                                               EXTRA_SCORE_THRESHOLD);
             }
 
-            if (intended_duration >= SCORE_INTENDED_DURATION_THRESHOLD)
+            if (intended_duration >= EXTRA_SCORE_THRESHOLD)
             {
                 var base_score = elapsed / intended_duration;
-                var partial_score = (
-                        (double) (elapsed - base_score * intended_duration) /
-                        (COMPLETION_THRESHOLD * (double) intended_duration));
+                var partial_score = (double) (elapsed - base_score * intended_duration) /
+                                    (double) completion_threshold;
 
                 score = Math.floor (
                     (double) base_score + partial_score
@@ -463,7 +516,7 @@ namespace Ft
             }
             else {
                 score = Math.floor (
-                    (double) elapsed / (COMPLETION_THRESHOLD * (double) intended_duration)
+                    (double) elapsed / (double) completion_threshold
                 ).clamp (0.0, 1.0);
             }
 

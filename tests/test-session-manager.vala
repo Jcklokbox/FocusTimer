@@ -3787,7 +3787,7 @@ namespace Tests
                 new GLib.Variant.int64 (gap_end_time),
                 new GLib.Variant.int64 (now)
             );
-            assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 0.1, EPSILON);
+            assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 2.0 / 18.75, EPSILON);
 
             // Second rewind.
             gaps_count = 0;
@@ -3819,9 +3819,13 @@ namespace Tests
             );
             assert_cmpvariant (
                 new GLib.Variant.int64 (time_block.get_completion_time ()),
-                new GLib.Variant.int64 (time_block.end_time - 5 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (session_manager.scheduler.calculate_time_block_completion_time (time_block))
             );
-            assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 65.0 / 1200.0, EPSILON);
+            assert_cmpfloat_with_epsilon (
+                cycle.calculate_progress (now),
+                65.0 / (18.75 * 60.00),
+                EPSILON
+            );
 
             // Third rewind.
             gaps_count = 0;
@@ -3853,7 +3857,7 @@ namespace Tests
             );
             assert_cmpvariant (
                 new GLib.Variant.int64 (time_block.get_completion_time ()),
-                new GLib.Variant.int64 (time_block.end_time - 5 * Ft.Interval.MINUTE)
+                new GLib.Variant.int64 (session_manager.scheduler.calculate_time_block_completion_time (time_block))
             );
             assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 0.0, EPSILON);
         }
@@ -3899,7 +3903,11 @@ namespace Tests
                 new GLib.Variant.int64 (cycle.get_completion_time ()),
                 new GLib.Variant.int64 (expected_completion_time)
             );
-            assert_cmpfloat_with_epsilon (cycle.calculate_progress (timer.state.paused_time), 4.0 / 20.0, EPSILON);
+            assert_cmpfloat_with_epsilon (
+                cycle.calculate_progress (timer.state.paused_time),
+                4.0 / 18.75,
+                EPSILON
+            );
             assert_cmpfloat_with_epsilon (cycle.get_weight (), 1.0, EPSILON);
             assert_true (cycle.is_visible ());
         }
@@ -3983,7 +3991,11 @@ namespace Tests
                 new GLib.Variant.int64 (time_block.get_completion_time ()),
                 new GLib.Variant.int64 (original_completion_time + Ft.Interval.MINUTE)
             );
-            assert_cmpfloat_with_epsilon (cycle.calculate_progress (timer.state.paused_time), 2.0 / 20.0, EPSILON);
+            assert_cmpfloat_with_epsilon (
+                cycle.calculate_progress (timer.state.paused_time),
+                2.0 / 18.75,
+                EPSILON
+            );
             assert_cmpfloat_with_epsilon (cycle.get_weight (), 1.0, EPSILON);
             assert_true (cycle.is_visible ());
 
@@ -4011,7 +4023,7 @@ namespace Tests
                 new GLib.Variant.int64 (time_block.get_completion_time ()),
                 new GLib.Variant.int64 (original_completion_time + 2 * Ft.Interval.MINUTE)
             );
-            assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 1.0 / 20.0, EPSILON);
+            assert_cmpfloat_with_epsilon (cycle.calculate_progress (now), 1.0 / 18.75, EPSILON);
             assert_cmpfloat_with_epsilon (cycle.get_weight (), 1.0, EPSILON);
             assert_true (cycle.is_visible ());
 
