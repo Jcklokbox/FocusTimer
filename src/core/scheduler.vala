@@ -144,7 +144,10 @@ namespace Ft
                 intended_duration = this._session_template.get_duration (time_block.state);
             }
 
-            var remaining_elapsed = (int64) Math.floor (intended_duration * COMPLETION_THRESHOLD);
+            var completion_threshold = time_block.state == Ft.State.LONG_BREAK
+                    ? (this._session_template.short_break_duration + intended_duration) / 2
+                    : (int64) Math.floor (intended_duration * COMPLETION_THRESHOLD);
+            var remaining_elapsed = completion_threshold;
             var reference_time = time_block.start_time;
 
             time_block.foreach_gap (

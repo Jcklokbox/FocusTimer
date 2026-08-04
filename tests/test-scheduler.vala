@@ -51,8 +51,10 @@ namespace Tests
     {
         public SimpleSchedulerTest ()
         {
-            this.add_test ("calculate_time_block_completion_time", this.test_calculate_time_block_completion_time);
-            this.add_test ("calculate_time_block_completion_time__with_gaps", this.test_calculate_time_block_completion_time__with_gaps);
+            this.add_test ("calculate_time_block_completion_time__pomodoro", this.test_calculate_time_block_completion_time__pomodoro);
+            this.add_test ("calculate_time_block_completion_time__pomodoro_with_gaps", this.test_calculate_time_block_completion_time__pomodoro_with_gaps);
+            this.add_test ("calculate_time_block_completion_time__short_break", this.test_calculate_time_block_completion_time__short_break);
+            this.add_test ("calculate_time_block_completion_time__long_break", this.test_calculate_time_block_completion_time__long_break);
 
             this.add_test ("calculate_time_block_score__pomodoro", this.test_calculate_time_block_score__pomodoro);
             this.add_test ("calculate_time_block_score__extended_pomodoro", this.test_calculate_time_block_score__extended_pomodoro);
@@ -115,7 +117,7 @@ namespace Tests
             this.add_test ("ensure_session_meta__mixed_states", this.test_ensure_session_meta__mixed_states);
         }
 
-        public void test_calculate_time_block_completion_time ()
+        public void test_calculate_time_block_completion_time__pomodoro ()
         {
             var now = Ft.Timestamp.peek ();
             var scheduler = new Ft.SimpleScheduler.with_template (this.session_template);
@@ -143,25 +145,9 @@ namespace Tests
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_3)),
                 new GLib.Variant.int64 (now + 18 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
             );
-
-            var time_block_4 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
-            time_block_4.set_time_range (now, now + 5 * Ft.Interval.MINUTE);
-            time_block_4.set_intended_duration (5 * Ft.Interval.MINUTE);
-            assert_cmpvariant (
-                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_4)),
-                new GLib.Variant.int64 (now + 3 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
-            );
-
-            var time_block_5 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
-            time_block_5.set_time_range (now, now + 30 * Ft.Interval.SECOND);
-            time_block_5.set_intended_duration (30 * Ft.Interval.SECOND);
-            assert_cmpvariant (
-                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_5)),
-                new GLib.Variant.int64 (now + 22 * Ft.Interval.SECOND + Ft.Interval.SECOND / 2)
-            );
         }
 
-        public void test_calculate_time_block_completion_time__with_gaps ()
+        public void test_calculate_time_block_completion_time__pomodoro_with_gaps ()
         {
             var now = Ft.Timestamp.peek ();
             var scheduler = new Ft.SimpleScheduler.with_template (this.session_template);
@@ -193,6 +179,54 @@ namespace Tests
             assert_cmpvariant (
                 new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block)),
                 new GLib.Variant.int64 (now + completion_threshold + gap.duration)
+            );
+        }
+
+        public void test_calculate_time_block_completion_time__short_break ()
+        {
+            var now = Ft.Timestamp.peek ();
+            var scheduler = new Ft.SimpleScheduler.with_template (this.session_template);
+
+            var time_block_1 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
+            time_block_1.set_time_range (now, now + 5 * Ft.Interval.MINUTE);
+            time_block_1.set_intended_duration (5 * Ft.Interval.MINUTE);
+            assert_cmpvariant (
+                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_1)),
+                new GLib.Variant.int64 (now + 3 * Ft.Interval.MINUTE + 45 * Ft.Interval.SECOND)
+            );
+
+            var time_block_2 = new Ft.TimeBlock (Ft.State.SHORT_BREAK);
+            time_block_2.set_time_range (now, now + 30 * Ft.Interval.SECOND);
+            time_block_2.set_intended_duration (30 * Ft.Interval.SECOND);
+            assert_cmpvariant (
+                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_2)),
+                new GLib.Variant.int64 (now + 22 * Ft.Interval.SECOND + Ft.Interval.SECOND / 2)
+            );
+        }
+
+        public void test_calculate_time_block_completion_time__long_break ()
+        {
+            var now = Ft.Timestamp.peek ();
+            var scheduler = new Ft.SimpleScheduler.with_template (this.session_template);
+
+            var completion_threshold_1 =
+                    (this.session_template.short_break_duration + 15 * Ft.Interval.MINUTE) / 2;
+            var time_block_1 = new Ft.TimeBlock (Ft.State.LONG_BREAK);
+            time_block_1.set_time_range (now, now + 15 * Ft.Interval.MINUTE);
+            time_block_1.set_intended_duration (15 * Ft.Interval.MINUTE);
+            assert_cmpvariant (
+                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_1)),
+                new GLib.Variant.int64 (now + completion_threshold_1)
+            );
+
+            var completion_threshold_2 =
+                    (this.session_template.short_break_duration + 30 * Ft.Interval.MINUTE) / 2;
+            var time_block_2 = new Ft.TimeBlock (Ft.State.LONG_BREAK);
+            time_block_2.set_time_range (now, now + 30 * Ft.Interval.MINUTE);
+            time_block_2.set_intended_duration (30 * Ft.Interval.MINUTE);
+            assert_cmpvariant (
+                new GLib.Variant.int64 (scheduler.calculate_time_block_completion_time (time_block_2)),
+                new GLib.Variant.int64 (now + completion_threshold_2)
             );
         }
 
