@@ -47,8 +47,9 @@ namespace Mpris
         public abstract bool can_pause { get; }
         public abstract bool can_seek { get; }
 
-        public abstract async void pause () throws GLib.DBusError, GLib.IOError;
         public abstract async void play () throws GLib.DBusError, GLib.IOError;
+        public abstract async void play_pause () throws GLib.DBusError, GLib.IOError;
+        public abstract async void pause () throws GLib.DBusError, GLib.IOError;
         public abstract async void seek (int64 offset) throws GLib.DBusError, GLib.IOError;
     }
 

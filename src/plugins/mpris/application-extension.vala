@@ -165,8 +165,7 @@ namespace Mpris
             this.foreach_player (
                 (player) => {
                     if (player.status == Mpris.PlaybackStatus.PLAYING &&
-                        player.ignore_status != Mpris.PlaybackStatus.PAUSED &&
-                        !player.can_pause)
+                        player.ignore_status == Mpris.PlaybackStatus.UNKNOWN)
                     {
                         can_resume = false;
                     }
@@ -185,7 +184,6 @@ namespace Mpris
                         return;
                     }
 
-                    player.ignore_status = Mpris.PlaybackStatus.PAUSED;
                     player.pause.begin (
                         (obj, res) => {
                             if (player.pause.end (res)) {
@@ -202,16 +200,14 @@ namespace Mpris
 
             this.foreach_player (
                 (player) => {
-                    if (player.status != Mpris.PlaybackStatus.PAUSED ||
-                        player.status_changed_state != assigned_state ||
-                        !player.auto_paused)
+                    if (!player.auto_paused ||
+                        player.status_changed_state != assigned_state)
                     {
                         return;
                     }
 
                     if (can_resume)
                     {
-                        player.ignore_status = Mpris.PlaybackStatus.PLAYING;
                         player.resume.begin (
                             (obj, res) => {
                                 if (player.resume.end (res)) {

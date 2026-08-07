@@ -121,12 +121,15 @@ namespace Mpris
 
         public async bool pause ()
         {
-            if (!this.player_proxy.can_pause) {
-                return false;
-            }
-
             try {
-                yield this.player_proxy.pause ();
+                if (this.player_proxy.can_pause) {
+                    this.ignore_status = Mpris.PlaybackStatus.PAUSED;
+                    yield this.player_proxy.pause ();
+                }
+                else {
+                    this.ignore_status = Mpris.PlaybackStatus.STOPPED;
+                    yield this.player_proxy.play_pause ();
+                }
 
                 this.paused_timestamp = GLib.get_monotonic_time ();
             }
@@ -162,7 +165,14 @@ namespace Mpris
             }
 
             try {
-                yield this.player_proxy.play ();
+                this.ignore_status = Mpris.PlaybackStatus.PLAYING;
+
+                if (this.status == Mpris.PlaybackStatus.PAUSED) {
+                    yield this.player_proxy.play ();
+                }
+                else {
+                    yield this.player_proxy.play_pause ();
+                }
             }
             catch (GLib.Error error) {
                 GLib.warning ("Failed to resume player %s: %s", this.dbus_name, error.message);
