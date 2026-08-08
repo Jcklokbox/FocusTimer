@@ -10,6 +10,7 @@ namespace Mpris
     {
         private GLib.Settings?                              settings = null;
         private Ft.Timer?                                   timer = null;
+        private Ft.SessionManager?                          session_manager = null;
         private GLib.Cancellable?                           cancellable = null;
         private GLib.DBusConnection?                        connection = null;
         private uint                                        name_owner_changed_id = 0;
@@ -25,6 +26,7 @@ namespace Mpris
             this.cancellable = new GLib.Cancellable ();
 
             this.timer = Ft.Timer.get_default ();
+            this.session_manager = Ft.SessionManager.get_default ();
 
             this.settings = new GLib.Settings ("io.github.focustimerhq.FocusTimer.plugins.mpris");
             this.settings.changed.connect (this.on_settings_changed);
@@ -120,7 +122,6 @@ namespace Mpris
 
             this.foreach_player (
                 (player) => {
-                    player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
                     player.auto_paused = false;
                 });
         }
@@ -164,9 +165,7 @@ namespace Mpris
 
             this.foreach_player (
                 (player) => {
-                    if (player.status == Mpris.PlaybackStatus.PLAYING &&
-                        player.ignore_status == Mpris.PlaybackStatus.UNKNOWN)
-                    {
+                    if (player.status == Mpris.PlaybackStatus.PLAYING && !player.is_pausing ()) {
                         can_resume = false;
                     }
                 });
@@ -179,7 +178,7 @@ namespace Mpris
             this.foreach_player (
                 (player) => {
                     if (player.status != Mpris.PlaybackStatus.PLAYING ||
-                        player.status_changed_state != assigned_state)
+                        player.associated_state != assigned_state)
                     {
                         return;
                     }
@@ -201,7 +200,7 @@ namespace Mpris
             this.foreach_player (
                 (player) => {
                     if (!player.auto_paused ||
-                        player.status_changed_state != assigned_state)
+                        player.associated_state != assigned_state)
                     {
                         return;
                     }
@@ -251,28 +250,41 @@ namespace Mpris
                                                Mpris.PlaybackStatus status,
                                                Mpris.PlaybackStatus previous_status)
         {
-            if (this.timer.user_data != null)
-            {
-                var current_time_block = this.timer.user_data as Ft.TimeBlock;
-                var is_waiting_for_activity = current_time_block != null && !this.timer.is_started ();
+            var current_time_block = this.timer.user_data as Ft.TimeBlock;
+            var is_waiting_for_activity = current_time_block != null && !this.timer.is_started ();
 
+            this.update_background_sound_inhibitor ();
+
+            if (status == Mpris.PlaybackStatus.PLAYING &&
+                is_waiting_for_activity &&
+                player.auto_paused &&
+                player.associated_state == Ft.State.POMODORO)
+            {
+                // Treat resuming playback as an activity that resumes the timer,
+                // even on lock-screen.
+                var timer_action_group = new Ft.TimerActionGroup ();
+                timer_action_group.activate_action ("start", null);
+            }
+            else if (status == Mpris.PlaybackStatus.PLAYING ||
+                     previous_status == Mpris.PlaybackStatus.UNKNOWN)
+            {
                 // When we're about to start Pomodoro, assume the PLAYING state is attributed to
                 // the Pomodoro, even if advancement hasn't been confirmed yet.
                 var effective_state = is_waiting_for_activity && status == Mpris.PlaybackStatus.PLAYING
                         ? current_time_block.state
                         : this.effective_state;
 
-                if (status != player.ignore_status ||
-                    previous_status == Mpris.PlaybackStatus.UNKNOWN)
-                {
-                    player.status_changed_state = effective_state;
-                    player.auto_paused = false;
-                }
-
-                player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
+                player.associated_state = effective_state;
+                player.auto_paused = false;
             }
-
-            this.update_background_sound_inhibitor ();
+            else if (previous_status == Mpris.PlaybackStatus.PLAYING &&
+                     current_time_block != null &&
+                     this.session_manager.lockscreen_active)
+            {
+                // Mark manually pausing playback on the lock-screen with `auto-paused`,
+                // to auto resume playback later.
+                player.auto_paused = true;
+            }
         }
 
         private void on_timer_state_changed (Ft.TimerState current_state,
@@ -310,11 +322,10 @@ namespace Mpris
             {
                 this.foreach_player (
                     (player) => {
-                        player.ignore_status = Mpris.PlaybackStatus.UNKNOWN;
                         player.auto_paused = false;
 
                         if (player.status == Mpris.PlaybackStatus.PLAYING) {
-                            player.status_changed_state = effective_state;
+                            player.associated_state = effective_state;
                         }
                     });
             }
@@ -391,6 +402,7 @@ namespace Mpris
             this.connection = null;
             this.players = null;
             this.sound_manager = null;
+            this.session_manager = null;
 
             base.dispose ();
         }
