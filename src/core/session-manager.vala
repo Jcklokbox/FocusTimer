@@ -146,10 +146,15 @@ namespace Ft
          *
          * It equivalent to whether a session has short breaks.
          */
-        [CCode (notify = false)]
         public bool has_uniform_breaks {
             get {
                 return this._has_uniform_breaks;
+            }
+        }
+
+        public bool lockscreen_active {
+            get {
+                return this._lockscreen_active;
             }
         }
 
@@ -160,6 +165,7 @@ namespace Ft
         private Ft.Gap?                 _current_gap = null;
         private Ft.State                _current_state = Ft.State.STOPPED;
         private bool                    _has_uniform_breaks = false;
+        private bool                    _lockscreen_active = false;
         private Ft.Session?             next_session = null;
         private Ft.TimeBlock?           next_time_block = null;
         private Ft.IdleMonitor?         idle_monitor = null;
@@ -168,6 +174,7 @@ namespace Ft
         private Ft.ScreenSaver?         screensaver = null;
         private Ft.LockScreen?          lockscreen = null;
         private bool                    auto_paused = false;
+        private bool                    inhibit_auto_pause = false;
         private bool                    current_time_block_entered = false;
         private ulong                   current_time_block_changed_id = 0;
         private bool                    current_session_entered = false;
@@ -211,12 +218,17 @@ namespace Ft
             this.scheduler = new Ft.SimpleScheduler ();
             this.timezone_monitor = new Ft.TimeZoneMonitor ();
             this.timezone_history = new Ft.TimezoneHistory ();
+            this.lockscreen = new Ft.LockScreen ();
+            this.screensaver = new Ft.ScreenSaver ();
             this.save_callbacks = {};
 
             this.settings.changed.connect (this.on_settings_changed);
             this.timezone_monitor.changed.connect (this.on_timezone_changed);
+            this.lockscreen.notify["active"].connect (this.on_lockscreen_notify_active);
+            this.screensaver.notify["active"].connect (this.on_screensaver_notify_active);
 
             this.update_session_template ();
+            this.update_lockscreen_active ();
         }
 
         /**
@@ -1928,23 +1940,17 @@ namespace Ft
 
         private bool should_auto_pause ()
         {
-            if (this._current_time_block == null ||
-                this._current_time_block.state != Ft.State.POMODORO ||
+            if (this.inhibit_auto_pause ||
+                this._current_time_block == null ||
+                this.resolving_timer_state > 0 ||
                 !this._timer.is_running () && !this.auto_paused ||
-                this.resolving_timer_state > 0)
+                !this.settings.get_boolean ("pause-on-lockscreen"))
             {
                 return false;
             }
 
-            if (this.lockscreen != null && this.lockscreen.enabled && this.lockscreen.active) {
-                return true;
-            }
-
-            if (this.screensaver != null && this.screensaver.enabled && this.screensaver.active) {
-                return true;
-            }
-
-            return false;
+            return this._current_time_block.state == Ft.State.POMODORO &&
+                   this._lockscreen_active;
         }
 
         private bool should_auto_resume ()
@@ -1953,37 +1959,21 @@ namespace Ft
                 return false;
             }
 
-            if (this.lockscreen != null && this.lockscreen.enabled && this.lockscreen.active) {
-                return false;
-            }
-
-            if (this.screensaver != null && this.screensaver.enabled && this.screensaver.active) {
-                return false;
-            }
-
-            return true;
+            return !this._lockscreen_active;
         }
 
         private bool should_auto_advance ()
         {
             if (!this._timer.is_finished () ||
                 this._current_time_block == null ||
-                this._current_time_block.state != Ft.State.POMODORO ||
-                this.next_time_block == null ||
-                !this.next_time_block.state.is_break ())
+                this.next_time_block == null)
             {
                 return false;
             }
 
-            if (this.lockscreen != null && this.lockscreen.enabled && this.lockscreen.active) {
-                return true;
-            }
-
-            if (this.screensaver != null && this.screensaver.enabled && this.screensaver.active) {
-                return true;
-            }
-
-            return false;
+            return this._current_time_block.state == Ft.State.POMODORO &&
+                   this.next_time_block.state.is_break () &&
+                   !this._lockscreen_active;
         }
 
         private void pause ()
@@ -2008,47 +1998,28 @@ namespace Ft
             }
         }
 
-        private void enable_auto_pause ()
+        private void update_lockscreen_active ()
         {
-            if (this.lockscreen == null) {
-                this.lockscreen = new Ft.LockScreen ();
-                this.lockscreen.notify["active"].connect (this.on_lockscreen_notify_active);
-            }
+            var lockscreen_active = (
+                    this.lockscreen != null && this.lockscreen.enabled && this.lockscreen.active ||
+                    this.screensaver != null && this.screensaver.enabled && this.screensaver.active);
 
-            if (this.screensaver == null) {
-                this.screensaver = new Ft.ScreenSaver ();
-                this.screensaver.notify["active"].connect (this.on_screensaver_notify_active);
+            if (this._lockscreen_active != lockscreen_active) {
+                this._lockscreen_active = lockscreen_active;
+                this.notify_property ("lockscreen-active");
             }
-
-            if (this.should_auto_pause ()) {
-                this.pause ();
-            }
-        }
-
-        private void disable_auto_pause ()
-        {
-            if (this.lockscreen != null) {
-                this.lockscreen.notify["active"].disconnect (this.on_lockscreen_notify_active);
-                this.lockscreen = null;
-            }
-
-            if (this.screensaver != null) {
-                this.screensaver.notify["active"].disconnect (this.on_screensaver_notify_active);
-                this.screensaver = null;
-            }
-
-            this.resume ();
         }
 
         private void update_auto_pause ()
         {
-            if (this._current_time_block != null &&
-                this.settings.get_boolean ("pause-on-lockscreen"))
-            {
-                this.enable_auto_pause ();
+            if (this.should_auto_pause ()) {
+                this.pause ();
             }
-            else {
-                this.disable_auto_pause ();
+            else if (this.should_auto_resume ()) {
+                this.resume ();
+            }
+            else if (this.should_auto_advance ()) {
+                this.advance ();
             }
         }
 
@@ -2225,9 +2196,17 @@ namespace Ft
                                              Ft.TimerState previous_state)
         {
             // Remove activity watch upon first change.
-            if (this.active_watch_id != 0 && (current_state.is_started () || current_state.user_data == null)) {
+            if (this.active_watch_id != 0 &&
+                (current_state.is_started () || current_state.user_data == null))
+            {
                 this.idle_monitor.remove_watch (this.active_watch_id);
                 this.active_watch_id = 0;
+            }
+
+            // Handle manually resuming the timer on the lock-screen.
+            if (this._lockscreen_active) {
+                this.inhibit_auto_pause = current_state.is_running ();
+                this.auto_paused = current_state.is_paused ();
             }
 
             // HACK: Use `resolving_timer_state` to preserve original timestamp
@@ -2375,33 +2354,29 @@ namespace Ft
 
         private void handle_became_active ()
         {
-            if (this._timer.user_data == null || this._timer.is_started ()) {
+            if (this._lockscreen_active) {
                 return;
             }
 
-            if ((this.screensaver != null && this.screensaver.active) ||
-                (this.lockscreen != null && this.lockscreen.active))
-            {
-                return;
-            }
+            var is_waiting_for_activity =
+                    this._timer.user_data != null && !this._timer.is_started ();
 
-            this._timer.start ();
+            if (is_waiting_for_activity) {
+                this._timer.start ();
+            }
         }
 
         private void on_lockscreen_notify_active (GLib.Object    object,
                                                   GLib.ParamSpec pspec)
         {
-            if (this.should_auto_pause ()) {
-                this.pause ();
-            }
-            else if (this.should_auto_resume ()) {
-                this.resume ();
-            }
-            else if (this.should_auto_advance ()) {
-                this.advance ();
-            }
+            this.update_lockscreen_active ();
+            this.update_auto_pause ();
 
-            if (!this.lockscreen.active) {
+            if (this._lockscreen_active) {
+                this.auto_paused |= this._timer.is_paused ();
+            }
+            else {
+                this.inhibit_auto_pause = false;
                 this.handle_became_active ();
             }
         }
@@ -2409,17 +2384,14 @@ namespace Ft
         private void on_screensaver_notify_active (GLib.Object    object,
                                                    GLib.ParamSpec pspec)
         {
-            if (this.should_auto_pause ()) {
-                this.pause ();
-            }
-            else if (this.should_auto_resume ()) {
-                this.resume ();
-            }
-            else if (this.should_auto_advance ()) {
-                this.advance ();
-            }
+            this.update_lockscreen_active ();
+            this.update_auto_pause ();
 
-            if (!this.screensaver.active) {
+            if (this._lockscreen_active) {
+                this.auto_paused |= this._timer.is_paused ();
+            }
+            else {
+                this.inhibit_auto_pause = false;
                 this.handle_became_active ();
             }
         }
@@ -2721,6 +2693,14 @@ namespace Ft
                 this.settings.changed.disconnect (this.on_settings_changed);
             }
 
+            if (this.lockscreen != null) {
+                this.lockscreen.notify["active"].disconnect (this.on_lockscreen_notify_active);
+            }
+
+            if (this.screensaver != null) {
+                this.screensaver.notify["active"].disconnect (this.on_screensaver_notify_active);
+            }
+
             if (this.reschedule_idle_id != 0) {
                 GLib.Source.remove (this.reschedule_idle_id);
                 this.reschedule_idle_id = 0;
@@ -2736,7 +2716,6 @@ namespace Ft
                 this.expiry_timeout_id = 0;
             }
 
-            this.disable_auto_pause ();
             this.disable_idle_monitor ();
 
             this._current_gap = null;
