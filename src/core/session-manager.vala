@@ -28,6 +28,7 @@ namespace Ft
          * Time limit when waiting for activity or confirmation.
          */
         private const int64 OVERDUE_TIMEOUT = Ft.Interval.HOUR;
+        private const int64 SESSION_EXPIRY_TIMEOUT = 100 * 365 * 24 * Ft.Interval.HOUR;
 
         private static Ft.SessionManager? instance = null;
 
@@ -1416,12 +1417,12 @@ namespace Ft
             this.mark_timezone (this.timezone_monitor.timezone, timestamp);
 
             // Fetch the most recent session
-            var end_time_value = GLib.Value (typeof (int64));
-            end_time_value.set_int64 (timestamp - 2 * Ft.Interval.HOUR);
+            var expiry_time_value = GLib.Value (typeof (int64));
+            expiry_time_value.set_int64 (timestamp);
             var session_filter = new Gom.Filter.gte (
                     typeof (Ft.SessionEntry),
-                    "end-time",
-                    end_time_value);
+                    "expiry-time",
+                    expiry_time_value);
 
             var session_sorting = (Gom.Sorting) GLib.Object.@new (typeof (Gom.Sorting));
             session_sorting.add (
@@ -1823,14 +1824,7 @@ namespace Ft
          */
         public int64 calculate_expiry_timeout ()
         {
-            var session_template = this._scheduler.session_template;
-            var pomodoro_duration = session_template.pomodoro_duration;
-            var long_break_duration = session_template.has_uniform_breaks ()
-                    ? session_template.short_break_duration
-                    : session_template.long_break_duration;
-
-            return int64.max (OVERDUE_TIMEOUT,
-                              int64.max (pomodoro_duration, 2 * long_break_duration));
+            return SESSION_EXPIRY_TIMEOUT;
         }
 
         /**
