@@ -6,6 +6,18 @@
 
 [Focus Timer](https://gnomepomodoro.org) (formerly gnome-pomodoro) is a time-management app built around the [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique), helping you maintain focus and prevent burnout through structured work and break intervals.
 
+## Fork changes
+
+This fork modifies session persistence behavior:
+
+* Paused sessions effectively do not expire and can be restored after restarting the app, rebooting, or leaving them paused for a long time.
+* A timer that was manually paused stays paused across suspend, screen lock, and wake-up.
+* Automatic resume only applies when Focus Timer itself automatically paused a running timer.
+
+Everything else is intended to stay close to upstream Focus Timer.
+
+To use these changes, build and install this fork from source. The Flathub and distribution packages listed below contain the upstream version and do not include these modifications.
+
 **Key features:**
 * Customizable work session and break lengths
 * Screen overlay during breaks
