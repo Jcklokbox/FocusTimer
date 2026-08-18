@@ -1972,7 +1972,7 @@ namespace Ft
 
         private void pause ()
         {
-            if (!this.auto_paused)
+            if (!this.auto_paused && this._timer.is_running ())
             {
                 this.auto_paused = true;
 
@@ -2366,10 +2366,7 @@ namespace Ft
             this.update_lockscreen_active ();
             this.update_auto_pause ();
 
-            if (this._lockscreen_active) {
-                this.auto_paused |= this._timer.is_paused ();
-            }
-            else {
+            if (!this._lockscreen_active) {
                 this.inhibit_auto_pause = false;
                 this.handle_became_active ();
             }
@@ -2381,10 +2378,7 @@ namespace Ft
             this.update_lockscreen_active ();
             this.update_auto_pause ();
 
-            if (this._lockscreen_active) {
-                this.auto_paused |= this._timer.is_paused ();
-            }
-            else {
+            if (!this._lockscreen_active) {
                 this.inhibit_auto_pause = false;
                 this.handle_became_active ();
             }
